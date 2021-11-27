@@ -1,0 +1,734 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		EB171C802751E81E00F9289F /* FoodWiseCourierApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171C7F2751E81E00F9289F /* FoodWiseCourierApp.swift */; };
+		EB171C822751E81E00F9289F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171C812751E81E00F9289F /* ContentView.swift */; };
+		EB171C842751E82300F9289F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB171C832751E82300F9289F /* Assets.xcassets */; };
+		EB171C872751E82300F9289F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB171C862751E82300F9289F /* Preview Assets.xcassets */; };
+		EB171C912751E82400F9289F /* FoodWiseCourierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171C902751E82400F9289F /* FoodWiseCourierTests.swift */; };
+		EB171C9B2751E82400F9289F /* FoodWiseCourierUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171C9A2751E82400F9289F /* FoodWiseCourierUITests.swift */; };
+		EB171C9D2751E82400F9289F /* FoodWiseCourierUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171C9C2751E82400F9289F /* FoodWiseCourierUITestsLaunchTests.swift */; };
+		EB171CBE2751E8B400F9289F /* SwiftUI.LinearGradient+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171CAA2751E8B400F9289F /* SwiftUI.LinearGradient+.swift */; };
+		EB171CBF2751E8B400F9289F /* UIBlurEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171CAB2751E8B400F9289F /* UIBlurEffect.swift */; };
+		EB171CC02751E8B400F9289F /* SwiftUI.Image+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171CAC2751E8B400F9289F /* SwiftUI.Image+.swift */; };
+		EB171CC12751E8B400F9289F /* SwiftUI.Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171CAD2751E8B400F9289F /* SwiftUI.Color+.swift */; };
+		EB171CC22751E8B400F9289F /* SwiftUI.View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171CAE2751E8B400F9289F /* SwiftUI.View+.swift */; };
+		EB171CC32751E8B400F9289F /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171CAF2751E8B400F9289F /* Double+.swift */; };
+		EB171CC42751E8B400F9289F /* FWAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171CB12751E8B400F9289F /* FWAnnotation.swift */; };
+		EB171CC52751E8B400F9289F /* LocationGeocoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171CB22751E8B400F9289F /* LocationGeocoder.swift */; };
+		EB171CC62751E8B400F9289F /* MapAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171CB32751E8B400F9289F /* MapAnnotation.swift */; };
+		EB171CC72751E8B400F9289F /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171CB42751E8B400F9289F /* Food.swift */; };
+		EB171CC82751E8B400F9289F /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171CB52751E8B400F9289F /* LocationManager.swift */; };
+		EB171CC92751E8B400F9289F /* InputFieldContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171CB82751E8B400F9289F /* InputFieldContainer.swift */; };
+		EB171CCA2751E8B400F9289F /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171CBB2751E8B400F9289F /* SignUpView.swift */; };
+		EB171CCB2751E8B400F9289F /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171CBD2751E8B400F9289F /* SignInView.swift */; };
+		EB171CCE2751F99800F9289F /* DrivingLicenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171CCD2751F99800F9289F /* DrivingLicenseView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EB171C8D2751E82400F9289F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EB171C742751E81E00F9289F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EB171C7B2751E81E00F9289F;
+			remoteInfo = FoodWiseCourier;
+		};
+		EB171C972751E82400F9289F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EB171C742751E81E00F9289F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EB171C7B2751E81E00F9289F;
+			remoteInfo = FoodWiseCourier;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		EB171C7C2751E81E00F9289F /* FoodWiseCourier.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoodWiseCourier.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB171C7F2751E81E00F9289F /* FoodWiseCourierApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodWiseCourierApp.swift; sourceTree = "<group>"; };
+		EB171C812751E81E00F9289F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		EB171C832751E82300F9289F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EB171C862751E82300F9289F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		EB171C8C2751E82400F9289F /* FoodWiseCourierTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FoodWiseCourierTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB171C902751E82400F9289F /* FoodWiseCourierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodWiseCourierTests.swift; sourceTree = "<group>"; };
+		EB171C962751E82400F9289F /* FoodWiseCourierUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FoodWiseCourierUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB171C9A2751E82400F9289F /* FoodWiseCourierUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodWiseCourierUITests.swift; sourceTree = "<group>"; };
+		EB171C9C2751E82400F9289F /* FoodWiseCourierUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodWiseCourierUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		EB171CAA2751E8B400F9289F /* SwiftUI.LinearGradient+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftUI.LinearGradient+.swift"; sourceTree = "<group>"; };
+		EB171CAB2751E8B400F9289F /* UIBlurEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBlurEffect.swift; sourceTree = "<group>"; };
+		EB171CAC2751E8B400F9289F /* SwiftUI.Image+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftUI.Image+.swift"; sourceTree = "<group>"; };
+		EB171CAD2751E8B400F9289F /* SwiftUI.Color+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftUI.Color+.swift"; sourceTree = "<group>"; };
+		EB171CAE2751E8B400F9289F /* SwiftUI.View+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftUI.View+.swift"; sourceTree = "<group>"; };
+		EB171CAF2751E8B400F9289F /* Double+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Double+.swift"; sourceTree = "<group>"; };
+		EB171CB12751E8B400F9289F /* FWAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWAnnotation.swift; sourceTree = "<group>"; };
+		EB171CB22751E8B400F9289F /* LocationGeocoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationGeocoder.swift; sourceTree = "<group>"; };
+		EB171CB32751E8B400F9289F /* MapAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapAnnotation.swift; sourceTree = "<group>"; };
+		EB171CB42751E8B400F9289F /* Food.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
+		EB171CB52751E8B400F9289F /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		EB171CB82751E8B400F9289F /* InputFieldContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputFieldContainer.swift; sourceTree = "<group>"; };
+		EB171CBB2751E8B400F9289F /* SignUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		EB171CBD2751E8B400F9289F /* SignInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		EB171CCD2751F99800F9289F /* DrivingLicenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrivingLicenseView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EB171C792751E81E00F9289F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EB171C892751E82400F9289F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EB171C932751E82400F9289F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EB171C732751E81E00F9289F = {
+			isa = PBXGroup;
+			children = (
+				EB171C7E2751E81E00F9289F /* FoodWiseCourier */,
+				EB171C8F2751E82400F9289F /* FoodWiseCourierTests */,
+				EB171C992751E82400F9289F /* FoodWiseCourierUITests */,
+				EB171C7D2751E81E00F9289F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EB171C7D2751E81E00F9289F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EB171C7C2751E81E00F9289F /* FoodWiseCourier.app */,
+				EB171C8C2751E82400F9289F /* FoodWiseCourierTests.xctest */,
+				EB171C962751E82400F9289F /* FoodWiseCourierUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EB171C7E2751E81E00F9289F /* FoodWiseCourier */ = {
+			isa = PBXGroup;
+			children = (
+				EB171C7F2751E81E00F9289F /* FoodWiseCourierApp.swift */,
+				EB171C812751E81E00F9289F /* ContentView.swift */,
+				EB171CB02751E8B400F9289F /* Models */,
+				EB171CB62751E8B400F9289F /* UI */,
+				EB171CA92751E8B400F9289F /* Utils */,
+				EB171C832751E82300F9289F /* Assets.xcassets */,
+				EB171C852751E82300F9289F /* Preview Content */,
+			);
+			path = FoodWiseCourier;
+			sourceTree = "<group>";
+		};
+		EB171C852751E82300F9289F /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				EB171C862751E82300F9289F /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		EB171C8F2751E82400F9289F /* FoodWiseCourierTests */ = {
+			isa = PBXGroup;
+			children = (
+				EB171C902751E82400F9289F /* FoodWiseCourierTests.swift */,
+			);
+			path = FoodWiseCourierTests;
+			sourceTree = "<group>";
+		};
+		EB171C992751E82400F9289F /* FoodWiseCourierUITests */ = {
+			isa = PBXGroup;
+			children = (
+				EB171C9A2751E82400F9289F /* FoodWiseCourierUITests.swift */,
+				EB171C9C2751E82400F9289F /* FoodWiseCourierUITestsLaunchTests.swift */,
+			);
+			path = FoodWiseCourierUITests;
+			sourceTree = "<group>";
+		};
+		EB171CA92751E8B400F9289F /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				EB171CAA2751E8B400F9289F /* SwiftUI.LinearGradient+.swift */,
+				EB171CAB2751E8B400F9289F /* UIBlurEffect.swift */,
+				EB171CAC2751E8B400F9289F /* SwiftUI.Image+.swift */,
+				EB171CAD2751E8B400F9289F /* SwiftUI.Color+.swift */,
+				EB171CAE2751E8B400F9289F /* SwiftUI.View+.swift */,
+				EB171CAF2751E8B400F9289F /* Double+.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		EB171CB02751E8B400F9289F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				EB171CB12751E8B400F9289F /* FWAnnotation.swift */,
+				EB171CB22751E8B400F9289F /* LocationGeocoder.swift */,
+				EB171CB32751E8B400F9289F /* MapAnnotation.swift */,
+				EB171CB42751E8B400F9289F /* Food.swift */,
+				EB171CB52751E8B400F9289F /* LocationManager.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		EB171CB62751E8B400F9289F /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				EB171CB72751E8B400F9289F /* Shared */,
+				EB171CB92751E8B400F9289F /* Onboarding */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		EB171CB72751E8B400F9289F /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				EB171CCC2751F94400F9289F /* DrivingLicense */,
+				EB171CB82751E8B400F9289F /* InputFieldContainer.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		EB171CB92751E8B400F9289F /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				EB171CBA2751E8B400F9289F /* SignUp */,
+				EB171CBC2751E8B400F9289F /* SignIn */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		EB171CBA2751E8B400F9289F /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				EB171CBB2751E8B400F9289F /* SignUpView.swift */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
+		EB171CBC2751E8B400F9289F /* SignIn */ = {
+			isa = PBXGroup;
+			children = (
+				EB171CBD2751E8B400F9289F /* SignInView.swift */,
+			);
+			path = SignIn;
+			sourceTree = "<group>";
+		};
+		EB171CCC2751F94400F9289F /* DrivingLicense */ = {
+			isa = PBXGroup;
+			children = (
+				EB171CCD2751F99800F9289F /* DrivingLicenseView.swift */,
+			);
+			path = DrivingLicense;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EB171C7B2751E81E00F9289F /* FoodWiseCourier */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EB171CA02751E82400F9289F /* Build configuration list for PBXNativeTarget "FoodWiseCourier" */;
+			buildPhases = (
+				EB171C782751E81E00F9289F /* Sources */,
+				EB171C792751E81E00F9289F /* Frameworks */,
+				EB171C7A2751E81E00F9289F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FoodWiseCourier;
+			productName = FoodWiseCourier;
+			productReference = EB171C7C2751E81E00F9289F /* FoodWiseCourier.app */;
+			productType = "com.apple.product-type.application";
+		};
+		EB171C8B2751E82400F9289F /* FoodWiseCourierTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EB171CA32751E82400F9289F /* Build configuration list for PBXNativeTarget "FoodWiseCourierTests" */;
+			buildPhases = (
+				EB171C882751E82400F9289F /* Sources */,
+				EB171C892751E82400F9289F /* Frameworks */,
+				EB171C8A2751E82400F9289F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EB171C8E2751E82400F9289F /* PBXTargetDependency */,
+			);
+			name = FoodWiseCourierTests;
+			productName = FoodWiseCourierTests;
+			productReference = EB171C8C2751E82400F9289F /* FoodWiseCourierTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		EB171C952751E82400F9289F /* FoodWiseCourierUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EB171CA62751E82400F9289F /* Build configuration list for PBXNativeTarget "FoodWiseCourierUITests" */;
+			buildPhases = (
+				EB171C922751E82400F9289F /* Sources */,
+				EB171C932751E82400F9289F /* Frameworks */,
+				EB171C942751E82400F9289F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EB171C982751E82400F9289F /* PBXTargetDependency */,
+			);
+			name = FoodWiseCourierUITests;
+			productName = FoodWiseCourierUITests;
+			productReference = EB171C962751E82400F9289F /* FoodWiseCourierUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EB171C742751E81E00F9289F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1310;
+				LastUpgradeCheck = 1310;
+				TargetAttributes = {
+					EB171C7B2751E81E00F9289F = {
+						CreatedOnToolsVersion = 13.1;
+					};
+					EB171C8B2751E82400F9289F = {
+						CreatedOnToolsVersion = 13.1;
+						TestTargetID = EB171C7B2751E81E00F9289F;
+					};
+					EB171C952751E82400F9289F = {
+						CreatedOnToolsVersion = 13.1;
+						TestTargetID = EB171C7B2751E81E00F9289F;
+					};
+				};
+			};
+			buildConfigurationList = EB171C772751E81E00F9289F /* Build configuration list for PBXProject "FoodWiseCourier" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = EB171C732751E81E00F9289F;
+			productRefGroup = EB171C7D2751E81E00F9289F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EB171C7B2751E81E00F9289F /* FoodWiseCourier */,
+				EB171C8B2751E82400F9289F /* FoodWiseCourierTests */,
+				EB171C952751E82400F9289F /* FoodWiseCourierUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EB171C7A2751E81E00F9289F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EB171C872751E82300F9289F /* Preview Assets.xcassets in Resources */,
+				EB171C842751E82300F9289F /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EB171C8A2751E82400F9289F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EB171C942751E82400F9289F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EB171C782751E81E00F9289F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EB171C822751E81E00F9289F /* ContentView.swift in Sources */,
+				EB171CC42751E8B400F9289F /* FWAnnotation.swift in Sources */,
+				EB171CBF2751E8B400F9289F /* UIBlurEffect.swift in Sources */,
+				EB171CC12751E8B400F9289F /* SwiftUI.Color+.swift in Sources */,
+				EB171CC62751E8B400F9289F /* MapAnnotation.swift in Sources */,
+				EB171CC72751E8B400F9289F /* Food.swift in Sources */,
+				EB171CC22751E8B400F9289F /* SwiftUI.View+.swift in Sources */,
+				EB171CC02751E8B400F9289F /* SwiftUI.Image+.swift in Sources */,
+				EB171C802751E81E00F9289F /* FoodWiseCourierApp.swift in Sources */,
+				EB171CC32751E8B400F9289F /* Double+.swift in Sources */,
+				EB171CC52751E8B400F9289F /* LocationGeocoder.swift in Sources */,
+				EB171CCA2751E8B400F9289F /* SignUpView.swift in Sources */,
+				EB171CBE2751E8B400F9289F /* SwiftUI.LinearGradient+.swift in Sources */,
+				EB171CC82751E8B400F9289F /* LocationManager.swift in Sources */,
+				EB171CCE2751F99800F9289F /* DrivingLicenseView.swift in Sources */,
+				EB171CCB2751E8B400F9289F /* SignInView.swift in Sources */,
+				EB171CC92751E8B400F9289F /* InputFieldContainer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EB171C882751E82400F9289F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EB171C912751E82400F9289F /* FoodWiseCourierTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EB171C922751E82400F9289F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EB171C9D2751E82400F9289F /* FoodWiseCourierUITestsLaunchTests.swift in Sources */,
+				EB171C9B2751E82400F9289F /* FoodWiseCourierUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EB171C8E2751E82400F9289F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EB171C7B2751E81E00F9289F /* FoodWiseCourier */;
+			targetProxy = EB171C8D2751E82400F9289F /* PBXContainerItemProxy */;
+		};
+		EB171C982751E82400F9289F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EB171C7B2751E81E00F9289F /* FoodWiseCourier */;
+			targetProxy = EB171C972751E82400F9289F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		EB171C9E2751E82400F9289F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		EB171C9F2751E82400F9289F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		EB171CA12751E82400F9289F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"FoodWiseCourier/Preview Content\"";
+				DEVELOPMENT_TEAM = CLHKU9LALJ;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.abhijanar.FoodWiseCourier;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		EB171CA22751E82400F9289F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"FoodWiseCourier/Preview Content\"";
+				DEVELOPMENT_TEAM = CLHKU9LALJ;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.abhijanar.FoodWiseCourier;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		EB171CA42751E82400F9289F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = CLHKU9LALJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.abhijanar.FoodWiseCourierTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FoodWiseCourier.app/FoodWiseCourier";
+			};
+			name = Debug;
+		};
+		EB171CA52751E82400F9289F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = CLHKU9LALJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.abhijanar.FoodWiseCourierTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FoodWiseCourier.app/FoodWiseCourier";
+			};
+			name = Release;
+		};
+		EB171CA72751E82400F9289F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = CLHKU9LALJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.abhijanar.FoodWiseCourierUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = FoodWiseCourier;
+			};
+			name = Debug;
+		};
+		EB171CA82751E82400F9289F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = CLHKU9LALJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.abhijanar.FoodWiseCourierUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = FoodWiseCourier;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EB171C772751E81E00F9289F /* Build configuration list for PBXProject "FoodWiseCourier" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EB171C9E2751E82400F9289F /* Debug */,
+				EB171C9F2751E82400F9289F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EB171CA02751E82400F9289F /* Build configuration list for PBXNativeTarget "FoodWiseCourier" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EB171CA12751E82400F9289F /* Debug */,
+				EB171CA22751E82400F9289F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EB171CA32751E82400F9289F /* Build configuration list for PBXNativeTarget "FoodWiseCourierTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EB171CA42751E82400F9289F /* Debug */,
+				EB171CA52751E82400F9289F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EB171CA62751E82400F9289F /* Build configuration list for PBXNativeTarget "FoodWiseCourierUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EB171CA72751E82400F9289F /* Debug */,
+				EB171CA82751E82400F9289F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EB171C742751E81E00F9289F /* Project object */;
+}
