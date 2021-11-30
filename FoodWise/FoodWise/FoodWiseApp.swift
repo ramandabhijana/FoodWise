@@ -6,12 +6,19 @@
 //
 
 import SwiftUI
+import Firebase
 
 @main
 struct FoodWiseApp: App {
+  @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+  
   var body: some Scene {
     WindowGroup {
-//      SignUpView()
+//      SignInViewTest()
+      
+      RootSignedInView()
+      
+//      SignUpView(viewModel: .init())
 //      NearbyView()
 //      SignInView()
 //      WelcomeView()
@@ -20,8 +27,18 @@ struct FoodWiseApp: App {
 //      HomeView()
 //      MerchantHomeView()
 //      FoodDetailsView(food: .sampleData.first!)
-      SelectLocationView(viewModel: .init(), onSave: { _, _ in })
+//      SelectLocationView(viewModel: .init(), onSave: { _, _ in })
 //      SelectLocationViewTest()
     }
+  }
+}
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+  func application(
+    _ application: UIApplication,
+    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
+  ) -> Bool {
+    FirebaseApp.configure()
+    return true
   }
 }
