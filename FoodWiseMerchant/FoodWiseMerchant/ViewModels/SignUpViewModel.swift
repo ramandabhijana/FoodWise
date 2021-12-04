@@ -14,8 +14,7 @@ class SignUpViewModel: ObservableObject {
   @Published var storeType = ""
   @Published var email = ""
   @Published var password = ""
-  
-  var address: (lat: Double, long: Double, details: String)? = nil
+  var address: (location: MerchantLocation, details: String)? = nil
   
   @Published private(set) var nameValid: Bool? = nil
   @Published private(set) var emailValid: Bool? = nil
@@ -61,7 +60,7 @@ class SignUpViewModel: ObservableObject {
           storeType: self.storeType,
           email: self.email,
           password: self.password,
-          coordinate: (self.address!.lat, self.address!.long),
+          location: self.address!.location,
           addressDetails: self.address!.details,
           imageData: self.profileImageData
         )

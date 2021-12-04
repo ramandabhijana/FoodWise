@@ -24,7 +24,6 @@ final class CustomerRepository: ObservableObject {
     userId: String,
     name: String,
     email: String,
-    password: String,
     imageData: Data? = nil
   ) -> AnyPublisher<Customer, Error> {
     Future { [weak self] promise in
@@ -41,9 +40,9 @@ final class CustomerRepository: ObservableObject {
           imageData,
           path: .profilePictures(fileName: filename)
         )
-        .flatMap { url -> AnyPublisher<Void, Error> in
+        .flatMap { url -> AnyPublisher<Customer, Error> in
           newCustomer.profileImageUrl = url
-          return self.addCustomer(newCustomer)
+          return self.upsertCustomer(newCustomer)
         }
         .sink { completion in
           if case .failure(let error) = completion {
@@ -56,7 +55,7 @@ final class CustomerRepository: ObservableObject {
         
       } else {
         // No profile picture data
-        self.addCustomer(newCustomer)
+        self.upsertCustomer(newCustomer)
           .sink { completion in
             if case .failure(let error) = completion {
               return promise(.failure(error))
@@ -94,12 +93,18 @@ final class CustomerRepository: ObservableObject {
     .eraseToAnyPublisher()
   }
   
-  private func addCustomer(_ customer: Customer) -> AnyPublisher<Void, Error> {
+  func updateCustomer(_ customer: Customer) -> AnyPublisher<Customer, Error> {
+    upsertCustomer(customer, merge: true)
+  }
+  
+  private func upsertCustomer(_ customer: Customer, merge: Bool = false) -> AnyPublisher<Customer, Error> {
     Future { [weak self] promise in
       guard let self = self else { return }
       do {
-        try self.db.collection(self.path).document(customer.id).setData(from: customer)
-        promise(.success(Void()))
+        try self.db.collection(self.path)
+          .document(customer.id)
+          .setData(from: customer)
+        promise(.success(customer))
       } catch let error {
         promise(.failure(error))
       }

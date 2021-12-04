@@ -13,15 +13,17 @@ extension Notification.Name {
 }
 
 class RootViewModel: ObservableObject {
+  @Published private(set) var customer: Customer?
   @Published var selectedTab = 0 {
     didSet {
       if selectedTab == 3 && AuthenticationService.shared.user == nil {
-        NotificationCenter.default.post(name: .signInRequiredNotification,
-                                        object: nil)
+        NotificationCenter.default.post(
+          name: .signInRequiredNotification,
+          object: nil
+        )
       }
     }
   }
-  @Published private(set) var customer: Customer?
   
   private let customerRepo = CustomerRepository()
   private var subscriptions = Set<AnyCancellable>()
@@ -67,13 +69,15 @@ class RootViewModel: ObservableObject {
 
 struct RootSignedInView: View {
   @State private var presentingOnboardingView = false
-  @ObservedObject private var viewModel = RootViewModel()
+  @StateObject private var viewModel: RootViewModel
   
   private let signInRequiredPublisher = NotificationCenter.default
     .publisher(for: .signInRequiredNotification)
     .receive(on: RunLoop.main)
   
   init() {
+    _viewModel = StateObject(wrappedValue: RootViewModel())
+    
     let itemAppearance = UITabBarItemAppearance()
     itemAppearance.selected.iconColor = .darkGray
     itemAppearance.normal.iconColor = .lightGray.withAlphaComponent(0.5)

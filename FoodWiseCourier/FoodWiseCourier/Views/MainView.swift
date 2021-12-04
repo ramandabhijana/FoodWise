@@ -22,10 +22,16 @@ struct MainView: View {
   
   var body: some View {
     Group {
-      if let courier = viewModel.courier {
+      if viewModel.courier != nil {
         HomeView()
+          .environmentObject(viewModel)
       } else {
-        Color.primaryColor.ignoresSafeArea()
+        Color.primaryColor
+          .ignoresSafeArea()
+          .overlay {
+            ProgressView()
+              .progressViewStyle(CircularProgressViewStyle())
+          }
       }
     }
     .onAppear(perform: viewModel.postSignInNotificationIfNeeded)

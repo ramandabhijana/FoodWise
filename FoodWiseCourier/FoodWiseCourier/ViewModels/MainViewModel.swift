@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 class MainViewModel: ObservableObject {
-  @Published private(set) var courier: Courier?
+  @Published private(set) var courier: Courier!
   
   private let courierRepo = CourierRepository()
   private var subscriptions = Set<AnyCancellable>()

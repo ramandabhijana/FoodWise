@@ -14,7 +14,7 @@ struct MyProfileView: View {
   init() {
     let appearance = UINavigationBarAppearance()
     appearance.configureWithTransparentBackground()
-    appearance.backgroundColor = UIColor(named: "PrimaryColor")
+    appearance.backgroundColor = UIColor(named: "BackgroundColor")
     UINavigationBar.appearance().standardAppearance = appearance
     UINavigationBar.appearance().tintColor = .black
   }
@@ -24,10 +24,9 @@ struct MyProfileView: View {
       if let customer = rootViewModel.customer {
         ScrollView(showsIndicators: false) {
           LazyVStack(alignment: .leading) {
-            // Email field
             VStack(alignment: .leading, spacing: 25) {
               HStack {
-                WebImage(url: URL(string: "https://2.bp.blogspot.com/-ZdnLaOpiMoo/WQMdt5AzfdI/AAAAAAAABdA/aP3bOxoU-zw8alU1dw4Yx8s-M9DmSNXxwCEw/s1600/Mitsuki_Infobox.png"))
+                WebImage(url: customer.profileImageUrl)
                   .resizable()
                   .scaledToFill()
                   .frame(width: 55, height: 55)
@@ -44,14 +43,14 @@ struct MyProfileView: View {
                     .lineLimit(2)
                 }
                 Spacer()
-                Button(
-                  action: { },
-                  label: {
-                    Image(systemName: "square.and.pencil")
-                      .font(.system(size: 24))
-                      
-                  }
-                )
+                NavigationLink {
+                  LazyView(EditProfileView(
+                    viewModel: .init(rootViewModel: rootViewModel)
+                  ))
+                } label: {
+                  Image(systemName: "square.and.pencil")
+                    .font(.system(size: 24))
+                }
               }
               
               VStack(alignment: .leading) {
@@ -89,33 +88,6 @@ struct MyProfileView: View {
                   }
               }
               .padding(.top)
-              
-  //            VStack(alignment: .leading) {
-  //
-  //              Text("Balance")
-  //                .font(.headline)
-  //                .bold()
-  //
-  //              NavigationLink(destination: Text("")) {
-  //                RoundedRectangle(cornerRadius: 10)
-  //                  .fill(.white.opacity(0.2))
-  //                  .shadow(radius: 1)
-  //                  .frame(height: 60)
-  //                  .overlay {
-  //                    VStack {
-  //                      Text(verbatim: "IDR 10.000")
-  //                        .font(.title2)
-  //                        .fontWeight(.semibold)
-  //                        .foregroundColor(.black)
-  //                    }
-  //                  }
-  //                  .overlay(alignment: .trailing) {
-  //                    Image(systemName: "chevron.right")
-  //                      .padding(.trailing)
-  //                  }
-  //              }
-  //
-  //            }
               
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -163,8 +135,8 @@ struct MyProfileView: View {
                   }
                   .padding(.leading)
                 }
+                .foregroundColor(.black)
               }
-              
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()

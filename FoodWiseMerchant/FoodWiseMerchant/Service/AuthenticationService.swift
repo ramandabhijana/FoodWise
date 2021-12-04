@@ -1,13 +1,12 @@
 //
 //  AuthenticationService.swift
-//  FoodWise
+//  FoodWiseMerchant
 //
-//  Created by Abhijana Agung Ramanda on 27/11/21.
+//  Created by Abhijana Agung Ramanda on 01/12/21.
 //
 
 import Foundation
-import Firebase
-import GoogleSignIn
+import FirebaseAuth
 import Combine
 
 final class AuthenticationService: ObservableObject {
@@ -58,39 +57,6 @@ final class AuthenticationService: ObservableObject {
       password: password,
       completion: completion
     )
-  }
-  
-  func signInWithGoogle(onViewController viewController: UIViewController)
-    -> AnyPublisher<(profile: GIDProfileData, authResult: AuthDataResult), Error>
-  {
-    guard let clientID = FirebaseApp.app()?.options.clientID else {
-      fatalError("Missing clientID")
-    }
-    // Create Google Sign In configuration object.
-    let config = GIDConfiguration(clientID: clientID)
-    // Start the sign in flow!
-    return Future { [unowned self] promise in
-      GIDSignIn.sharedInstance.signIn(with: config, presenting: viewController) { user, error in
-        guard
-          error == nil,
-          let idToken = user?.authentication.idToken,
-          let accessToken = user?.authentication.accessToken,
-          let profile = user?.profile
-        else {
-          return promise(.failure(error!))
-        }
-        let credential = GoogleAuthProvider.credential(
-          withIDToken: idToken,
-          accessToken: accessToken
-        )
-        auth.signIn(with: credential) { authResult, error in
-          guard error == nil, let authResult = authResult else {
-            return promise(.failure(error!))
-          }
-          return promise(.success((profile, authResult)))
-        }
-      }
-    }.eraseToAnyPublisher()
   }
   
   public func signOut() {

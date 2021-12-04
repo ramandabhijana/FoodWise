@@ -10,6 +10,9 @@ import SwiftUI
 struct WelcomeView: View {
   @Environment(\.presentationMode) var presentationMode
   @EnvironmentObject var rootViewModel: RootViewModel
+  
+  @State private var viewController: UIViewController!
+  private static let signInViewModel = SignInViewModel()
   private var onReceiveCustomer: (Customer) -> Void
   
   init(onReceiveCustomer: @escaping (Customer) -> Void) {
@@ -43,6 +46,7 @@ struct WelcomeView: View {
           }
         }
       }
+      .introspectViewController { viewController = $0 }
     }
   }
 }
@@ -114,16 +118,18 @@ private extension WelcomeView {
   var registerOptionView: some View {
     HStack {
       Text("New Here?").fontWeight(.light)
-//      NavigationLink("Create Account") {
-//        SignUpView(viewModel: .init(),
-//                   onReceiveCustomer: onReceiveCustomer)
-//      }
+      NavigationLink("Create Account") {
+        LazyView(
+          SignUpView(viewModel: .init(),
+                     onReceiveCustomer: onReceiveCustomer)
+        )
+      }
     }
   }
   
   func makeButtonStack(parentSize size: CGSize) -> some View {
     VStack(spacing: 16) {
-      Button(action: { }) {
+      Button(action: signInGoogle) {
         SignInButtonLabel(
           image: .googleLogo.resizable(),
           title: Text("Sign in with Google")
@@ -132,8 +138,10 @@ private extension WelcomeView {
       .frame(height: size.height * 0.18)
       
       NavigationLink {
-        SignInView(viewModel: .init(),
-                   onReceiveCustomer: onReceiveCustomer)
+        LazyView(
+          SignInView(viewModel: Self.signInViewModel,
+                     onReceiveCustomer: onReceiveCustomer)
+        )
       } label: {
         SignInButtonLabel(
           image: Image(systemName: "envelope.fill"),
@@ -143,6 +151,13 @@ private extension WelcomeView {
       }
     }
     .foregroundColor(.black)
+  }
+  
+  private func signInGoogle() {
+    GoogleSignInHandler.shared.signIn(
+      viewController: viewController,
+      onReceiveCustomer: onReceiveCustomer
+    )
   }
   
   struct SignInButtonLabel: View {
@@ -162,5 +177,63 @@ private extension WelcomeView {
           .padding(.horizontal)
         }
     }
+  }
+}
+
+import Combine
+import GoogleSignIn
+import FirebaseAuth
+
+class GoogleSignInHandler {
+  private let customerRepo = CustomerRepository()
+  private var subscriptions = Set<AnyCancellable>()
+  
+  static let shared = GoogleSignInHandler()
+  
+  private init() { }
+  
+  func signIn(viewController: UIViewController,
+              onReceiveCustomer: @escaping (Customer) -> Void) {
+    AuthenticationService.shared
+      .signInWithGoogle(onViewController: viewController)
+      .flatMap { [weak self] profileAuthResult -> AnyPublisher<Customer, Error> in
+        let (profile, authResult) = profileAuthResult
+        guard let self = self,
+              let userInfo = authResult.additionalUserInfo
+        else {
+          let error = NSError(
+            domain: "",
+            code: 0,
+            userInfo: [NSLocalizedDescriptionKey: "Fail unwrapping self or getting additionalUserInfo"]
+          )
+          return Fail(error: error).eraseToAnyPublisher()
+        }
+        return userInfo.isNewUser
+          ? self.createCustomer(profileData: profile, authResult: authResult)
+          : self.getCustomer(userId: authResult.user.uid)
+      }
+      .sink { completion in
+        if case .failure(let error) = completion {
+          print("Error continue with google: \(error)")
+        }
+      } receiveValue: { onReceiveCustomer($0) }
+      .store(in: &subscriptions)
+  }
+  
+  private func createCustomer(profileData: GIDProfileData,
+                              authResult: AuthDataResult) -> AnyPublisher<Customer, Error> {
+    let imageData = profileData.hasImage
+      ? try? Data(contentsOf: profileData.imageURL(withDimension: 200)!)
+      : nil
+    return customerRepo.createCustomer(
+      userId: authResult.user.uid,
+      name: profileData.name,
+      email: profileData.email,
+      imageData: imageData
+    )
+  }
+  
+  private func getCustomer(userId: String) -> AnyPublisher<Customer, Error> {
+    customerRepo.getCustomer(withId: userId)
   }
 }

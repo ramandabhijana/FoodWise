@@ -29,6 +29,9 @@
 		EB171CCA2751E8B400F9289F /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171CBB2751E8B400F9289F /* SignUpView.swift */; };
 		EB171CCB2751E8B400F9289F /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171CBD2751E8B400F9289F /* SignInView.swift */; };
 		EB171CCE2751F99800F9289F /* DrivingLicenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171CCD2751F99800F9289F /* DrivingLicenseView.swift */; };
+		EB17791A2757D3980033EAC3 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1779192757D3980033EAC3 /* EditProfileViewModel.swift */; };
+		EB17791C2757D3F20033EAC3 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB17791B2757D3F20033EAC3 /* EditProfileView.swift */; };
+		EB17791F27584BDE0033EAC3 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = EB17791E27584BDE0033EAC3 /* SDWebImageSwiftUI */; };
 		EB4A4A092755F38900B35CEF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB4A4A082755F38900B35CEF /* GoogleService-Info.plist */; };
 		EB4A4A0D2755F3DF00B35CEF /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4A4A0C2755F3DF00B35CEF /* AuthenticationService.swift */; };
 		EB4A4A0F2755F3ED00B35CEF /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4A4A0E2755F3ED00B35CEF /* StorageService.swift */; };
@@ -96,6 +99,8 @@
 		EB171CBB2751E8B400F9289F /* SignUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		EB171CBD2751E8B400F9289F /* SignInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		EB171CCD2751F99800F9289F /* DrivingLicenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrivingLicenseView.swift; sourceTree = "<group>"; };
+		EB1779192757D3980033EAC3 /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
+		EB17791B2757D3F20033EAC3 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		EB4A4A082755F38900B35CEF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EB4A4A0C2755F3DF00B35CEF /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
 		EB4A4A0E2755F3ED00B35CEF /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
@@ -121,6 +126,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB17791F27584BDE0033EAC3 /* SDWebImageSwiftUI in Frameworks */,
 				EB4A4A1A2755F5EC00B35CEF /* FirebaseFirestoreSwift-Beta in Frameworks */,
 				EB4A4A1C2755F5EC00B35CEF /* FirebaseStorage in Frameworks */,
 				EB4A4A162755F5EC00B35CEF /* FirebaseAuth in Frameworks */,
@@ -307,6 +313,7 @@
 			isa = PBXGroup;
 			children = (
 				EB4A4A202756371F00B35CEF /* HomeView.swift */,
+				EB17791B2757D3F20033EAC3 /* EditProfileView.swift */,
 			);
 			path = SignedIn;
 			sourceTree = "<group>";
@@ -318,6 +325,7 @@
 				EB4A4A2627563A5600B35CEF /* SignInViewModel.swift */,
 				EBE975F42754E03C00FD380B /* DrivingLicenseViewModel.swift */,
 				EB4A4A24275637D600B35CEF /* MainViewModel.swift */,
+				EB1779192757D3980033EAC3 /* EditProfileViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -343,6 +351,7 @@
 				EB4A4A172755F5EC00B35CEF /* FirebaseFirestore */,
 				EB4A4A192755F5EC00B35CEF /* FirebaseFirestoreSwift-Beta */,
 				EB4A4A1B2755F5EC00B35CEF /* FirebaseStorage */,
+				EB17791E27584BDE0033EAC3 /* SDWebImageSwiftUI */,
 			);
 			productName = FoodWiseCourier;
 			productReference = EB171C7C2751E81E00F9289F /* FoodWiseCourier.app */;
@@ -418,6 +427,7 @@
 			mainGroup = EB171C732751E81E00F9289F;
 			packageReferences = (
 				EB4A4A142755F5EC00B35CEF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				EB17791D27584BDE0033EAC3 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 			);
 			productRefGroup = EB171C7D2751E81E00F9289F /* Products */;
 			projectDirPath = "";
@@ -480,6 +490,7 @@
 				EBE975F92754F56100FD380B /* String+.swift in Sources */,
 				EBE975F72754E65D00FD380B /* KeyboardResponder.swift in Sources */,
 				EB4A4A212756371F00B35CEF /* HomeView.swift in Sources */,
+				EB17791C2757D3F20033EAC3 /* EditProfileView.swift in Sources */,
 				EB4A4A112755F42A00B35CEF /* CourierRepository.swift in Sources */,
 				EB171CC02751E8B400F9289F /* SwiftUI.Image+.swift in Sources */,
 				EB171C802751E81E00F9289F /* FoodWiseCourierApp.swift in Sources */,
@@ -494,6 +505,7 @@
 				EBE975F52754E03C00FD380B /* DrivingLicenseViewModel.swift in Sources */,
 				EB171CCE2751F99800F9289F /* DrivingLicenseView.swift in Sources */,
 				EB171CCB2751E8B400F9289F /* SignInView.swift in Sources */,
+				EB17791A2757D3980033EAC3 /* EditProfileViewModel.swift in Sources */,
 				EB171CC92751E8B400F9289F /* InputFieldContainer.swift in Sources */,
 				EB4A4A25275637D600B35CEF /* MainViewModel.swift in Sources */,
 			);
@@ -846,6 +858,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		EB17791D27584BDE0033EAC3 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		EB4A4A142755F5EC00B35CEF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -857,6 +877,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		EB17791E27584BDE0033EAC3 /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB17791D27584BDE0033EAC3 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
+		};
 		EB4A4A152755F5EC00B35CEF /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EB4A4A142755F5EC00B35CEF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

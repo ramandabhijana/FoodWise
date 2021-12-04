@@ -170,6 +170,7 @@ class SelectLocationViewModel: ObservableObject {
   
   init(coordinate: CLLocationCoordinate2D? = nil, addressDetails: String? = nil) {
     self.coordinate = coordinate
+    self.addressDetails = addressDetails ?? ""
     if let coordinate = coordinate {
       self.region = MKCoordinateRegion(center: coordinate, span: span)
     } else {

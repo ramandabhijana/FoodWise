@@ -10,6 +10,7 @@ import SwiftUI
 struct MainView: View {
   @State private var presentingSignInView = false
   @StateObject private var viewModel: MainViewModel
+  private static var signInViewModel = SignInViewModel()
   
   init(viewModel: MainViewModel) {
     _viewModel = StateObject(wrappedValue: viewModel)
@@ -21,21 +22,25 @@ struct MainView: View {
   
   var body: some View {
     Group {
-      if let merchant = viewModel.merchant {
+      if viewModel.merchant != nil {
         MerchantHomeView()
+          .environmentObject(viewModel)
       } else {
-        SignInView(
-          viewModel: .init(),
-          onReceiveMerchant: viewModel.setMerchant
-        )
+        Color.primaryColor
+          .ignoresSafeArea()
+          .overlay {
+            ProgressView()
+              .progressViewStyle(CircularProgressViewStyle())
+          }
       }
     }
+    .onAppear(perform: viewModel.postSignInNotificationIfNeeded)
     .onReceive(signInRequiredPublisher) { _ in
       presentingSignInView = true
     }
     .fullScreenCover(isPresented: $presentingSignInView) {
       LazyView(
-        SignInView(viewModel: .init()) {
+        SignInView(viewModel: Self.signInViewModel) {
           viewModel.setMerchant($0)
           presentingSignInView = false
         }

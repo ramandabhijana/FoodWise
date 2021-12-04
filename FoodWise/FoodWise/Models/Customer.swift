@@ -9,7 +9,7 @@ import Foundation
 
 struct Customer: Codable {
   let id: String
-  let fullName: String
+  var fullName: String
   let email: String
   var profileImageUrl: URL? = nil
 }

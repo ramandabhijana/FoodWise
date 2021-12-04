@@ -40,13 +40,16 @@
 		EB171CE12752039D00F9289F /* FoodWiseAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171CDB2752039D00F9289F /* FoodWiseAnnotationView.swift */; };
 		EB171CE22752039D00F9289F /* FoodWiseClusterAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171CDC2752039D00F9289F /* FoodWiseClusterAnnotationView.swift */; };
 		EB171CE52752040C00F9289F /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = EB171CE42752040C00F9289F /* SDWebImageSwiftUI */; };
+		EB177910275732BB0033EAC3 /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB17790F275732BB0033EAC3 /* AuthenticationService.swift */; };
+		EB177913275735D90033EAC3 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB177912275735D90033EAC3 /* SettingsView.swift */; };
+		EB17791527574F620033EAC3 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB17791427574F620033EAC3 /* EditProfileViewModel.swift */; };
+		EB177918275765C90033EAC3 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB177917275765C90033EAC3 /* EditProfileView.swift */; };
 		EB4A49E02755179C00B35CEF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB4A49DF2755179C00B35CEF /* GoogleService-Info.plist */; };
 		EB4A49E32755185B00B35CEF /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = EB4A49E22755185B00B35CEF /* FirebaseAuth */; };
 		EB4A49E52755185B00B35CEF /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = EB4A49E42755185B00B35CEF /* FirebaseFirestore */; };
 		EB4A49E72755185B00B35CEF /* FirebaseFirestoreSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = EB4A49E62755185B00B35CEF /* FirebaseFirestoreSwift-Beta */; };
 		EB4A49E92755185B00B35CEF /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = EB4A49E82755185B00B35CEF /* FirebaseStorage */; };
 		EB4A49ED27551A0300B35CEF /* Merchant.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4A49EC27551A0300B35CEF /* Merchant.swift */; };
-		EB4A49F027551E7100B35CEF /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4A49EE27551E7100B35CEF /* AuthenticationService.swift */; };
 		EB4A49F127551E7100B35CEF /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4A49EF27551E7100B35CEF /* StorageService.swift */; };
 		EB4A49F327551E8E00B35CEF /* MerchantRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4A49F227551E8E00B35CEF /* MerchantRepository.swift */; };
 		EB4A49F62755295200B35CEF /* MerchantHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4A49F52755295200B35CEF /* MerchantHomeView.swift */; };
@@ -55,6 +58,9 @@
 		EB4A49FD27552BC400B35CEF /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4A49FC27552BC400B35CEF /* MainViewModel.swift */; };
 		EB4A4A01275540B900B35CEF /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4A4A00275540B900B35CEF /* SignInViewModel.swift */; };
 		EB4A4A072755EEF800B35CEF /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4A4A062755EEF800B35CEF /* HomeViewModel.swift */; };
+		EB4A4A2D27572FCD00B35CEF /* ManageFoodStockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4A4A2C27572FCD00B35CEF /* ManageFoodStockView.swift */; };
+		EB4A4A2F27572FF100B35CEF /* NewFoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4A4A2E27572FF100B35CEF /* NewFoodView.swift */; };
+		EB7BB3A6275B0AAA002A209C /* SelectCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7BB3A5275B0AAA002A209C /* SelectCategoryView.swift */; };
 		EBE975E82754B47C00FD380B /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE975E72754B47C00FD380B /* LazyView.swift */; };
 		EBE975EA2754C8E500FD380B /* PHPickerViewController.View.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE975E92754C8E500FD380B /* PHPickerViewController.View.swift */; };
 /* End PBXBuildFile section */
@@ -112,9 +118,12 @@
 		EB171CDA2752039D00F9289F /* FoodWiseMapPin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodWiseMapPin.swift; sourceTree = "<group>"; };
 		EB171CDB2752039D00F9289F /* FoodWiseAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodWiseAnnotationView.swift; sourceTree = "<group>"; };
 		EB171CDC2752039D00F9289F /* FoodWiseClusterAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodWiseClusterAnnotationView.swift; sourceTree = "<group>"; };
+		EB17790F275732BB0033EAC3 /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
+		EB177912275735D90033EAC3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		EB17791427574F620033EAC3 /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
+		EB177917275765C90033EAC3 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		EB4A49DF2755179C00B35CEF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EB4A49EC27551A0300B35CEF /* Merchant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Merchant.swift; sourceTree = "<group>"; };
-		EB4A49EE27551E7100B35CEF /* AuthenticationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuthenticationService.swift; path = ../../../FoodWise/FoodWise/Services/AuthenticationService.swift; sourceTree = "<group>"; };
 		EB4A49EF27551E7100B35CEF /* StorageService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StorageService.swift; path = ../../../FoodWise/FoodWise/Services/StorageService.swift; sourceTree = "<group>"; };
 		EB4A49F227551E8E00B35CEF /* MerchantRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantRepository.swift; sourceTree = "<group>"; };
 		EB4A49F52755295200B35CEF /* MerchantHomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MerchantHomeView.swift; sourceTree = "<group>"; };
@@ -123,6 +132,9 @@
 		EB4A49FC27552BC400B35CEF /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		EB4A4A00275540B900B35CEF /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		EB4A4A062755EEF800B35CEF /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		EB4A4A2C27572FCD00B35CEF /* ManageFoodStockView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageFoodStockView.swift; sourceTree = "<group>"; };
+		EB4A4A2E27572FF100B35CEF /* NewFoodView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewFoodView.swift; sourceTree = "<group>"; };
+		EB7BB3A5275B0AAA002A209C /* SelectCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCategoryView.swift; sourceTree = "<group>"; };
 		EBE975E72754B47C00FD380B /* LazyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LazyView.swift; path = ../../../../FoodWise/FoodWise/Views/Shared/LazyView.swift; sourceTree = "<group>"; };
 		EBE975E92754C8E500FD380B /* PHPickerViewController.View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PHPickerViewController.View.swift; path = ../../../../FoodWise/FoodWise/Views/Shared/PHPickerViewController.View.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -162,6 +174,7 @@
 			children = (
 				EB0C1FCB275471EF00FD0F2C /* SignUpViewModel.swift */,
 				EB4A4A00275540B900B35CEF /* SignInViewModel.swift */,
+				EB17791427574F620033EAC3 /* EditProfileViewModel.swift */,
 				EB4A4A062755EEF800B35CEF /* HomeViewModel.swift */,
 				EB4A49FC27552BC400B35CEF /* MainViewModel.swift */,
 			);
@@ -321,6 +334,23 @@
 			path = SwiftUI;
 			sourceTree = "<group>";
 		};
+		EB177911275735BF0033EAC3 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				EB177916275765B50033EAC3 /* EditProfile */,
+				EB177912275735D90033EAC3 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		EB177916275765B50033EAC3 /* EditProfile */ = {
+			isa = PBXGroup;
+			children = (
+				EB177917275765C90033EAC3 /* EditProfileView.swift */,
+			);
+			path = EditProfile;
+			sourceTree = "<group>";
+		};
 		EB4A49EA275518B000B35CEF /* Repository */ = {
 			isa = PBXGroup;
 			children = (
@@ -332,7 +362,7 @@
 		EB4A49EB275518BF00B35CEF /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				EB4A49EE27551E7100B35CEF /* AuthenticationService.swift */,
+				EB17790F275732BB0033EAC3 /* AuthenticationService.swift */,
 				EB4A49EF27551E7100B35CEF /* StorageService.swift */,
 			);
 			path = Service;
@@ -341,6 +371,8 @@
 		EB4A49F4275528AE00B35CEF /* SignedIn */ = {
 			isa = PBXGroup;
 			children = (
+				EB177911275735BF0033EAC3 /* Settings */,
+				EB4A4A302757300900B35CEF /* ManageFoodStock */,
 				EB4A49F72755295700B35CEF /* Home */,
 			);
 			path = SignedIn;
@@ -353,6 +385,16 @@
 				EB4A49F52755295200B35CEF /* MerchantHomeView.swift */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		EB4A4A302757300900B35CEF /* ManageFoodStock */ = {
+			isa = PBXGroup;
+			children = (
+				EB4A4A2C27572FCD00B35CEF /* ManageFoodStockView.swift */,
+				EB4A4A2E27572FF100B35CEF /* NewFoodView.swift */,
+				EB7BB3A5275B0AAA002A209C /* SelectCategoryView.swift */,
+			);
+			path = ManageFoodStock;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -509,7 +551,9 @@
 				EB171C522751DFCD00F9289F /* SwiftUI.LinearGradient+.swift in Sources */,
 				EB171C562751DFCD00F9289F /* SwiftUI.View+.swift in Sources */,
 				EB171CDF2752039D00F9289F /* FWAnnotationView.swift in Sources */,
+				EB4A4A2F27572FF100B35CEF /* NewFoodView.swift in Sources */,
 				EB0C1FD02754729500FD0F2C /* String+.swift in Sources */,
+				EB177918275765C90033EAC3 /* EditProfileView.swift in Sources */,
 				EB0C1FCC275471EF00FD0F2C /* SignUpViewModel.swift in Sources */,
 				EB171CE02752039D00F9289F /* FoodWiseMapPin.swift in Sources */,
 				EB171C662751E0F000F9289F /* FWAnnotation.swift in Sources */,
@@ -517,6 +561,8 @@
 				EB4A49F92755298500B35CEF /* MenuButtonModel.swift in Sources */,
 				EB4A49F327551E8E00B35CEF /* MerchantRepository.swift in Sources */,
 				EB4A49FD27552BC400B35CEF /* MainViewModel.swift in Sources */,
+				EB177913275735D90033EAC3 /* SettingsView.swift in Sources */,
+				EB17791527574F620033EAC3 /* EditProfileViewModel.swift in Sources */,
 				EB171C722751E5D400F9289F /* SignUpView.swift in Sources */,
 				EB171C1D2751DDC700F9289F /* ContentView.swift in Sources */,
 				EB171C612751E05200F9289F /* InputFieldContainer.swift in Sources */,
@@ -525,16 +571,18 @@
 				EB4A49F127551E7100B35CEF /* StorageService.swift in Sources */,
 				EB4A49F62755295200B35CEF /* MerchantHomeView.swift in Sources */,
 				EBE975E82754B47C00FD380B /* LazyView.swift in Sources */,
+				EB4A4A2D27572FCD00B35CEF /* ManageFoodStockView.swift in Sources */,
 				EB0C1FCF2754729500FD0F2C /* KeyboardResponder.swift in Sources */,
 				EB171C642751E05200F9289F /* LocationManager.swift in Sources */,
 				EB171C602751E05200F9289F /* LocationGeocoder.swift in Sources */,
-				EB4A49F027551E7100B35CEF /* AuthenticationService.swift in Sources */,
 				EB171CD22752029500F9289F /* SelectLocationView.swift in Sources */,
 				EB171C1B2751DDC700F9289F /* FoodWiseMerchantApp.swift in Sources */,
 				EB4A4A072755EEF800B35CEF /* HomeViewModel.swift in Sources */,
+				EB177910275732BB0033EAC3 /* AuthenticationService.swift in Sources */,
 				EB4A4A01275540B900B35CEF /* SignInViewModel.swift in Sources */,
 				EB171CE22752039D00F9289F /* FoodWiseClusterAnnotationView.swift in Sources */,
 				EB171C622751E05200F9289F /* MapAnnotation.swift in Sources */,
+				EB7BB3A6275B0AAA002A209C /* SelectCategoryView.swift in Sources */,
 				EB4A49ED27551A0300B35CEF /* Merchant.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -714,7 +762,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -744,7 +792,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

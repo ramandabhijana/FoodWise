@@ -6,13 +6,14 @@
 //
 
 import Foundation
+import CoreLocation
 
 struct Merchant: Codable {
   let id: String
   let name: String
   let email: String
   let storeType: String
-  let coordinate: [String: Double]
+  let location: MerchantLocation
   let addressDetails: String
   var logoUrl: URL? = nil
   
@@ -20,7 +21,7 @@ struct Merchant: Codable {
        name: String,
        email: String,
        storeType: String,
-       coordinate: (lat: Double, long: Double),
+       location: MerchantLocation,
        addressDetails: String,
        logoUrl: URL? = nil
   ) {
@@ -28,7 +29,7 @@ struct Merchant: Codable {
     self.name = name
     self.email = email
     self.storeType = storeType
-    self.coordinate = ["lat": coordinate.lat, "long": coordinate.long]
+    self.location = location
     self.addressDetails = addressDetails
     self.logoUrl = logoUrl
   }
@@ -37,7 +38,7 @@ struct Merchant: Codable {
        name: String,
        email: String,
        storeType: String,
-       coordinate: [String: Double],
+       location: [String: Any],
        addressDetails: String,
        logoUrl: URL? = nil
   ) {
@@ -45,7 +46,7 @@ struct Merchant: Codable {
     self.name = name
     self.email = email
     self.storeType = storeType
-    self.coordinate = coordinate
+    self.location = MerchantLocation(object: location)!
     self.addressDetails = addressDetails
     self.logoUrl = logoUrl
   }
@@ -57,7 +58,7 @@ extension Merchant {
        let name = object["name"] as? String,
        let email = object["email"] as? String,
        let type = object["storeType"] as? String,
-       let coordinate = object["coordinate"] as? [String: Double],
+       let location = object["location"] as? [String: Any],
        let addressDetails = object["addressDetails"] as? String
     {
       self.init(
@@ -65,7 +66,7 @@ extension Merchant {
         name: name,
         email: email,
         storeType: type,
-        coordinate: coordinate,
+        location: location,
         addressDetails: addressDetails
       )
       guard let logoUrl = object["logoUrl"] as? String else {
@@ -79,5 +80,41 @@ extension Merchant {
   }
 }
 
-
+struct MerchantLocation: Codable, Equatable {
+  var lat: Double
+  var long: Double
+  var geocodedLocation: String
+  
+  internal init(lat: Double, long: Double, geocodedLocation: String) {
+    self.lat = lat
+    self.long = long
+    self.geocodedLocation = geocodedLocation
+  }
+  
+  init?(object: [String: Any]) {
+    if let lat = object["lat"] as? Double,
+       let long = object["long"] as? Double,
+       let geocoded = object["geocodedLocation"] as? String
+    {
+      self.init(lat: lat, long: long, geocodedLocation: geocoded)
+    } else {
+      print("\n🚨Fail to init mandatory field with object: \(object)\n")
+      return nil
+    }
+  }
+  
+  var coordinate: CLLocationCoordinate2D { .init(latitude: lat, longitude: long) }
+  
+  var asObject: [String: Any] {
+    ["lat": lat,
+     "long": long,
+     "geocodedLocation": geocodedLocation]
+  }
+  
+  static func ==(lhs: MerchantLocation, rhs: MerchantLocation) -> Bool {
+    lhs.long == rhs.long
+    && lhs.lat == rhs.lat
+    && lhs.geocodedLocation == rhs.geocodedLocation
+  }
+}
 

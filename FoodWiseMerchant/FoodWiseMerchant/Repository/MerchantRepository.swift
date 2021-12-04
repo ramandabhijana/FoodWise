@@ -32,7 +32,7 @@ final class MerchantRepository {
     storeType: String,
     email: String,
     password: String,
-    coordinate: (lat: Double, long: Double),
+    location: MerchantLocation,
     addressDetails: String,
     imageData: Data?
   ) -> AnyPublisher<Merchant, Error> {
@@ -43,7 +43,7 @@ final class MerchantRepository {
         name: name,
         email: email,
         storeType: storeType,
-        coordinate: coordinate,
+        location: location,
         addressDetails: addressDetails
       )
       if let imageData = imageData {
@@ -111,4 +111,42 @@ final class MerchantRepository {
     }
     .eraseToAnyPublisher()
   }
+  
+  func updateMerchant(
+    merchantId: String,
+    logoUrl: URL?,
+    name: String,
+    storeType: String,
+    location: MerchantLocation,
+    addressDetails: String
+  ) -> AnyPublisher<Merchant, Error> {
+    Future<String, Error> { [weak self] promise in
+      guard let self = self else { return }
+      let docRef = self.db.collection(self.path).document(merchantId)
+      var data = [
+        "name": name,
+        "storeType": storeType,
+        "location": location.asObject,
+        "addressDetails": addressDetails
+      ] as [String : Any]
+      if let logoUrl = logoUrl {
+        data["logoUrl"] = logoUrl.absoluteString
+      }
+      docRef.updateData(data) { error in
+        if let error = error {
+          return promise(.failure(error))
+        } else {
+          return promise(.success(merchantId))
+        }
+      }
+    }
+    .flatMap { [unowned self] merchantId in
+      getMerchant(withId: merchantId)
+    }
+    .eraseToAnyPublisher()
+  }
 }
+
+// @Published var name: String
+//@Published var storeType: String
+//var address: (location: MerchantLocation, details: String)?

@@ -9,11 +9,11 @@ import Foundation
 
 struct Courier: Codable {
   let id: String
-  let name: String
-  let bikeBrand: String
-  let bikePlate: String
+  var name: String
+  var bikeBrand: String
+  var bikePlate: String
   let email: String
-  let license: DrivingLicense
+  var license: DrivingLicense
   var profilePictureUrl: URL? = nil
 }
 

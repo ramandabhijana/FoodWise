@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 class MainViewModel: ObservableObject {
-  @Published private(set) var merchant: Merchant?
+  @Published private(set) var merchant: Merchant!
   
   private let merchantRepo = MerchantRepository()
   private var subscriptions = Set<AnyCancellable>()
@@ -30,6 +30,13 @@ class MainViewModel: ObservableObject {
   
   func setMerchant(_ merchant: Merchant) {
     self.merchant = merchant
+  }
+  
+  func postSignInNotificationIfNeeded() {
+    if AuthenticationService.shared.currentUserExist == false {
+      NotificationCenter.default.post(name: .signInRequiredNotification,
+                                      object: nil)
+    }
   }
 }
 

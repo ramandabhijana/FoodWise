@@ -13,6 +13,12 @@ class DrivingLicenseViewModel: ObservableObject {
   @Published var licenseNo = ""
   
   @Published private(set) var licenseNoValid: Bool? = nil
+  private(set) var imageUrl: URL? = nil
+  
+  init(imageUrl: URL? = nil, licenseNo: String = "") {
+    self.imageUrl = imageUrl
+    self.licenseNo = licenseNo
+  }
   
   public var signUpButtonDisabled: Bool {
     guard let licenseNoValid = licenseNoValid else {

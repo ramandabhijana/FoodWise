@@ -67,7 +67,7 @@ final class CourierRepository {
             license: newLicense,
             profilePictureUrl: profileUrl
           )
-          return self.addCourier(newCourier)
+          return self.upsertCourier(newCourier)
         }.eraseToAnyPublisher()
     } else {
       return licenseUploadPublisher
@@ -85,21 +85,27 @@ final class CourierRepository {
             email: email,
             license: newLicense
           )
-          return self.addCourier(newCourier)
+          return self.upsertCourier(newCourier)
         }.eraseToAnyPublisher()
     }
   }
   
-  private func addCourier(_ courier: Courier) -> AnyPublisher<Courier, Error> {
+  private func upsertCourier(_ courier: Courier, merge: Bool = false) -> AnyPublisher<Courier, Error> {
     Future { [weak self] promise in
       guard let self = self else { return }
       do {
-        try self.db.collection(self.path).document(courier.id).setData(from: courier)
+        try self.db.collection(self.path)
+          .document(courier.id)
+          .setData(from: courier, merge: merge)
         return promise(.success(courier))
       } catch let error {
         return promise(.failure(error))
       }
     }.eraseToAnyPublisher()
+  }
+  
+  func updateCourier(_ courier: Courier) -> AnyPublisher<Courier, Error> {
+    upsertCourier(courier, merge: true)
   }
   
   func getCourier(withId id: String) -> AnyPublisher<Courier, Error> {

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import GoogleSignIn
 
 @main
 struct FoodWiseApp: App {
@@ -40,5 +41,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
   ) -> Bool {
     FirebaseApp.configure()
     return true
+  }
+  
+  func application(
+    _ app: UIApplication,
+    open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]
+  ) -> Bool {
+    return GIDSignIn.sharedInstance.handle(url)
   }
 }

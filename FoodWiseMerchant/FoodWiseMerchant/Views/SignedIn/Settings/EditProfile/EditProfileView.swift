@@ -1,17 +1,20 @@
 //
-//  RegisterMerchant.swift
-//  FoodWise
+//  EditProfileView.swift
+//  FoodWiseMerchant
 //
-//  Created by Abhijana Agung Ramanda on 19/11/21.
+//  Created by Abhijana Agung Ramanda on 01/12/21.
 //
 
 import SwiftUI
 import PhotosUI
+import SDWebImageSwiftUI
 
-struct RegisterMerchantView: View {
-  @StateObject private var viewModel: SignUpViewModel
-  @StateObject private var locationViewModel: SelectLocationViewModel
+struct EditProfileView: View {
+  @EnvironmentObject var mainViewModel: MainViewModel
+  @Environment(\.dismiss) private var dismiss
+  @StateObject private var viewModel: EditProfileViewModel
   @StateObject private var keyboard: KeyboardResponder
+  private static var locationViewModel: SelectLocationViewModel!
   
   @FocusState private var nameFieldFocused: Bool
   @FocusState private var storeTypeFieldFocused: Bool
@@ -21,20 +24,14 @@ struct RegisterMerchantView: View {
   @State private var showImagePicker = false
   @State private var showLocationPicker = false
   @State private var showErrorSnackbar = false
-  @State private var showSettingUpAccountSnackbar = false
+  @State private var showSavingChangesSnackbar = false
+  @State private var addressText: String? = nil
+  @Binding var showingSelf: Bool
   
-  @State private var addressText = ""
-
-  private var onReceiveMerchant: (Merchant) -> Void
-  
-  init(viewModel: SignUpViewModel,
-       locationViewModel: SelectLocationViewModel,
-       onReceiveMerchant: @escaping (Merchant) -> Void
-  ) {
+  init(showingSelf: Binding<Bool>, viewModel: EditProfileViewModel) {
     _viewModel = StateObject(wrappedValue: viewModel)
-    _locationViewModel = StateObject(wrappedValue: locationViewModel)
     _keyboard = StateObject(wrappedValue: KeyboardResponder())
-    self.onReceiveMerchant = onReceiveMerchant
+    _showingSelf = showingSelf
   }
   
   var body: some View {
@@ -50,28 +47,34 @@ struct RegisterMerchantView: View {
       ScrollView(showsIndicators: false) {
         VStack(spacing: 50) {
           VStack {
-            if let image = viewModel.profileImage {
+            if let image = viewModel.profileImageData?.asImage {
               image
                 .resizable()
                 .scaledToFill()
                 .frame(width: 100, height: 100)
                 .clipShape(Circle())
             } else {
-              Circle()
-                .fill(Color(uiColor: .lightGray).opacity(0.6))
-                .frame(width: 100, height: 100)
-                .overlay {
-                  Image("store-logo-placeholder")
-                    .resizable()
-                    .frame(width: 70, height: 70)
+              WebImage(url: mainViewModel.merchant.logoUrl)
+                .resizable()
+                .placeholder {
+                  Circle()
+                    .fill(Color(uiColor: .lightGray).opacity(0.6))
+                    .frame(width: 100, height: 100)
+                    .overlay {
+                      ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle())
+                        .tint(.white)
+                    }
                 }
+                .frame(width: 100, height: 100)
+                .clipShape(Circle())
             }
             photoPickerButton
           }
           
           VStack(spacing: 25) {
             InputFieldContainer(
-              isError: !(viewModel.nameValid ?? true),
+              isError: !viewModel.nameValid,
               label: "Name"
             ) {
               TextField("Merchant's name", text: $viewModel.name)
@@ -84,7 +87,7 @@ struct RegisterMerchantView: View {
             }
             
             InputFieldContainer(
-              isError: !(viewModel.storeTypeValid ?? true),
+              isError: !viewModel.storeTypeValid,
               label: "Type"
             ) {
               TextField("Merchant's type (eg. Restaurant)", text: $viewModel.storeType)
@@ -97,59 +100,42 @@ struct RegisterMerchantView: View {
             }
             
             InputFieldContainer(
-              isError: !(viewModel.addressValid ?? true),
+              isError: !viewModel.addressValid,
               label: "Address"
             ) {
-              TextField("Merchant's address and location", text: .constant(addressText))
-                .disabled(true)
-                .overlay(alignment: .trailing) {
-                  Image(systemName: "chevron.forward")
-                    .foregroundColor(.accentColor)
-                }
-                .onTapGesture { showLocationPicker.toggle() }
+              TextField(
+                "Merchant's address and location",
+                text: .constant(addressText ?? viewModel.address!.location.geocodedLocation)
+              )
+              .disabled(true)
+              .overlay(alignment: .trailing) {
+                Image(systemName: "chevron.forward")
+                  .foregroundColor(.accentColor)
+              }
+              .onTapGesture {
+                Self.locationViewModel = .init(
+                  coordinate: viewModel.address?.location.coordinate,
+                  addressDetails: viewModel.address?.details
+                )
+                showLocationPicker.toggle()
+              }
             }
             
-            InputFieldContainer(
-              isError: !(viewModel.emailValid ?? true),
-              label: "Email"
-            ) {
-              TextField("Merchant's email", text: $viewModel.email)
-                .keyboardType(.emailAddress)
-                .disableAutocorrection(true)
-                .focused($emailFieldFocused)
-                .onChange(
-                  of: emailFieldFocused,
-                  perform: viewModel.validateEmailIfFocusIsLost
-                )
-            }
-            
-            InputFieldContainer(
-              isError: !(viewModel.passwordValid ?? true),
-              label: "Password"
-            ) {
-              SecureField("8 char long, 1 uppercase, 1 number", text: $viewModel.password)
-                .disableAutocorrection(true)
-                .focused($passwordFieldFocused)
-                .onChange(
-                  of: passwordFieldFocused,
-                  perform: viewModel.validatePasswordIfFocusIsLost
-                )
-            }
           }
           .padding(.bottom, 50)
-          
-          Button(action: signUp) {
+          Button(action: viewModel.saveChanges) {
+//          Button(action: { presentationMode.wrappedValue.dismiss() }) {
             RoundedRectangle(cornerRadius: 10)
               .fill(Color.accentColor)
               .frame(height: 48)
               .overlay {
-                if viewModel.loadingUser {
+                if viewModel.savingUpdate {
                   ProgressView().tint(.white)
                 } else {
-                  Text("Sign up").foregroundColor(.white)
+                  Text("Save Changes").foregroundColor(.white)
                 }
               }
-          }.disabled(viewModel.signUpButtonDisabled)
+          }.disabled(viewModel.buttonDisabled)
         }
         .frame(
           width: UIScreen.main.bounds.width * 0.8
@@ -162,12 +148,11 @@ struct RegisterMerchantView: View {
       .padding(.bottom, keyboard.currentHeight)
       .animation(.easeOut, value: keyboard.currentHeight)
     }
-    .navigationTitle("Create Account")
+    .navigationTitle("Edit Profile")
     .edgesIgnoringSafeArea(.bottom)
-    .onReceive(
-      viewModel.$signedInMerchant.compactMap { $0 },
-      perform: onReceiveMerchant
-    )
+    .onReceive(mainViewModel.$merchant.compactMap { $0 }) { _ in
+      showingSelf = false
+    }
     .onReceive(viewModel.$errorMessage.dropFirst()) { _ in
       showErrorSnackbar.toggle()
     }
@@ -178,26 +163,26 @@ struct RegisterMerchantView: View {
       )
     }
     .fullScreenCover(isPresented: $showLocationPicker, onDismiss: {
-      if let coord = locationViewModel.coordinate {
-        addressText = locationViewModel.geocodedLocation
+      if let coord = Self.locationViewModel.coordinate {
+        addressText = Self.locationViewModel.geocodedLocation
         let merchantLocation = MerchantLocation(
           lat: coord.latitude as Double,
           long: coord.longitude as Double,
-          geocodedLocation: locationViewModel.geocodedLocation
+          geocodedLocation: Self.locationViewModel.geocodedLocation
         )
         viewModel.address = (merchantLocation,
-                             locationViewModel.addressDetails)
+                             Self.locationViewModel.addressDetails)
       } else {
         addressText = ""
         viewModel.address = nil
       }
       viewModel.validateAddressIfFocusIsLost(focus: false)
     }) {
-      LazyView(SelectLocationView(viewModel: locationViewModel))
+      LazyView(SelectLocationView(viewModel: Self.locationViewModel))
     }
     .snackBar(
-      isShowing: $showSettingUpAccountSnackbar,
-      text: Text("Setting up your account...")
+      isShowing: $showSavingChangesSnackbar,
+      text: Text("Saving changes...")
     )
     .snackBar(
       isShowing: $showErrorSnackbar,
@@ -213,31 +198,28 @@ struct RegisterMerchantView: View {
     return Button(title) { showImagePicker.toggle() }
   }
   
-  private func signUp() {
-    showSettingUpAccountSnackbar.toggle()
-    viewModel.signUp()
+  private func save() {
+    showSavingChangesSnackbar = true
+    
   }
 }
 
-struct RegisterMerchantView_Previews: PreviewProvider {
+struct EditProfileView_Previews: PreviewProvider {
   static var previews: some View {
-    RegisterMerchantView(viewModel: .init(), locationViewModel: .init(), onReceiveMerchant: { _ in})
+    EditProfileView(
+      showingSelf: .constant(true),
+      viewModel: .init(mainViewModel: .init())
+    )
   }
 }
 
-extension SignUpViewModel {
-  var profileImage: Image? {
-    guard let profileImageData = profileImageData,
-          let uiImage = UIImage(data: profileImageData) else {
+extension Data {
+  var asImage: Image? {
+    guard let uiImage = UIImage(data: self) else {
       return nil
     }
     return Image(uiImage: uiImage)
   }
-  
-//  var coordinate: CLLocationCoordinate2D? {
-//    if let lat = address?.lat, let long = address?.long {
-//      return .init(latitude: lat, longitude: long)
-//    }
-//    return nil
-//  }
 }
+
+

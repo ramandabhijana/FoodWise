@@ -25,6 +25,7 @@
 		EB2E23B727435214002296B2 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2E23B627435214002296B2 /* SignUpView.swift */; };
 		EB33E2242753640B00E07CA5 /* Snackbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB33E2232753640B00E07CA5 /* Snackbar.swift */; };
 		EB4A4A052755415100B35CEF /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4A4A042755415100B35CEF /* SignInViewModel.swift */; };
+		EB4A4A2A275674EF00B35CEF /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = EB4A4A29275674EF00B35CEF /* GoogleSignIn */; };
 		EB55C1AE27526B7F0013162A /* PHPickerViewController.View.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB55C1AD27526B7F0013162A /* PHPickerViewController.View.swift */; };
 		EB55C1B227527B040013162A /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB55C1B127527B040013162A /* AuthenticationService.swift */; };
 		EB55C1B527527BB70013162A /* CustomerRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB55C1B427527BB70013162A /* CustomerRepository.swift */; };
@@ -57,6 +58,8 @@
 		EBE0C6E92744D78900A9C312 /* FoodDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE0C6E82744D78900A9C312 /* FoodDetailsView.swift */; };
 		EBE0C6EB2744D87800A9C312 /* NavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE0C6EA2744D87800A9C312 /* NavigationBarView.swift */; };
 		EBE0C6F3274779F600A9C312 /* FWAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE0C6F2274779F600A9C312 /* FWAnnotation.swift */; };
+		EBE15A1D275A19AF00440DC2 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE15A1C275A19AF00440DC2 /* EditProfileViewModel.swift */; };
+		EBE15A1F275A19E300440DC2 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE15A1E275A19E300440DC2 /* EditProfileView.swift */; };
 		EBE81C072753AE6400F8A6FD /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE81C062753AE6400F8A6FD /* MainView.swift */; };
 		EBE81C092753B22400F8A6FD /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE81C082753B22400F8A6FD /* LazyView.swift */; };
 		EBE963C12734E65A0076E124 /* NearbyMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE963C02734E65A0076E124 /* NearbyMapView.swift */; };
@@ -100,6 +103,7 @@
 		EB2E23B627435214002296B2 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		EB33E2232753640B00E07CA5 /* Snackbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snackbar.swift; sourceTree = "<group>"; };
 		EB4A4A042755415100B35CEF /* SignInViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
+		EB4A4A2B2756759D00B35CEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		EB55C1AD27526B7F0013162A /* PHPickerViewController.View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PHPickerViewController.View.swift; sourceTree = "<group>"; };
 		EB55C1B127527B040013162A /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
 		EB55C1B427527BB70013162A /* CustomerRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerRepository.swift; sourceTree = "<group>"; };
@@ -134,6 +138,8 @@
 		EBE0C6E82744D78900A9C312 /* FoodDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodDetailsView.swift; sourceTree = "<group>"; };
 		EBE0C6EA2744D87800A9C312 /* NavigationBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarView.swift; sourceTree = "<group>"; };
 		EBE0C6F2274779F600A9C312 /* FWAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWAnnotation.swift; sourceTree = "<group>"; };
+		EBE15A1C275A19AF00440DC2 /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
+		EBE15A1E275A19E300440DC2 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		EBE81C062753AE6400F8A6FD /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		EBE81C082753B22400F8A6FD /* LazyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyView.swift; sourceTree = "<group>"; };
 		EBE963C02734E65A0076E124 /* NearbyMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyMapView.swift; sourceTree = "<group>"; };
@@ -157,6 +163,7 @@
 				EB171CE82752122E00F9289F /* FirebaseAuth in Frameworks */,
 				EB2B14B52733AD99008D5AD3 /* Introspect in Frameworks */,
 				EB171CEE2752122E00F9289F /* FirebaseStorage in Frameworks */,
+				EB4A4A2A275674EF00B35CEF /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,6 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				EB33E21F27534F4600E07CA5 /* Onboarding */,
+				EBE15A1C275A19AF00440DC2 /* EditProfileViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -294,14 +302,15 @@
 		EBB7F9FF272CF9DE006BC1F4 /* FoodWise */ = {
 			isa = PBXGroup;
 			children = (
+				EB4A4A2B2756759D00B35CEF /* Info.plist */,
 				EBB7FA00272CF9DE006BC1F4 /* FoodWiseApp.swift */,
 				EBB7FA02272CF9DF006BC1F4 /* ContentView.swift */,
 				EBE81C062753AE6400F8A6FD /* MainView.swift */,
 				EB55C1B027527ADC0013162A /* Services */,
 				EB55C1AF275279B00013162A /* Repository */,
 				EB7FC0CA2742977700039342 /* Models */,
-				EB171CF1275219B900F9289F /* ViewModels */,
 				EBB7FA2A272CFC29006BC1F4 /* Views */,
+				EB171CF1275219B900F9289F /* ViewModels */,
 				EBB7FA31272D0A80006BC1F4 /* Utils */,
 				EBB7FA06272CF9E0006BC1F4 /* Preview Content */,
 				EB171C6B2751E37F00F9289F /* Assets.xcassets */,
@@ -410,6 +419,7 @@
 		EBB7FA39272ED0D0006BC1F4 /* MyProfile */ = {
 			isa = PBXGroup;
 			children = (
+				EBE15A1B2759E14D00440DC2 /* EditProfile */,
 				EBB7FA3A272ED0F2006BC1F4 /* MyProfileView.swift */,
 			);
 			path = MyProfile;
@@ -431,6 +441,14 @@
 				EBE0C6E82744D78900A9C312 /* FoodDetailsView.swift */,
 			);
 			path = FoodDetails;
+			sourceTree = "<group>";
+		};
+		EBE15A1B2759E14D00440DC2 /* EditProfile */ = {
+			isa = PBXGroup;
+			children = (
+				EBE15A1E275A19E300440DC2 /* EditProfileView.swift */,
+			);
+			path = EditProfile;
 			sourceTree = "<group>";
 		};
 		EBE963BE2734DA780076E124 /* Nearby */ = {
@@ -503,6 +521,7 @@
 				EB171CE92752122E00F9289F /* FirebaseFirestore */,
 				EB171CEB2752122E00F9289F /* FirebaseFirestoreSwift-Beta */,
 				EB171CED2752122E00F9289F /* FirebaseStorage */,
+				EB4A4A29275674EF00B35CEF /* GoogleSignIn */,
 			);
 			productName = FoodWise;
 			productReference = EBB7F9FD272CF9DE006BC1F4 /* FoodWise.app */;
@@ -580,6 +599,7 @@
 				EB2B14B32733AD99008D5AD3 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				EB7FC0C72742971F00039342 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 				EB171CE62752122E00F9289F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				EB4A4A28275674EE00B35CEF /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			productRefGroup = EBB7F9FE272CF9DE006BC1F4 /* Products */;
 			projectDirPath = "";
@@ -663,6 +683,8 @@
 				EBE81C092753B22400F8A6FD /* LazyView.swift in Sources */,
 				EB03596E274927DF00C22829 /* LocationGeocoder.swift in Sources */,
 				EB7FC0D02742B71100039342 /* Double+.swift in Sources */,
+				EBE15A1D275A19AF00440DC2 /* EditProfileViewModel.swift in Sources */,
+				EBE15A1F275A19E300440DC2 /* EditProfileView.swift in Sources */,
 				EB55C1B927528E8F0013162A /* StorageService.swift in Sources */,
 				EBB7FA01272CF9DE006BC1F4 /* FoodWiseApp.swift in Sources */,
 				EBE963D02734F42A0076E124 /* MerchantAnnotation.swift in Sources */,
@@ -835,6 +857,7 @@
 				DEVELOPMENT_TEAM = CLHKU9LALJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FoodWise/Info.plist;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Food Wise requires your location access ";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Food Wise requires access to your location";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -867,6 +890,7 @@
 				DEVELOPMENT_TEAM = CLHKU9LALJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FoodWise/Info.plist;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Food Wise requires your location access ";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Food Wise requires access to your location";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -1042,6 +1066,14 @@
 				minimumVersion = 0.1.3;
 			};
 		};
+		EB4A4A28275674EE00B35CEF /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
 		EB7FC0C72742971F00039342 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
@@ -1077,6 +1109,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EB2B14B32733AD99008D5AD3 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
 			productName = Introspect;
+		};
+		EB4A4A29275674EF00B35CEF /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB4A4A28275674EE00B35CEF /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
 		};
 		EB7FC0C82742971F00039342 /* SDWebImageSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -9,8 +9,8 @@ import Foundation
 import FirebaseFirestoreSwift
 
 struct DrivingLicense: Codable {
-  let imageUrl: URL
-  let licenseNo: String
+  var imageUrl: URL
+  var licenseNo: String
   let licenseHolderId: String
 }
 

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import VisionKit
+import SDWebImageSwiftUI
 
 struct DrivingLicenseView: View {
   @StateObject private var viewModel: DrivingLicenseViewModel
@@ -36,22 +37,31 @@ struct DrivingLicenseView: View {
                     lineWidth: 1.5
                   )
                   .overlay {
-                    if let image = viewModel.licenseImage {
-                      image
-                        .resizable()
-                        .scaledToFit()
-                        .padding(.vertical)
-                        .padding(.horizontal, 8)
-                      Button("Retake", action: presentCamera)
-                    } else {
-                      Image(systemName: "creditcard")
-                        .font(.system(size: 70))
-                        .foregroundColor(.secondary.opacity(0.3))
-                      Button(action: presentCamera) {
-                        Text("Tap to add license picture")
-                          .foregroundColor(.secondary)
-                          .font(.subheadline)
+                    VStack {
+                      if let image = viewModel.licenseImage {
+                        image
+                          .resizable()
+                          .scaledToFit()
+                          .padding(.vertical)
+                          .padding(.horizontal, 8)
+                      } else if let url = viewModel.imageUrl {
+                        WebImage(url: url)
+                          .resizable()
+                          .placeholder {
+                            VStack {
+                              ProgressView().progressViewStyle(CircularProgressViewStyle())
+                              Text("Loading License Image")
+                            }
+                          }
+                          .scaledToFit()
+                          .padding(.vertical)
+                          .padding(.horizontal, 8)
+                      } else {
+                        Image(systemName: "creditcard")
+                          .font(.system(size: 70))
+                          .foregroundColor(.secondary.opacity(0.3))
                       }
+                      Button("Scan License", action: presentCamera)
                     }
                   }
                   .background(RoundedRectangle(cornerRadius: 10).fill(Color.white))

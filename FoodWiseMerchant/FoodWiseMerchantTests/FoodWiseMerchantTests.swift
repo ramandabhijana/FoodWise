@@ -4,7 +4,7 @@
 //
 //  Created by Abhijana Agung Ramanda on 27/11/21.
 //
-
+/*
 import XCTest
 @testable import FoodWiseMerchant
 
@@ -31,3 +31,4 @@ class FoodWiseMerchantTests: XCTestCase {
     }
 
 }
+*/

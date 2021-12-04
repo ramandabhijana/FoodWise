@@ -54,7 +54,6 @@ class SignUpViewModel: ObservableObject {
           userId: (authResult?.user.uid)!,
           name: self.fullName,
           email: self.email,
-          password: self.password,
           imageData: self.profileImageData
         )
         .sink(receiveCompletion: { completion in
