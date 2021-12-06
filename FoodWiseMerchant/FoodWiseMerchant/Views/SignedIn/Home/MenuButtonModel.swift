@@ -22,7 +22,8 @@ enum MenuDestination {
   var view: some View {
     switch self {
     case .manageFoodStock:
-      EmptyView()
+//      NewFoodView(viewModel: .init())
+      ManageFoodStockView()
     case .editFoodDetails:
       EmptyView()
     case .chats:

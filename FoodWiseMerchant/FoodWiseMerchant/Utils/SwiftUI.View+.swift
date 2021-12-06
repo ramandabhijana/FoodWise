@@ -21,4 +21,14 @@ extension View {
       self
     }
   }
+  
+  func setupFoodWiseNavigationBarAppearance() {
+    let appearance = UINavigationBarAppearance()
+    appearance.configureWithTransparentBackground()
+    appearance.backgroundColor = UIColor(named: "PrimaryColor")
+    UINavigationBar.appearance().standardAppearance = appearance
+    UINavigationBar.appearance().scrollEdgeAppearance = appearance
+//    UINavigationBar.appearance().tintColor = .black
+    
+  }
 }

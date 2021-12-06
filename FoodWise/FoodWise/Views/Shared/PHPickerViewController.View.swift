@@ -32,10 +32,12 @@ extension PHPickerViewController.Delegate: PHPickerViewControllerDelegate {
     _ picker: PHPickerViewController,
     didFinishPicking results: [PHPickerResult]
   ) {
-    results.first?.itemProvider.loadObject(ofClass: UIImage.self) { image, error in
-      if let originalImage = image as? UIImage {
-        DispatchQueue.main.async { [weak self] in
-          self?.imageData = originalImage.jpegData(compressionQuality: 0.5)
+    for result in results {
+      result.itemProvider.loadObject(ofClass: UIImage.self) { image, error in
+        if let originalImage = image as? UIImage {
+          DispatchQueue.main.async { [weak self] in
+            self?.imageData = originalImage.jpegData(compressionQuality: 0.5)
+          }
         }
       }
     }

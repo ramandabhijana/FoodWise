@@ -7,67 +7,135 @@
 
 import SwiftUI
 
-@available(iOS 15.0, *)
 struct ManageFoodStockView: View {
+  @EnvironmentObject var mainViewModel: MainViewModel
+  @StateObject private var viewModel: ManageFoodViewModel
+  static private var updateStockViewModel: UpdateStockViewModel!
+//  @State private var showingAddFoodView = false
+  
+  @State private var showsUpdateStockView = false
   
   init() {
-    setupNavigationBarAppearance()
+    _viewModel = StateObject(wrappedValue: ManageFoodViewModel())
+    setupFoodWiseNavigationBarAppearance()
   }
   
   var body: some View {
-    NavigationView {
-      ZStack {
-        Color.backgroundColor
-        Text("Tap the + button\nto begin with")
-          .multilineTextAlignment(.center)
-          
-      }
-      .ignoresSafeArea()
-      .navigationTitle("Manage Food Stock")
-      .navigationBarTitleDisplayMode(.inline)
-      .toolbar {
-        ToolbarItem(placement: .navigationBarTrailing) {
-          Menu("\(Image(systemName: "plus"))") {
-            Button("New Food") { }
-            Button("New Stock") { }
-          }
+    ZStack {
+      Color.backgroundColor.ignoresSafeArea()
+      
+      VStack(spacing: 0) {
+        HStack {
+          TextField("Search Recorded Food", text: $viewModel.searchFieldText)
+            .padding(8)
+            .disableAutocorrection(true)
+            .background(Color.gray.opacity(0.2))
+            .overlay(alignment: .trailing) {
+              if !viewModel.searchFieldText.isEmpty {
+                Button("\(Image(systemName: "xmark.circle.fill"))",
+                       action: viewModel.clearSearchText)
+                  .padding(.trailing, 8)
+                  .foregroundColor(.secondary)
+              }
+            }
+            .padding(.horizontal)
+            .padding(.bottom, 8)
         }
+        .background(Color.primaryColor)
         
-        ToolbarItem(placement: .navigationBarLeading) {
-          Button(
-            action: { },
-            label: {
-              Text("Cancel")
-                .foregroundColor(.black)
-            })
-        }
         
-        ToolbarItem(placement: .bottomBar) {
-          Button(
-            action: { },
-            label: {
-              RoundedRectangle(cornerRadius: 10)
-                .fill(Color.accentColor)
-                .frame(
-                  width: UIScreen.main.bounds.width - 30,
-                  height: 44
-                )
-                .overlay {
-                  Text("Submit")
-                    .foregroundColor(.white)
-                }
-              
-            })
+        ScrollView(showsIndicators: false) {
+          LazyVStack(spacing: 24) {
+            
+            
+            ForEach(viewModel.foodsList) { food in
+              FoodStockCellView(food: food) { tappedFood in
+                Self.updateStockViewModel = UpdateStockViewModel(
+                  food: tappedFood,
+                  manageFoodViewModel: viewModel)
+                showsUpdateStockView = true
+              }
+              .padding(.horizontal)
+            }
+            .redacted(reason: viewModel.loading ? .placeholder : [])
+            
+            
+          }.padding(.vertical, 24)
         }
       }
       
+      
+      
+      
+      
+      
+      /*
+      NavigationLink("New Food") {
+        LazyView(
+          NewFoodView(viewModel: .init(merchantId: mainViewModel.merchant.id,
+                                       manageFoodViewModel: viewModel))
+            .environmentObject(viewModel)
+        )
+      }
+      */
+//        Text("Tap the + button\nto begin with")
+//          .multilineTextAlignment(.center)
+        
     }
+    .navigationTitle("Manage Food Stock")
+    .navigationBarTitleDisplayMode(.inline)
+//    .onReceive(viewModel.$recordedFoods.drop(while: { $0.isEmpty }), perform: { _ in
+//      showingAddFoodView = false
+//    })
+    .toolbar {
+      ToolbarItem(placement: .navigationBarTrailing) {
+        NavigationLink("\(Image(systemName: "plus"))") {
+          LazyView(
+            NewFoodView(viewModel: .init(
+              merchantId: mainViewModel.merchant.id,
+              manageFoodViewModel: viewModel))
+          )
+        }
+//        Button("\(Image(systemName: "plus"))") {
+//
+//        }
+//          Menu("\(Image(systemName: "plus"))") {
+//            Button("New Food") { }
+//            Button("New Stock") { }
+//          }
+      }
+      
+//      ToolbarItem(placement: .navigationBarLeading) {
+//        Button(
+//          action: { },
+//          label: {
+//            Text("Cancel")
+//              .foregroundColor(.black)
+//          })
+//      }
+      
+    }
+    .onAppear {
+      viewModel.fetchFoodsIfListEmpty(merchantId: mainViewModel.merchant.id)
+    }
+//    .fullScreenCover(isPresented: $showsUpdateStockView) {
+//      UpdateStockView(showing: $showsUpdateStockView,
+//                      viewModel: Self.updateStockViewModel)
+//    }
+    .sheet(isPresented: $showsUpdateStockView) {
+      LazyView(
+        UpdateStockView(showing: $showsUpdateStockView,
+                        viewModel: Self.updateStockViewModel)
+      )
+
+    }
+    
   }
   
   private func setupNavigationBarAppearance() {
     let appearance = UINavigationBarAppearance()
     appearance.configureWithTransparentBackground()
-    appearance.backgroundColor = UIColor(named: "Color")
+    appearance.backgroundColor = UIColor(named: "PrimaryColor")
     UINavigationBar.appearance().standardAppearance = appearance
     UINavigationBar.appearance().scrollEdgeAppearance = appearance
     UINavigationBar.appearance().tintColor = .black
