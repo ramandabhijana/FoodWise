@@ -7,24 +7,29 @@
 
 import SwiftUI
 
-struct NavigationBarView: View {
+struct NavigationBarView<ButtonLabel: View>: View {
   let width: CGFloat
+  let title: String
+  let subtitle: String
   var showTitle: Bool
   var backgroundColor: Color
+  var onTapBackButton: () -> ()
+  var favoriteButtonLabel: () -> ButtonLabel
+  var onTapFavoriteButton: () -> ()
   
   var body: some View {
     HStack {
       backButton
       Spacer()
       VStack {
-        Text("Kentucky Fried Chicken")
-        Text("Rp 30.000")
-          .bold()
+        Text(title)
+          .font(.headline)
+        Text(subtitle)
+          .font(.subheadline)
       }
       .offset(y: showTitle ? 0 : 65)
       Spacer()
-      VStack(content: EmptyView.init)
-        .frame(width: width * 0.08)
+      favoriteButton
     }
     .frame(width: width, height: 48)
     // the live preview won't work if this uncommented
@@ -39,18 +44,28 @@ struct NavigationBarView: View {
     let imageName = "chevron.backward"
     return VStack {
       Button(
-        action: {},
+        action: onTapBackButton,
         label: {
           Image(systemName: imageName)
-            .font(.title2)
-            .foregroundColor(.black)
+            .foregroundColor(.init(uiColor: .darkGray))
+            .font(.title3)
         })
     }
-    .frame(width: width * 0.08)
-    .padding(backgroundColor == .clear ? 4 : .zero)
+    .frame(width: width * 0.08, height: width * 0.08)
     .background(backgroundColor == .clear ? Color.white : .clear)
     .clipShape(Circle())
   }
+  
+  // heart
+  private var favoriteButton: some View {
+    return VStack {
+      Button(action: onTapFavoriteButton, label: favoriteButtonLabel)
+    }
+    .frame(width: width * 0.08, height: width * 0.08)
+    .background(backgroundColor == .clear ? Color.white : .clear)
+    .clipShape(Circle())
+  }
+  
   
   @ViewBuilder private var background: some View {
     if backgroundColor == .clear {
@@ -68,19 +83,20 @@ struct NavigationBarView: View {
   }
 }
 
-struct NavigationBarView_Previews: PreviewProvider {
-  static var previews: some View {
-    NavigationBarView(
-      width: 400,
-      showTitle: false,
-      backgroundColor: .clear
-    )
-    .previewLayout(.sizeThatFits)
-  }
-}
+//struct NavigationBarView_Previews: PreviewProvider {
+//  static var previews: some View {
+//    NavigationBarView(
+//      width: 400,
+//      showTitle: false,
+//      backgroundColor: .clear
+//    )
+//    .previewLayout(.sizeThatFits)
+//  }
+//}
 
 extension CGFloat {
   static let safeAreaInsetsTop = UIApplication.shared.windows.first!.safeAreaInsets.top
   
-  static let safeAreaInsetsBottom = UIApplication.shared.windows.first!.safeAreaInsets.bottom
+  static let safeAreaInsetsBottom =
+  UIApplication.shared.windows.first!.safeAreaInsets.bottom
 }

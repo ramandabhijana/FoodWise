@@ -7,43 +7,86 @@
 
 import SwiftUI
 import SDWebImageSwiftUI
+import SwiftUIPullToRefresh
 
 struct FoodDetailsView: View {
+  @Environment(\.dismiss) private var dismiss
+  @StateObject private var viewModel: FoodDetailsViewModel
+  
   @State private var navigationBarBackgroundColor = Color.clear
   @State private var showTitle = false
+  @State private var showsPhotoZoomView = false
+  @State private var navigationController: UINavigationController? = nil
+  @State private var tabBar: UITabBar? = nil
   
   private var contentWidth: CGFloat = UIScreen.main.bounds.width - 30
   
-  let food: Food
+  // To be called when the view is dismissed and the food is no longer a favorite
+  private var onDismiss: ((Food) -> Void)?
   
-  init(food: Food) {
-    self.food = food
+  private static var tappedPhotoUrl: URL?
+  
+  
+  init(
+    viewModel: FoodDetailsViewModel,
+    onDismiss: ((Food) -> Void)? = nil
+  ) {
+    _viewModel = StateObject(wrappedValue: viewModel)
+    self.onDismiss = onDismiss
   }
+  
+  
   
   var body: some View {
     ZStack(alignment: .top) {
       Color.backgroundColor
       
-      ScrollView {
+      RefreshableScrollView(showsIndicators: false, onRefresh: { done in
+        viewModel.fetchFood { done() }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//          done()
+//        }
+      }, progress: { state in
+        VStack {
+          switch state {
+          case .waiting:
+            Text("Pull down")
+          case .primed:
+            Text("Release to refresh")
+          case .loading:
+            ProgressView()
+              .tint(.black)
+              .padding(.top, 40)
+          }
+        }
+        .font(.caption)
+        .frame(maxWidth: .infinity, maxHeight: 68)
+        .background(Color.backgroundColor)
+      }) {
         LazyVStack(spacing: 18) {
           GeometryReader { proxy -> AnyView in
             let minY = proxy.frame(in: .global).minY
-            let scrollViewScrolled = minY > 0
             return AnyView(
-              WebImage(url: food.imageUrl)
-                .resizable()
-                .offset(y: scrollViewScrolled ? -minY : .zero)
-                .onChange(of: minY) { value in
-                  if abs(value) > (.headerImageHeight * 0.76) {
-                    withAnimation {
-                      navigationBarBackgroundColor = Color.primaryColor
+              TabView {
+                ForEach(viewModel.food.imagesUrl, id: \.self) { url in
+                  WebImage(url: url)
+                    .resizable()
+                    .onChange(of: minY) { value in
+                      DispatchQueue.main.async {
+                        if abs(value) > (.headerImageHeight * 0.76) {
+                          withAnimation { navigationBarBackgroundColor = Color.primaryColor }
+                        } else {
+                          withAnimation { navigationBarBackgroundColor = .clear }
+                        }
+                      }
                     }
-                  } else {
-                    withAnimation {
-                      navigationBarBackgroundColor = .clear
+                    .onTapGesture {
+                      Self.tappedPhotoUrl = url
+                      showsPhotoZoomView.toggle()
                     }
-                  }
                 }
+              }
+              .tabViewStyle(.page)
             )
           }.frame(height: .headerImageHeight)
           
@@ -52,54 +95,53 @@ struct FoodDetailsView: View {
               let minY = proxy.frame(in: .global).minY
               return AnyView(
                 HStack(alignment: .top,spacing: 15) {
-                  Text(food.name)
+                  Text(viewModel.food.name)
                     .font(.title2)
                     .fontWeight(.semibold)
                     .lineLimit(2)
+                  
                   Spacer()
                   VStack(alignment: .trailing) {
-                    Text(food.priceString)
+                    Text(viewModel.food.priceString)
                       .font(.title2)
                       .fontWeight(.bold)
-                    Text("\(food.discountRateString) OFF")
+                    Text("\(viewModel.food.discountRateString) OFF")
                       .font(.callout)
                       .foregroundColor(.red)
-                    Text("was " + food.retailPriceString)
+                    Text("was " + viewModel.food.retailPriceString)
                       .font(.callout)
                       .foregroundColor(.secondary)
                   }
                 }
-                .onChange(of: minY, perform: { value in
-                  let viewNotCoveredByNavigationBar = value > (.headerImageHeight * 0.17)
-                  if viewNotCoveredByNavigationBar {
-                    if showTitle {
-                      withAnimation { showTitle = false }
-                    }
-                  } else {
-                    if !showTitle {
-                      withAnimation(.easeOut) { showTitle = true }
+                .onChange(of: minY) { value in
+                  DispatchQueue.main.async {
+                    let viewNotCoveredByNavigationBar = value > (.headerImageHeight * 0.17)
+                    if viewNotCoveredByNavigationBar {
+                      if showTitle {
+                        withAnimation { showTitle = false }
+                      }
+                    } else {
+                      if !showTitle {
+                        withAnimation(.easeOut) { showTitle = true }
+                      }
                     }
                   }
-                })
+                }
               )
             }
             .frame(
               width: contentWidth,
               height: 65
             )
-            
-            
-            Rectangle()
-              .fill(Color(.systemFill))
-              .frame(height: 10)
+            divider
               
             
-            VStack(spacing: 10) {
+            VStack(alignment: .leading, spacing: 10) {
               HStack(alignment: .top) {
                 Text("Stock Left")
                   .fontWeight(.light)
                 Spacer()
-                Text("3")
+                Text("\(viewModel.food.stock)")
                   .frame(width: contentWidth * 0.58, alignment: .leading)
               }
               
@@ -107,25 +149,32 @@ struct FoodDetailsView: View {
                 Text("Category")
                   .fontWeight(.light)
                 Spacer()
-                Text("Rice, Main Dish")
+                Text(viewModel.food.categoriesName)
                   .frame(width: contentWidth * 0.58, alignment: .leading)
               }
               
-              Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco")
+              Text(viewModel.food.description.isEmpty
+                   ? "No Description"
+                   : viewModel.food.description)
                 .font(.callout)
-                .padding(.top, 5)
+                .padding(.top, 10)
             }
             .frame(width: contentWidth)
             
-            Rectangle()
-              .fill(Color(.systemFill))
-              .frame(height: 10)
+            divider
             
             VStack(alignment: .leading, spacing: 10) {
               Text("Rating and Reviews")
                 .font(.title3)
                 .fontWeight(.semibold)
+              Text("The food has never received a review")
+                .font(.callout)
               
+//              ForEach(0..<20) { num in
+//                Text("Text \(num)")
+//              }
+              
+              /*
               VStack(alignment: .leading, spacing: 0) {
                 Text("4.5 ★★★★★").font(.title3)
                 Text("(16 Reviews)").fontWeight(.light)
@@ -166,12 +215,14 @@ struct FoodDetailsView: View {
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity)
                 })
+              */
+              
             }
-            .frame(width: contentWidth)
+            .frame(width: contentWidth, alignment: .leading)
             
-            Rectangle()
-              .fill(Color(.systemFill))
-              .frame(height: 10)
+//            Rectangle()
+//              .fill(Color(.systemFill))
+//              .frame(height: 10)
             
 //            SimilarFoods()
 //              .padding(.horizontal)
@@ -181,19 +232,23 @@ struct FoodDetailsView: View {
         .padding(.bottom, 140)
       }
       
-      VStack {
+      .overlay(alignment: .top) {
         NavigationBarView(
           width: UIScreen.main.bounds.width - 30,
+          title: viewModel.food.name,
+          subtitle: viewModel.food.priceString,
           showTitle: showTitle,
-          backgroundColor: navigationBarBackgroundColor
-        )
-        .clipped()
-        Spacer()
-        
+          backgroundColor: navigationBarBackgroundColor,
+          onTapBackButton: onTapBackButton,
+          favoriteButtonLabel: favoriteButtonLabel,
+          onTapFavoriteButton: onTapFavoriteButton
+        ).clipped()
+      }
+      .overlay(alignment: .bottom) {
         ZStack {
           Rectangle()
             .fill(Color.secondaryColor)
-            .frame(height: 50)
+            .frame(height: 45)
             .shadow(
               color: .black,
               radius: 15,
@@ -219,6 +274,7 @@ struct FoodDetailsView: View {
                 action: {},
                 label: {
                   RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.accentColor)
                     .frame(width: proxy.size.width * 0.78)
                     .overlay {
                       HStack {
@@ -235,21 +291,88 @@ struct FoodDetailsView: View {
               height: 44
             )
           }
-          .frame(height: 35)
-          .padding()
+          .frame(height: 48)
+          .padding(.top, 10)
+          .padding(.horizontal)
           .padding(.bottom, 34)
   //        .padding(.bottom, .safeAreaInsetsBottom)
           .background(Color.secondaryColor)
         }
       }
+      .sheet(isPresented: $showsPhotoZoomView) {
+        PhotoZoomViewController.View(url: Self.tappedPhotoUrl)
+          .ignoresSafeArea()
+          .overlay(alignment: .topTrailing) {
+            Button("\(Image(systemName: "xmark.circle.fill"))") {
+              showsPhotoZoomView = false
+            }
+            .foregroundColor(.white)
+            .padding()
+          }
+      }
+      
+      
+      
+      
     }
     .ignoresSafeArea()
+    .onDisappear {
+      navigationController?.isNavigationBarHidden = false
+      tabBar?.isHidden = false
+    }
+    .snackBar(
+      isShowing: $viewModel.onUpdateFavoriteList.shows,
+      text: Text(viewModel.onUpdateFavoriteList.message)
+    )
+    .introspectNavigationController { controller in
+      controller.isNavigationBarHidden = true
+    }
+    .introspectTabBarController { controller in
+      tabBar = controller.tabBar
+      controller.tabBar.isHidden = true
+    }
   }
+  
+  private var divider: some View {
+    Rectangle()
+      .fill(Color(.systemFill))
+      .frame(height: 10)
+  }
+  
+  private func onTapBackButton() {
+    if !viewModel.favorited, let onDismiss = onDismiss {
+      onDismiss(viewModel.food)
+    }
+    dismiss()
+  }
+  
+  private func favoriteButtonLabel() -> some View {
+    Group {
+      if viewModel.favorited {
+        Image(systemName: "heart.fill")
+          .foregroundColor(.pink)
+      } else {
+        Image(systemName: "heart")
+          .foregroundColor(.init(uiColor: .darkGray))
+      }
+    }.font(.title3)
+  }
+  
+  private func onTapFavoriteButton() {
+    guard !viewModel.loading else { return }
+    if viewModel.favorited {
+      viewModel.removeFromFavorite()
+    } else {
+      viewModel.addToFavorite()
+    }
+  }
+  
+  
 }
 
 struct FoodDetailsView_Previews: PreviewProvider {
   static var previews: some View {
-    FoodDetailsView(food: .sampleData.first!)
+    FoodDetailsView(viewModel: .init(food: .sampleData.first!, foodRepository: .init()))
   }
 }
 

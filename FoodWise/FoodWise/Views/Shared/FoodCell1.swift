@@ -21,7 +21,7 @@ struct FoodCell1: View {
       .overlay {
         GeometryReader { proxy in
           VStack(alignment: .leading, spacing: 8) {
-            WebImage(url: food.imageUrl)
+            WebImage(url: food.imagesUrl[0])
               .resizable()
               .scaledToFill()
               .frame(
@@ -30,6 +30,7 @@ struct FoodCell1: View {
               )
               .clipped()
               .cornerRadius(10)
+            /*
               .overlay(alignment: .topTrailing) {
                 HStack(spacing: 2) {
                   Star(smoothness: 0.4)
@@ -52,28 +53,27 @@ struct FoodCell1: View {
                 )
                 .padding(5)
               }
+            */
             
-            Text(food.name)
-              .lineLimit(2)
-              .padding(.top, 8)
-            Text(food.priceString)
-              .fontWeight(.bold)
+            Group {
+              Text(food.name)
+                .lineLimit(2)
+                .padding(.top, 8)
+              Text(food.priceString)
+                .fontWeight(.bold)
+            }
+            .foregroundColor(.black)
             
             HStack {
-              Text(food.discountRateString)
-                .fontWeight(.semibold)
-                .padding(5)
-                .foregroundColor(.yellow)
-                .colorMultiply(.yellow)
-                .background(Color.primaryColor.opacity(0.2))
-                .font(.caption)
+              Text(food.discountRateString + " OFF")
+                .foregroundColor(.errorColor)
               
               Text(food.retailPriceString)
                 .strikethrough()
                 .lineLimit(1)
                 .foregroundColor(.secondary)
-                .font(.caption2)
             }
+            .font(.caption)
           }
           
         }
@@ -82,8 +82,10 @@ struct FoodCell1: View {
   }
 }
 
+/*
 struct FoodCell1_Previews: PreviewProvider {
   static var previews: some View {
     FoodCell1(food: .sampleData[0])
   }
 }
+*/

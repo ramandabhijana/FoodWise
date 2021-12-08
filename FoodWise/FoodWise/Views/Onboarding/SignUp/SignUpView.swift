@@ -18,6 +18,7 @@ struct SignUpView: View {
   
   @State private var showImagePicker = false
   @State private var showErrorSnackbar = false
+  
   @State private var showSettingUpAccountSnackbar = false
   
   private var onReceiveCustomer: (Customer) -> Void

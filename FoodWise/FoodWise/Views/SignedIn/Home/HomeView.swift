@@ -9,12 +9,16 @@ import SwiftUI
 import Introspect
 
 struct HomeView: View {
-  
+  @EnvironmentObject private var rootViewModel: RootViewModel
+  @StateObject private var viewModel: HomeViewModel
   @State private var selectedCategory: CategoryButtonModel? = nil
   @State private var categorySelected = false
-  @State private var showSearchView = false
-//  @FocusState private var searchFieldFocused = true
+  @State private var showsSearchView = false
   @State private var navigationBar: UINavigationBar? = nil
+  
+  init(viewModel: HomeViewModel) {
+    _viewModel = StateObject(wrappedValue: viewModel)
+  }
   
   var body: some View {
     NavigationView {
@@ -39,10 +43,16 @@ struct HomeView: View {
             CategoriesView()
             
             ForEach(Food.sampleSection, id: \.self) { sectionName in
+              HorizontalListView(
+                sectionName: sectionName,
+                viewModel: .init(foodRepository: viewModel.foodRepository)
+              )
+              /*
               VStack(alignment: .leading) {
                 Text(sectionName)
                   .font(.headline)
                   .padding(.leading)
+                
                 ScrollView(.horizontal, showsIndicators: false) {
                   LazyHStack(spacing: 16) {
                     ForEach(Food.sampleData) { food in
@@ -54,8 +64,9 @@ struct HomeView: View {
                 }
               }
               .padding(.vertical)
+              */
             }
-            .animation(nil, value: showSearchView)
+            .animation(nil, value: showsSearchView)
           }
           .background(Color.backgroundColor)
           
@@ -78,17 +89,21 @@ struct HomeView: View {
             text: .constant("")
           )
           .textFieldStyle(RoundedBorderTextFieldStyle())
-          .onTapGesture { showSearchView.toggle() }
+          .onTapGesture { showsSearchView.toggle() }
         }
         
         ToolbarItem(placement: .navigationBarTrailing) {
           HStack {
+            
             Button("\(Image(systemName: "envelope.fill"))") {
 
             }
-
-            Button("\(Image(systemName: "heart.fill"))") {
-
+            NavigationLink("\(Image(systemName: "heart.fill"))") {
+              LazyView(
+                FavoriteFoodsView(viewModel: .init(
+                  customerId: rootViewModel.customer?.id,
+                  foodRepository: viewModel.foodRepository))
+              )
             }
           }
           .foregroundColor(.init(uiColor: .darkGray))
@@ -113,10 +128,10 @@ struct HomeView: View {
       }
     }
     .overlay {
-      if showSearchView {
+      if showsSearchView {
         SearchingView(
           searchText: .constant(""),
-          showing: $showSearchView,
+          showing: $showsSearchView,
           onSubmit: .constant({ })
         )
       }
@@ -124,11 +139,11 @@ struct HomeView: View {
   }
 }
 
-struct HomeView_Previews: PreviewProvider {
-  static var previews: some View {
-    HomeView()
-  }
-}
+//struct HomeView_Previews: PreviewProvider {
+//  static var previews: some View {
+//    HomeView()
+//  }
+//}
 
 struct CategoriesView: View {
   let data = CategoryButtonModel.data

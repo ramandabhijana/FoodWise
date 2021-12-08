@@ -90,7 +90,7 @@ struct RootSignedInView: View {
   
   var body: some View {
     TabView(selection: $viewModel.selectedTab) {
-      HomeView()
+      HomeView(viewModel: .init())
         .tabItem { Label("Home", systemImage: "house") }
         .tag(0)
       
