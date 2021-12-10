@@ -103,7 +103,7 @@ final class CustomerRepository: ObservableObject {
       do {
         try self.db.collection(self.path)
           .document(customer.id)
-          .setData(from: customer)
+          .setData(from: customer, merge: merge)
         promise(.success(customer))
       } catch let error {
         promise(.failure(error))

@@ -24,23 +24,36 @@ struct HorizontalListView: View {
         .font(.headline)
         .padding(.leading)
       
+      
+      
       ScrollView(.horizontal, showsIndicators: false) {
-        LazyHStack(spacing: 16) {
-          ForEach(viewModel.foodsList) { food in
-            NavigationLink {
-              LazyView(FoodDetailsView(
-                viewModel: .init(food: food,
-                                 customerId: rootViewModel.customer?.id,
-                                 foodRepository: viewModel.foodRepository))
-              )
-            } label: {
-              FoodCell1(food: food)
-            }
+        if viewModel.foodsList.isEmpty {
+          VStack {
+            Image("empty_list")
+              .resizable()
+              .scaledToFit()
+              .frame(width: 100, height: 100)
+            Text("No results can be shown").font(.subheadline)
           }
-          .redacted(reason: viewModel.loading ? .placeholder : [])
+          .frame(width: UIScreen.main.bounds.width)
+        } else {
+          LazyHStack(spacing: 16) {
+            ForEach(viewModel.foodsList) { food in
+              NavigationLink {
+                LazyView(FoodDetailsView(
+                  viewModel: .init(food: food,
+                                   customerId: rootViewModel.customer?.id,
+                                   foodRepository: viewModel.foodRepository))
+                )
+              } label: {
+                FoodCell1(food: food)
+              }
+            }
+            .redacted(reason: viewModel.loading ? .placeholder : [])
+          }
+          .padding(.horizontal)
+          .frame(height: 260)
         }
-        .padding(.horizontal)
-        .frame(height: 260)
       }
     }
     .padding(.vertical)
@@ -49,6 +62,6 @@ struct HorizontalListView: View {
 
 //struct HorizontalListView_Previews: PreviewProvider {
 //  static var previews: some View {
-//    HorizontalListView()
+//    HorizontalListView(sectionName: "Preview", viewModel: .init(foodRepository: .init()))
 //  }
 //}

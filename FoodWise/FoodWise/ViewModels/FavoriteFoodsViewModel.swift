@@ -11,9 +11,11 @@ import Combine
 class FavoriteFoodsViewModel: ObservableObject {
   @Published var searchText = ""
   
-  @Published private(set) var loading = false
   @Published private(set) var errorMessage = ""
   @Published private(set) var foodsList: [Food] = []
+  @Published private(set) var loading = false {
+    willSet { if newValue { foodsList = [.asPlaceholderInstance, .asPlaceholderInstance, .asPlaceholderInstance, .asPlaceholderInstance, .asPlaceholderInstance] } }
+  }
   
   private var customerId: String?
   private var currentFavoriteList: FavoriteFoodList?
@@ -42,7 +44,6 @@ class FavoriteFoodsViewModel: ObservableObject {
       return
     }
     loading = true
-    foodsList = [.init(), .init(), .init(), .init(), .init()]
     favListRepository.getFavoriteList(forCustomerId: customerId)
       .handleEvents(receiveOutput: { [weak self] currentFavoriteList in
         self?.currentFavoriteList = currentFavoriteList
@@ -80,7 +81,7 @@ class FavoriteFoodsViewModel: ObservableObject {
     }
     currentFavoriteList?.foodIds.remove(at: index)
     favListRepository.updateFavoriteList(currentFavoriteList!)
-      .sink { [weak self] completion in
+      .sink { completion in
         if case .failure(let error) = completion {
           print("\n\(error.localizedDescription)\n")
         }

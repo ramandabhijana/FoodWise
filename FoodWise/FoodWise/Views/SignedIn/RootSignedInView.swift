@@ -82,17 +82,33 @@ struct RootSignedInView: View {
     itemAppearance.selected.iconColor = .darkGray
     itemAppearance.normal.iconColor = .lightGray.withAlphaComponent(0.5)
     
-    let appeareance = UITabBarAppearance()
-    appeareance.backgroundColor = UIColor(named: "SecondaryColor")
-    appeareance.stackedLayoutAppearance = itemAppearance
-    UITabBar.appearance().standardAppearance = appeareance
+    let appearance = UITabBarAppearance()
+    appearance.stackedLayoutAppearance = itemAppearance
+    appearance.configureWithTransparentBackground()
+    appearance.backgroundColor = UIColor(named: "SecondaryColor")
+    UITabBar.appearance().standardAppearance = appearance
+    UITabBar.appearance().scrollEdgeAppearance = appearance
   }
   
   var body: some View {
     TabView(selection: $viewModel.selectedTab) {
-      HomeView(viewModel: .init())
-        .tabItem { Label("Home", systemImage: "house") }
-        .tag(0)
+      HomeView(
+        viewModel: .init(),
+        categoriesViewModel: .init()
+      )
+      .tabItem { Label("Home", systemImage: "house") }
+      .tag(0)
+//      .introspectTabBarController { tbController in
+//        let itemAppearance = UITabBarItemAppearance()
+//        itemAppearance.selected.iconColor = .darkGray
+//        itemAppearance.normal.iconColor = .lightGray.withAlphaComponent(0.5)
+//        let appearance = UITabBarAppearance()
+//        appearance.stackedLayoutAppearance = itemAppearance
+//        appearance.configureWithOpaqueBackground()
+//        appearance.backgroundColor = UIColor(named: "SecondaryColor")
+//        tbController.tabBar.standardAppearance = appearance
+//        tbController.tabBar.scrollEdgeAppearance = appearance
+//      }
       
       Text("")
         .tabItem { Label("Your Bag", systemImage: "bag.fill") }
@@ -105,6 +121,17 @@ struct RootSignedInView: View {
       MyProfileView()
         .tabItem { Label("Settings", systemImage: "gearshape.fill") }
         .tag(3)
+//        .introspectTabBarController { tbController in
+//          let itemAppearance = UITabBarItemAppearance()
+//          itemAppearance.selected.iconColor = .darkGray
+//          itemAppearance.normal.iconColor = .lightGray.withAlphaComponent(0.5)
+//          let appearance = UITabBarAppearance()
+//          appearance.stackedLayoutAppearance = itemAppearance
+//          appearance.configureWithTransparentBackground()
+//          appearance.backgroundColor = UIColor(named: "BackgroundColor")
+//          tbController.tabBar.standardAppearance = appearance
+//          tbController.tabBar.scrollEdgeAppearance = appearance
+//        }
     }
     .onAppear(perform: viewModel.postSignInRequiredIfUserNil)
     .onReceive(signInRequiredPublisher) { _ in

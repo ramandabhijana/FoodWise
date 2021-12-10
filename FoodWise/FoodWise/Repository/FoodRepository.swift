@@ -21,7 +21,7 @@ final class FoodRepository {
     Future { [weak self] promise in
       guard let self = self else { return }
       self.db.collection(self.path)
-        .addSnapshotListener { snapshot, error in
+        .getDocuments { snapshot, error in
           guard error == nil else { return promise(.failure(error!)) }
           let foods = snapshot?.documents.compactMap{ document in
             do {
@@ -67,9 +67,91 @@ final class FoodRepository {
         .merge(with: getFood(withId: foodId))
         .eraseToAnyPublisher()
     }
-//    Future { [weak self] promise in
-//
-//    }.eraseToAnyPublisher()
   }
   
+  func getFoods(matching categories: [FoodCategories]) -> AnyPublisher<[Food], Error> {
+    Future { [weak self] promise in
+      guard let self = self else { return }
+      let categoriesObject = categories.map { $0.category.asObject }
+      self.db.collection(self.path)
+        .whereField("categories", arrayContainsAny: categoriesObject)
+        .getDocuments { snapshot, error in
+          guard error == nil else { return promise(.failure(error!)) }
+          let foods = snapshot?.documents.compactMap{ document in
+            do {
+              return try document.data(as: Food.self)
+            } catch let error {
+              print("Couldn't create Food from document. \(error)")
+              return nil
+            }
+          } ?? [Food]()
+          return promise(.success(foods))
+        }
+    }.eraseToAnyPublisher()
+  }
+  
+  func getBestDealsFoods(category: FoodCategory? = nil) -> AnyPublisher<[Food], Error> {
+    Future { [weak self] promise in
+      guard let self = self else { return }
+      let collectionRef = self.db.collection(self.path)
+      var query: Query
+      if let category = category {
+        query = collectionRef
+          .whereField("categories", arrayContains: category.asObject)
+          .whereField("discountRate", isGreaterThanOrEqualTo: 50)
+          .order(by: "discountRate", descending: true)
+      } else {
+        query = collectionRef
+          .whereField("discountRate", isGreaterThanOrEqualTo: 50)
+          .order(by: "discountRate", descending: true)
+      }
+      query.getDocuments { snapshot, error in
+        guard error == nil else { return promise(.failure(error!)) }
+        let foods = snapshot?.documents.compactMap{ document in
+          do {
+            return try document.data(as: Food.self)
+          } catch let error {
+            print("Couldn't create Food from document. \(error)")
+            return nil
+          }
+        } ?? [Food]()
+        return promise(.success(foods))
+      }
+    }.eraseToAnyPublisher()
+  }
+  
+  func getFoodsUnder10K(category: FoodCategory? = nil) -> AnyPublisher<[Food], Error> {
+    Future { [weak self] promise in
+      guard let self = self else { return }
+      let collectionRef = self.db.collection(self.path)
+      var query: Query
+      if let category = category {
+        query = collectionRef
+          .whereField("categories", arrayContains: category.asObject)
+          .whereField("price", isLessThanOrEqualTo: 10_000)
+      } else {
+        query = collectionRef
+          .whereField("price", isLessThanOrEqualTo: 10_000)
+      }
+      query.getDocuments { snapshot, error in
+        guard error == nil else { return promise(.failure(error!)) }
+        let foods = snapshot?.documents.compactMap{ document in
+          do {
+            return try document.data(as: Food.self)
+          } catch let error {
+            print("Couldn't create Food from document. \(error)")
+            return nil
+          }
+        } ?? [Food]()
+        return promise(.success(foods))
+      }
+    }.eraseToAnyPublisher()
+  }
+  
+  // Saved for the following iteration
+  func getMostLovedFoods(category: FoodCategory? = nil) -> AnyPublisher<[Food], Error> {
+    Future { promise in
+      promise(.success([]))
+    }.eraseToAnyPublisher()
+  }
 }

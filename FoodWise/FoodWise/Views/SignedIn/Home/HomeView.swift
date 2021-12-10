@@ -7,17 +7,21 @@
 
 import SwiftUI
 import Introspect
+import Combine
 
 struct HomeView: View {
   @EnvironmentObject private var rootViewModel: RootViewModel
   @StateObject private var viewModel: HomeViewModel
+  @StateObject private var categoriesViewModel: CategoriesViewModel
+  // categoriesvm
   @State private var selectedCategory: CategoryButtonModel? = nil
   @State private var categorySelected = false
   @State private var showsSearchView = false
   @State private var navigationBar: UINavigationBar? = nil
   
-  init(viewModel: HomeViewModel) {
+  init(viewModel: HomeViewModel, categoriesViewModel: CategoriesViewModel) {
     _viewModel = StateObject(wrappedValue: viewModel)
+    _categoriesViewModel = StateObject(wrappedValue: categoriesViewModel)
   }
   
   var body: some View {
@@ -40,31 +44,16 @@ struct HomeView: View {
               .padding(.top, -60)
             
             
-            CategoriesView()
+            CategoriesView(viewModel: categoriesViewModel)
             
-            ForEach(Food.sampleSection, id: \.self) { sectionName in
+            ForEach(Food.homeSection, id: \.self) { section in
               HorizontalListView(
-                sectionName: sectionName,
-                viewModel: .init(foodRepository: viewModel.foodRepository)
-              )
-              /*
-              VStack(alignment: .leading) {
-                Text(sectionName)
-                  .font(.headline)
-                  .padding(.leading)
-                
-                ScrollView(.horizontal, showsIndicators: false) {
-                  LazyHStack(spacing: 16) {
-                    ForEach(Food.sampleData) { food in
-                      FoodCell1(food: food)
-                    }
-                  }
-                  .padding(.horizontal)
-                  .frame(height: 260)
-                }
-              }
-              .padding(.vertical)
-              */
+                sectionName: section.name,
+                viewModel: .init(
+                  foodRepository: viewModel.foodRepository,
+                  criteria: section.criteria,
+                  onChangeOfSelectedCategory: categoriesViewModel.selectedCategoryPublisher
+                ))
             }
             .animation(nil, value: showsSearchView)
           }
@@ -107,15 +96,6 @@ struct HomeView: View {
             }
           }
           .foregroundColor(.init(uiColor: .darkGray))
-//          .opacity(searchFieldFocused ? 0 : 1)
-//          .overlay {
-//            if searchFieldFocused {
-//              Button("Cancel") {
-//                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
-//                searchFieldFocused = false
-//              }
-//            }
-//          }
         }
         
       }
@@ -141,31 +121,28 @@ struct HomeView: View {
 
 //struct HomeView_Previews: PreviewProvider {
 //  static var previews: some View {
-//    HomeView()
+//    HomeView(viewModel: .init())
 //  }
 //}
 
 struct CategoriesView: View {
-  let data = CategoryButtonModel.data
+  @ObservedObject private var viewModel: CategoriesViewModel
   @State private var indexOfSelectedCategory: Int? = nil
+  
+  init(viewModel: CategoriesViewModel) {
+    self.viewModel = viewModel
+  }
   
   var body: some View {
     ScrollView(.horizontal, showsIndicators: false) {
       LazyHStack(spacing: 16) {
-        ForEach(data.indices, id: \.self) { index in
+        ForEach(viewModel.data.indices, id: \.self) { index in
           CategoryButton(
-            model: data[index],
+            model: viewModel.data[index],
             index: index,
-            currentSelectedIndex: $indexOfSelectedCategory
+            currentSelectedIndex: $viewModel.indexOfSelectedCategory
           )
-          .onTapGesture {
-            guard indexOfSelectedCategory != index else {
-              indexOfSelectedCategory = nil
-              return
-            }
-            indexOfSelectedCategory = index
-          }
-          
+          .onTapGesture { viewModel.onTapCategory(at: index) }
         }
       }
       .padding(.horizontal)
@@ -215,6 +192,8 @@ struct SearchingView: View {
   @Binding var searchText: String
   @Binding var showing: Bool
   @Binding var onSubmit: () -> Void
+  @State private var tabBarFrame = CGRect.zero
+  @State private var tabBarController: UITabBarController? = nil
   
   var body: some View {
     NavigationView {
@@ -249,28 +228,27 @@ struct SearchingView: View {
           }
         }
       }
+      .onAppear {
+        DispatchQueue.main.async { tabBarHidden(true) }
+      }
+      .onDisappear { tabBarHidden(false) }
+      .introspectTabBarController(customize: setTabBarController)
       .introspectNavigationController { controller in
         let a2 = UINavigationBarAppearance()
         a2.configureWithOpaqueBackground()
         a2.backgroundColor = .white
         controller.navigationBar.standardAppearance = a2
       }
-      
-      //          ZStack {
-      //            Button("Dismiss") {
-      //              UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
-      //              searchFieldFocused = false
-      //            }
-      //          }
-      //          .frame(width: UIScreen.main.bounds.width, height: 400)
-      //          .background(.white)
-      //          .onAppear {
-      //            let a2 = UINavigationBarAppearance()
-      //            a2.configureWithOpaqueBackground()
-      //            a2.backgroundColor = .white
-      //            navigationBar?.standardAppearance = a2
-      //          }
     }
+  }
+  
+  private func setTabBarController(_ controller: UITabBarController) {
+    tabBarController = controller
+  }
+  
+  private func tabBarHidden(_ hidden: Bool) {
+    tabBarController?.tabBar.isHidden = hidden
+    UIView.transition(with: (tabBarController?.view)!, duration: 0.15, options: .transitionCrossDissolve, animations: nil, completion: nil)
   }
   
   private func dismiss() {

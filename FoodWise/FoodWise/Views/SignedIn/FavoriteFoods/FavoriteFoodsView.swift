@@ -11,6 +11,7 @@ struct FavoriteFoodsView: View {
   @EnvironmentObject private var rootViewModel: RootViewModel
   @StateObject private var viewModel: FavoriteFoodsViewModel
   @State private var showsUnfavoriteAlert = false
+//  @State private var viewIsShown = false
   
   static private var foodToBeRemoved: Food?
   
@@ -22,6 +23,9 @@ struct FavoriteFoodsView: View {
   var body: some View {
     ScrollView(showsIndicators: false) {
       LazyVStack(spacing: 20) {
+//        if viewIsShown {
+//          Text("This is view").font(.largeTitle)
+//        }
         ForEach(viewModel.filteredFoods) { food in
           FavoriteFoodCell(
             food: food,
@@ -40,10 +44,24 @@ struct FavoriteFoodsView: View {
           ).padding(.horizontal)
         }
         .redacted(reason: viewModel.loading ? .placeholder : [])
-      }.padding(.vertical, 20)
+      }
+      .padding(.vertical, 20)
     }
     .background(Color.backgroundColor)
     .navigationBarTitleDisplayMode(.inline)
+//    .simultaneousGesture(
+//       DragGesture().onChanged { value in
+//          if value.translation.height > 0 {
+//            withAnimation{
+//              self.viewIsShown = true
+//            }
+//          } else {
+//            withAnimation{
+//              self.viewIsShown = false
+//            }
+//          }
+//       }
+//    )
     .toolbar {
       ToolbarItem(placement: .principal) {
         TextField("Search favorited", text: $viewModel.searchText)
