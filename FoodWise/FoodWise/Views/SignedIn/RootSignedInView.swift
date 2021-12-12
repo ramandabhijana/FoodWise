@@ -69,8 +69,17 @@ class RootViewModel: ObservableObject {
 
 struct RootSignedInView: View {
   @State private var presentingOnboardingView = false
+  @State private var tabBarController: UITabBarController?
   @StateObject private var viewModel: RootViewModel
   
+  static private var tabBarFrame: CGRect = .zero
+  
+  private let tabBarHiddenPublisher = NotificationCenter.default
+    .publisher(for: .tabBarHiddenNotification)
+    .receive(on: RunLoop.main)
+  private let tabBarShownPublisher = NotificationCenter.default
+    .publisher(for: .tabBarShownNotification)
+    .receive(on: RunLoop.main)
   private let signInRequiredPublisher = NotificationCenter.default
     .publisher(for: .signInRequiredNotification)
     .receive(on: RunLoop.main)
@@ -98,17 +107,6 @@ struct RootSignedInView: View {
       )
       .tabItem { Label("Home", systemImage: "house") }
       .tag(0)
-//      .introspectTabBarController { tbController in
-//        let itemAppearance = UITabBarItemAppearance()
-//        itemAppearance.selected.iconColor = .darkGray
-//        itemAppearance.normal.iconColor = .lightGray.withAlphaComponent(0.5)
-//        let appearance = UITabBarAppearance()
-//        appearance.stackedLayoutAppearance = itemAppearance
-//        appearance.configureWithOpaqueBackground()
-//        appearance.backgroundColor = UIColor(named: "SecondaryColor")
-//        tbController.tabBar.standardAppearance = appearance
-//        tbController.tabBar.scrollEdgeAppearance = appearance
-//      }
       
       Text("")
         .tabItem { Label("Your Bag", systemImage: "bag.fill") }
@@ -121,17 +119,6 @@ struct RootSignedInView: View {
       MyProfileView()
         .tabItem { Label("Settings", systemImage: "gearshape.fill") }
         .tag(3)
-//        .introspectTabBarController { tbController in
-//          let itemAppearance = UITabBarItemAppearance()
-//          itemAppearance.selected.iconColor = .darkGray
-//          itemAppearance.normal.iconColor = .lightGray.withAlphaComponent(0.5)
-//          let appearance = UITabBarAppearance()
-//          appearance.stackedLayoutAppearance = itemAppearance
-//          appearance.configureWithTransparentBackground()
-//          appearance.backgroundColor = UIColor(named: "BackgroundColor")
-//          tbController.tabBar.standardAppearance = appearance
-//          tbController.tabBar.scrollEdgeAppearance = appearance
-//        }
     }
     .onAppear(perform: viewModel.postSignInRequiredIfUserNil)
     .onReceive(signInRequiredPublisher) { _ in
@@ -148,11 +135,63 @@ struct RootSignedInView: View {
       )
     }
     .environmentObject(viewModel)
+    .introspectTabBarController {
+      tabBarController = $0
+      Self.tabBarFrame = $0.tabBar.frame
+    }
+    .onReceive(tabBarHiddenPublisher) { _ in
+      tabBarController?.setTabBarHidden(true, animated: true)
+    }
+    .onReceive(tabBarShownPublisher) { _ in
+      tabBarController?.setTabBarHidden(false, animated: true)
+    }
+    
   }
 }
 
 struct RootSignedInView_Previews: PreviewProvider {
   static var previews: some View {
     RootSignedInView()
+  }
+}
+
+extension Notification.Name {
+  static let tabBarHiddenNotification = Notification.Name("TabBarHiddenNotification")
+  
+  static let tabBarShownNotification = Notification.Name("TabBarShownNotification")
+}
+
+extension UITabBarController {
+  /// Extends the size of the `UITabBarController` view frame, pushing the tab bar controller off screen.
+  /// - Parameters:
+  ///   - hidden: Hide or Show the `UITabBar`
+  ///   - animated: Animate the change
+  func setTabBarHidden(_ hidden: Bool, animated: Bool) {
+    guard let vc = selectedViewController else { return }
+    guard tabBarHidden != hidden else { return }
+    
+    let frame = self.tabBar.frame
+    let height = frame.size.height
+    let offsetY = hidden ? height : -height
+    let safeAreaInset = hidden ? (height - vc.view.window!.safeAreaInsets.bottom) : -height
+
+    UIViewPropertyAnimator(duration: animated ? 0.3 : 0, curve: .easeOut) {
+      self.tabBar.frame = self.tabBar.frame.offsetBy(dx: 0, dy: offsetY)
+      self.selectedViewController?.view.frame = CGRect(
+        x: 0,
+        y: 0,
+        width: vc.view.frame.width,
+        height: vc.view.frame.height + safeAreaInset
+      )
+      
+      self.view.setNeedsDisplay()
+      self.view.layoutIfNeeded()
+    }
+    .startAnimation()
+  }
+  
+  /// Is the tab bar currently off the screen.
+  private var tabBarHidden: Bool {
+    tabBar.frame.origin.y >= UIScreen.main.bounds.height
   }
 }

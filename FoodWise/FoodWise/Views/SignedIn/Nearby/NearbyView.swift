@@ -6,97 +6,98 @@
 //
 
 import SwiftUI
+import Combine
 
 struct NearbyView: View {
+  @Environment(\.dismiss) private var dismiss
+  @StateObject private var viewModel: NearbyViewModel
+  @State private var height: CGFloat = .zero
   
-  @State private var viewingMode = "Map"
+  private static var mapViewModel: NearbyMapViewModel!
+  private static var listViewModel: NearbyListViewModel!
   
-  init() {
+  private var radiusChangedSubject = PassthroughSubject<NearbyRadius, Never>()
+  private var radiusChangedPublisher: AnyPublisher<NearbyRadius, Never> {
+    radiusChangedSubject.eraseToAnyPublisher()
+  }
+  
+  init(viewModel: NearbyViewModel) {
     let segmentedAppearance = UISegmentedControl.appearance()
     segmentedAppearance.selectedSegmentTintColor = .darkGray
     segmentedAppearance.setTitleTextAttributes(
       [.foregroundColor: UIColor.white],
       for: .selected)
+    
+    _viewModel = StateObject(wrappedValue: viewModel)
+    Self.mapViewModel = NearbyMapViewModel(
+      radiusChangedSubject: radiusChangedSubject,
+      filteredMerchantsPublisher: viewModel.filteredMerchantsPublisher)
+    Self.listViewModel = NearbyListViewModel(
+      radiusChangedSubject: radiusChangedSubject,
+      filteredMerchantsPublisher: viewModel.filteredMerchantsPublisher)
+    
+    NotificationCenter.default.post(
+      name: .tabBarHiddenNotification,
+      object: nil)
   }
   
   var body: some View {
-    NavigationView {
-      ZStack {
-        NearbyMapView()
+    ZStack(alignment: .top) {
+      switch viewModel.viewMode {
+      case .map: NearbyMapView(viewModel: Self.mapViewModel)
+      case .list: NearbyListView(viewModel: Self.listViewModel).padding(.top, 130)
       }
-//      .navigationTitle("Nearby")
-      
-      .navigationBarTitleDisplayMode(.inline)
-      .navigationBarHidden(true)
-      .overlay(alignment: .top) {
-        VStack(spacing: 20) {
-          HStack {
-            Image(systemName: "location.fill")
-            Text("Kesiman, Denpasar").bold()
+      VStack(spacing: 16) {
+        HStack {
+          Button(action: dismiss.callAsFunction) {
+            Image(systemName: "chevron.backward")
+              .font(.title2)
+              .foregroundColor(.black)
           }
-          .font(.headline)
-          
-          
-          Picker("", selection: $viewingMode) {
-            Text("Map").tag("Map")
-            Text("List").tag("List")
-          }
-          .pickerStyle(.segmented)
+          Spacer()
+          Text(viewModel.currentLocationString)
+            .bold()
+            .font(.headline)
+          Spacer()
         }
-        .padding(.horizontal)
-        .background(LinearGradient.navigationBarBackgroundColor)
-        .padding(.top, 48)
-        .edgesIgnoringSafeArea(.top)
+        Picker("Select view mode", selection: $viewModel.viewMode) {
+          Text("Map").tag(NearbyViewModel.ViewMode.map)
+          Text("List").tag(NearbyViewModel.ViewMode.list)
+        }.pickerStyle(.segmented)
       }
-      .overlay(alignment: .bottom) {
-        Button(
-          action: { },
-          label: {
-            RoundedRectangle(cornerRadius: 50)
-              .fill(Color.white)
-              .frame(width: 170, height: 50)
-              .shadow(radius: 10)
-              .overlay {
-                Text("Within 5 km")
-                  .fontWeight(.bold)
-              }
-              .padding(.bottom)
-              .opacity(1)
-          }
-        )
-      }
-//      .overlay(alignment: .bottom) {
-//        HStack {
-//          ForEach(0..<4) { i in
-//            ZStack {
-//              RoundedRectangle(cornerRadius: 50)
-//                .fill(.white)
-//              
-//              RoundedRectangle(cornerRadius: 50)
-//                .strokeBorder(
-//                  i == 1 ? Color.accentColor : .secondary,
-//                  lineWidth: 3
-//                )
-//            }
-//            .frame(height: 50)
-//            .overlay {
-//              Text("7 km")
-//                .bold()
-//                .foregroundColor(i == 1 ? .accentColor : .secondary)
-//            }
-//          }
-//        }
-//        .padding(.horizontal)
-//        .padding(.bottom)
-//        .offset(y: -70)
-//      }
+      .padding(.horizontal)
+      .padding(.top)
+      .background(
+        viewModel.viewMode == .map
+        ? LinearGradient.navigationBarBackgroundColor
+        : .init(colors: [.clear], startPoint: .top, endPoint: .bottom)
+      )
+      .padding(.bottom, 8)
+      .background(
+        viewModel.viewMode == .list
+        ? Color.primaryColor
+        : .clear
+      )
+      .padding(.top, 48)
+      .frame(height: 120)
     }
-    
+    .navigationBarHidden(true)
+    .edgesIgnoringSafeArea(.top)
+    .onReceive(radiusChangedPublisher) { radius in
+      viewModel.onRadiusChanged(radius: radius)
+    }
+    .onDisappear {
+      NotificationCenter.default.post(
+        name: .tabBarShownNotification,
+        object: nil)
+    }
   }
+  
+  
 }
 
 struct NearbyView_Previews: PreviewProvider {
   static var previews: some View {
-    NearbyView()
+    NearbyView(viewModel: .init())
   }
 }

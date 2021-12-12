@@ -150,9 +150,32 @@ struct CategoriesView: View {
   }
 }
 
+struct FeaturedMenuModel: Identifiable {
+  var id = UUID()
+  let imageName: String
+  let destination: AnyView
+  
+  init(imageName: String, destination: AnyView) {
+    self.imageName = imageName
+    self.destination = destination
+  }
+  
+  static var data: [FeaturedMenuModel] {
+    return [
+      .init(imageName: "Frame 9-3",
+            destination: AnyView(LazyView(NearbyView(viewModel: .init())))),
+      .init(imageName: "Frame 10",
+            destination: AnyView(EmptyView()))
+    ]
+  }
+//    .init(imageName: "Frame 9-3") { NearbyView(viewModel: .init()) }
+//    .init(imageName: "Frame 10") {
+//      EmptyView() as! Destination
+//    }
+  
+}
 
 struct PageView: View {
-  
   @State var currentIndex = 0
   
   private let timer = Timer
@@ -160,28 +183,31 @@ struct PageView: View {
     .autoconnect()
     .eraseToAnyPublisher()
   
+  private let data = FeaturedMenuModel.data
   private let bannerImageNames = [ "Frame 9-3", "Frame 10"]
   
   var body: some View {
     TabView(selection: $currentIndex) {
-      ForEach(bannerImageNames.indices, id: \.self) { index in
-        Image(bannerImageNames[index])
-          .resizable()
-          .scaledToFit()
-          .clipShape(RoundedRectangle(cornerRadius: 10.0))
-          .tag(index)
-      }
-            .padding(.horizontal)
-//      .padding(.all)
-      .onReceive(timer) { _ in
-        guard currentIndex != bannerImageNames.count-1 else {
-          currentIndex = 0
-          return
+      ForEach(data.indices) { index in
+        NavigationLink {
+          LazyView(data[index].destination)
+        } label: {
+          Image(data[index].imageName)
+            .resizable()
+            .scaledToFit()
+            .clipShape(RoundedRectangle(cornerRadius: 10.0))
         }
-        currentIndex += 1
+        .tag(index)
       }
+      .padding(.horizontal)
+//      .onReceive(timer) { _ in
+//        guard currentIndex != bannerImageNames.count-1 else {
+//          currentIndex = 0
+//          return
+//        }
+//        currentIndex += 1
+//      }
     }
-//    .frame(width: UIScreen.main.bounds.width)
     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
     .animation(.easeInOut, value: currentIndex)
     .transition(.slide)

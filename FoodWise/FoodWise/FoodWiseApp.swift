@@ -17,7 +17,7 @@ struct FoodWiseApp: App {
     WindowGroup {
 //      SignInViewTest()
       
-      RootSignedInView()
+      MainView()
       
 //      SignUpView(viewModel: .init())
 //      NearbyView()

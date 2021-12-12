@@ -13,6 +13,8 @@ class FoodDetailsViewModel: ObservableObject {
   @Published private(set) var loading = false
   @Published private(set) var favorited = false
   @Published private(set) var errorMessage = ""
+  @Published private(set) var merchant: Merchant? = nil
+  
   @Published var onUpdateFavoriteList: (message: String, shows: Bool) = ("", false)
   
   private var customerId: String?
@@ -20,6 +22,7 @@ class FoodDetailsViewModel: ObservableObject {
   
   private lazy var favListRepository = FavoritesListRepository()
   private var foodRepository: FoodRepository
+  private var merchantRepository = MerchantRepository()
   private var subscriptions = Set<AnyCancellable>()
   
   init(food: Food,
@@ -29,6 +32,7 @@ class FoodDetailsViewModel: ObservableObject {
     self.foodRepository = foodRepository
     self.food = food
     self.customerId = customerId
+    fetchMerchant()
     fetchFavoriteList()
   }
   
@@ -41,7 +45,6 @@ class FoodDetailsViewModel: ObservableObject {
         }
         self?.loading = false
       } receiveValue: { [weak self] food in
-//        print("\n\(food)\n")
         self?.food = food
         completion()
       }
@@ -60,7 +63,6 @@ class FoodDetailsViewModel: ObservableObject {
           print("\n\(error.localizedDescription)\n")
         }
       } receiveValue: { [weak self] favoriteFoodList in
-        print("\n\(favoriteFoodList)\n")
         guard let self = self else { return }
         self.currentFavoriteList = favoriteFoodList
         self.favorited = favoriteFoodList.foodIds.contains(self.food.id)
@@ -108,6 +110,16 @@ class FoodDetailsViewModel: ObservableObject {
         self?.favorited = false
         self?.onUpdateFavoriteList = (message: "Food was removed from favorite",
                                       shows: true)
+      }
+      .store(in: &subscriptions)
+  }
+  
+  func fetchMerchant() {
+    merchantRepository.getMerchant(withId: food.merchantId)
+      .sink { completion in
+        print("Completed getMerchant(withId:) completion: \(completion)")
+      } receiveValue: { [weak self] merchant in
+        self?.merchant = merchant
       }
       .store(in: &subscriptions)
   }

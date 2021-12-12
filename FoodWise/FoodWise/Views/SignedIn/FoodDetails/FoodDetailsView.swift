@@ -90,7 +90,7 @@ struct FoodDetailsView: View {
             )
           }.frame(height: .headerImageHeight)
           
-          VStack(spacing: 30) {
+          VStack(spacing: 25) {
             GeometryReader { proxy -> AnyView in
               let minY = proxy.frame(in: .global).minY
               return AnyView(
@@ -135,8 +135,24 @@ struct FoodDetailsView: View {
             )
             divider
               
+            HStack(spacing: 20) {
+              WebImage(url: viewModel.merchant?.logoUrl)
+                .resizable()
+                .frame(width: 50, height: 50)
+                .clipShape(Circle())
+              VStack(alignment: .leading) {
+                Text(viewModel.merchant?.name ?? "Merchant's name")
+                Text(viewModel.merchant?.storeType ?? "Store Type")
+                  .font(.footnote)
+              }
+            }
+            .frame(width: contentWidth, alignment: .leading)
+            divider
             
             VStack(alignment: .leading, spacing: 10) {
+              Text("Food's Details")
+                .bold()
+                .padding(.bottom)
               HStack(alignment: .top) {
                 Text("Stock Left")
                   .fontWeight(.light)
@@ -165,8 +181,8 @@ struct FoodDetailsView: View {
             
             VStack(alignment: .leading, spacing: 10) {
               Text("Rating and Reviews")
-                .font(.title3)
-                .fontWeight(.semibold)
+                .bold()
+                .padding(.bottom)
               Text("The food has never received a review")
                 .font(.callout)
               
@@ -230,6 +246,7 @@ struct FoodDetailsView: View {
 //          .frame(width: contentWidth)
         }
         .padding(.bottom, 140)
+        .redacted(reason: viewModel.merchant == nil ? .placeholder : [])
       }
       
       .overlay(alignment: .top) {
