@@ -9,7 +9,7 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct NearbyMerchantCell: View {
-  var merchant: Merchant
+  var merchant: Merchant?
   
   var body: some View {
     RoundedRectangle(cornerRadius: 10)
@@ -18,7 +18,7 @@ struct NearbyMerchantCell: View {
       .shadow(radius: 1.5)
       .overlay(alignment: .leading) {
         HStack(alignment: .top, spacing: 20) {
-          WebImage(url: merchant.logoUrl)
+          WebImage(url: merchant?.logoUrl)
             .resizable()
             .frame(width: 70, height: 70)
             .scaledToFit()
@@ -26,14 +26,14 @@ struct NearbyMerchantCell: View {
             .shadow(radius: 1)
           
           VStack(alignment: .leading) {
-            Text(merchant.name)
+            Text(merchant?.name ?? "Name of merchants")
               .foregroundColor(.black)
               .bold()
             HStack {
               Image(systemName: "mappin.and.ellipse")
-              Text(merchant.location.geocodedLocation)
+              Text(merchant?.location.geocodedLocation ?? "Store Location")
             }.font(.footnote)
-            Text(merchant.storeType)
+            Text(merchant?.storeType ?? "Store type")
               .font(.caption)
               .foregroundColor(.black)
               .padding(3)

@@ -8,6 +8,7 @@
 import SwiftUI
 import Firebase
 import GoogleSignIn
+import CoreData
 
 @main
 struct FoodWiseApp: App {
@@ -18,6 +19,7 @@ struct FoodWiseApp: App {
 //      SignInViewTest()
       
       MainView()
+        .environment(\.managedObjectContext, CoreDataStack.viewContext)
       
 //      SignUpView(viewModel: .init())
 //      NearbyView()
@@ -40,6 +42,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
   ) -> Bool {
     FirebaseApp.configure()
+    print("Documents Directory: ", FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last ?? "Not Found!")
     return true
   }
   
@@ -48,5 +51,31 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]
   ) -> Bool {
     return GIDSignIn.sharedInstance.handle(url)
+  }
+  
+  func applicationDidEnterBackground(_ application: UIApplication) {
+    CoreDataStack.save()
+  }
+}
+
+private enum CoreDataStack {
+
+  static var viewContext: NSManagedObjectContext = {
+    let container = NSPersistentContainer(name: "SearchedKeyword")
+    container.loadPersistentStores { _, error in
+      guard error == nil else {
+        fatalError("\(#file), \(#function), \(error!)")
+      }
+    }
+    return container.viewContext
+  }()
+
+  static func save() {
+    guard viewContext.hasChanges else { return }
+    do {
+      try viewContext.save()
+    } catch {
+      fatalError("\(#file), \(#function), \(error.localizedDescription)")
+    }
   }
 }

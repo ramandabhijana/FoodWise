@@ -9,8 +9,17 @@ import SwiftUI
 
 struct MainView: View {
   var body: some View {
+//    NavigationView {
+//      NavigationLink {
+//        SearchResultsView()
+//      } label: {
+//        Text("Go to search result")
+//      }
+//      .navigationBarHidden(true)
+//    }
+    
+//
     RootSignedInView()
-//    NearbyView(viewModel: .init())
   }
 }
 

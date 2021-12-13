@@ -62,4 +62,25 @@ final class MerchantRepository {
     }.eraseToAnyPublisher()
   }
   
+  func getMerchants(withQuery query: String) -> AnyPublisher<[Merchant], Error> {
+    Future { [weak self] promise in
+      guard let self = self else { return }
+      self.db.collection(self.path)
+        .whereField("name", isGreaterThanOrEqualTo: query)
+        .whereField("name", isLessThanOrEqualTo: query + "~")
+        .getDocuments { snapshot, error in
+        guard error == nil else { return promise(.failure(error!)) }
+        let merchants = snapshot?.documents.compactMap{ document in
+          do {
+            return try document.data(as: Merchant.self)
+          } catch let error {
+            print("Couldn't create Merchant from document. \(error)")
+            return nil
+          }
+        } ?? [Merchant]()
+        return promise(.success(merchants))
+      }
+    }.eraseToAnyPublisher()
+  }
+  
 }

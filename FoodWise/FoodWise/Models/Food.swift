@@ -51,7 +51,7 @@ struct Food: Identifiable, Codable, Equatable {
   }
   
   static var asPlaceholderInstance: Food {
-    .init(id: UUID().uuidString, name: "Unnamed food", imagesUrl: [URL(string: "")], categories: [], stock: 0, keywords: [], description: "", retailPrice: 10_000, discountRate: 20.0, merchantId: "")
+    .init(id: UUID().uuidString, name: "Unnamed food", imagesUrl: [URL(string: "https://assets.grab.com/wp-content/uploads/sites/4/2018/09/17104052/order-grabfood-fast-food-delivery.jpg")], categories: [], stock: 0, keywords: [], description: "", retailPrice: 10_000, discountRate: 20.0, merchantId: "")
   }
   
   static func ==(lhs: Food, rhs: Food) -> Bool {

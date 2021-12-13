@@ -117,7 +117,21 @@ class NewFoodViewModel: ObservableObject {
       .subscribe(on: backgroundQueue)
       .receive(on: DispatchQueue.main)
       .flatMap { [unowned self] imageUrls in
-        foodRepo.createFood(withId: newFoodId, name: name, imageUrls: imageUrls, categories: selectedCategories, stock: stock!, keywords: keywords.components(separatedBy: ", "), description: description, retailPrice: retailPrice!, discountRate: discountRate!, merchantId: merchantId)
+        foodRepo.createFood(
+          withId: newFoodId,
+          name: name,
+          imageUrls: imageUrls,
+          categories: selectedCategories,
+          stock: stock!,
+          keywords: {
+            var keywords = keywords.components(separatedBy: ", ")
+            keywords.append(name)
+            return keywords
+          }(),
+          description: description,
+          retailPrice: retailPrice!,
+          discountRate: discountRate!,
+          merchantId: merchantId)
       }
       .sink { [weak self] completion in
         if case .failure(let error) = completion {

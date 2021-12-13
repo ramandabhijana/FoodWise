@@ -69,11 +69,18 @@ class RootViewModel: ObservableObject {
 
 struct RootSignedInView: View {
   @State private var presentingOnboardingView = false
+  @State private var navigationController: UINavigationController?
   @State private var tabBarController: UITabBarController?
   @StateObject private var viewModel: RootViewModel
   
   static private var tabBarFrame: CGRect = .zero
   
+  private let navigationBarHiddenPublisher = NotificationCenter.default
+    .publisher(for: .navigationBarHiddenNotification)
+    .receive(on: RunLoop.main)
+  private let navigationBarShownPublisher = NotificationCenter.default
+    .publisher(for: .navigationBarShownNotification)
+    .receive(on: RunLoop.main)
   private let tabBarHiddenPublisher = NotificationCenter.default
     .publisher(for: .tabBarHiddenNotification)
     .receive(on: RunLoop.main)
@@ -109,6 +116,7 @@ struct RootSignedInView: View {
       .tag(0)
       
       Text("")
+//      SearchResultsView()
         .tabItem { Label("Your Bag", systemImage: "bag.fill") }
         .tag(1)
       
@@ -135,17 +143,22 @@ struct RootSignedInView: View {
       )
     }
     .environmentObject(viewModel)
-    .introspectTabBarController {
-      tabBarController = $0
-      Self.tabBarFrame = $0.tabBar.frame
-    }
+    .introspectTabBarController { tabBarController = $0 }
+    .introspectNavigationController { navigationController = $0 }
     .onReceive(tabBarHiddenPublisher) { _ in
       tabBarController?.setTabBarHidden(true, animated: true)
     }
     .onReceive(tabBarShownPublisher) { _ in
       tabBarController?.setTabBarHidden(false, animated: true)
     }
-    
+//    .onReceive(navigationBarHiddenPublisher) { _ in
+//      navigationController?.setNavigationBarHidden(true, animated: true)
+//      navigationController?.setToolbarHidden(true, animated: true)
+//    }
+//    .onReceive(navigationBarShownPublisher) { _ in
+//      navigationController?.setNavigationBarHidden(false, animated: true)
+//      self.navigationController?.setToolbarHidden(false, animated: true)
+//    }
   }
 }
 
@@ -157,8 +170,9 @@ struct RootSignedInView_Previews: PreviewProvider {
 
 extension Notification.Name {
   static let tabBarHiddenNotification = Notification.Name("TabBarHiddenNotification")
-  
   static let tabBarShownNotification = Notification.Name("TabBarShownNotification")
+  static let navigationBarHiddenNotification = Notification.Name("NavigationBarHiddenNotification")
+  static let navigationBarShownNotification = Notification.Name("NavigationBarShownNotification")
 }
 
 extension UITabBarController {
@@ -173,7 +187,6 @@ extension UITabBarController {
     let frame = self.tabBar.frame
     let height = frame.size.height
     let offsetY = hidden ? height : -height
-    let safeAreaInset = hidden ? (height - vc.view.window!.safeAreaInsets.bottom) : -height
 
     UIViewPropertyAnimator(duration: animated ? 0.3 : 0, curve: .easeOut) {
       self.tabBar.frame = self.tabBar.frame.offsetBy(dx: 0, dy: offsetY)
@@ -181,13 +194,15 @@ extension UITabBarController {
         x: 0,
         y: 0,
         width: vc.view.frame.width,
-        height: vc.view.frame.height + safeAreaInset
+        height: vc.view.frame.height + offsetY
       )
       
       self.view.setNeedsDisplay()
       self.view.layoutIfNeeded()
     }
     .startAnimation()
+    
+    tabBar.isHidden = hidden
   }
   
   /// Is the tab bar currently off the screen.

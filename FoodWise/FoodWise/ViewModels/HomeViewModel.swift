@@ -9,6 +9,9 @@ import Foundation
 import Combine
 
 class HomeViewModel: ObservableObject {
+  @Published var searchText = ""
+  @Published var isShowingSearchView = false
+  @Published var isSearchResultNavigationActive = false
   @Published private(set) var foodsList: [Food] = []
   
   private(set) var foodRepository = FoodRepository()
@@ -26,7 +29,13 @@ class HomeViewModel: ObservableObject {
         print("Successfully added: \(category)")
       }
       .store(in: &subscriptions)
-
+  }
+  
+  func onSubmitSearchField() {
+    guard !searchText.isEmpty else { return }
+    isShowingSearchView = false
+    isSearchResultNavigationActive = true
+    
   }
   
   

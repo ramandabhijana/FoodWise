@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Merchant: Codable {
+struct Merchant: Codable, Hashable {
   let id: String
   let name: String
   let email: String
@@ -48,6 +48,10 @@ struct Merchant: Codable {
     self.location = MerchantLocation(object: location)!
     self.addressDetails = addressDetails
     self.logoUrl = logoUrl
+  }
+  
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
   }
 }
 

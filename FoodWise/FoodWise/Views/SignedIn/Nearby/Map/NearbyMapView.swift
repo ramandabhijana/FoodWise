@@ -75,11 +75,11 @@ struct NearbyMapView: View {
         )
         .ignoresSafeArea()
         .overlay(alignment: .bottom) {
-          RoundedRectangle(cornerRadius: 10)
+          Rectangle()
             .fill(Color.white)
             .frame(
-              width: UIScreen.main.bounds.width * 0.9,
-              height: 80
+              width: UIScreen.main.bounds.width,
+              height:  120
             )
             .shadow(radius: 2)
             .overlay(alignment: .leading) {
@@ -98,8 +98,8 @@ struct NearbyMapView: View {
                 .disabled(showsRadiusPicker)
               }
               .padding(.horizontal)
+              .padding(.bottom, 33)
             }
-            .padding(.bottom, 33)
             .onTapGesture {
               showsRadiusPicker.toggle()
             }

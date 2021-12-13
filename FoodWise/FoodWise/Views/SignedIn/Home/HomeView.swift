@@ -18,6 +18,9 @@ struct HomeView: View {
   @State private var categorySelected = false
   @State private var showsSearchView = false
   @State private var navigationBar: UINavigationBar? = nil
+  @State private var searchText = ""
+  
+  @Environment(\.managedObjectContext) private var viewContext
   
   init(viewModel: HomeViewModel, categoriesViewModel: CategoriesViewModel) {
     _viewModel = StateObject(wrappedValue: viewModel)
@@ -27,15 +30,21 @@ struct HomeView: View {
   var body: some View {
     NavigationView {
       ZStack {
+        NavigationLink(
+          isActive: $viewModel.isSearchResultNavigationActive) {
+            LazyView(SearchResultsView(viewModel: .init(searchText: viewModel.searchText)))
+          } label: {
+            EmptyView()
+          }
         ScrollView(showsIndicators: false) {
-          
           LazyVStack(spacing: 16) {
             RoundedRectangle(cornerRadius: 20)
               .fill(Color.primaryColor)
               .padding(.top, -50)
               .frame(
                 width: UIScreen.main.bounds.width,
-                height: 60)
+                height: 60
+              )
             
             PageView()
               .frame(
@@ -70,6 +79,9 @@ struct HomeView: View {
 //        }
         
       }
+      .onAppear {
+        NotificationCenter.default.post(name: .tabBarShownNotification, object: nil)
+      }
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .principal) {
@@ -78,9 +90,8 @@ struct HomeView: View {
             text: .constant("")
           )
           .textFieldStyle(RoundedBorderTextFieldStyle())
-          .onTapGesture { showsSearchView.toggle() }
+          .onTapGesture { viewModel.isShowingSearchView.toggle() }
         }
-        
         ToolbarItem(placement: .navigationBarTrailing) {
           HStack {
             
@@ -108,12 +119,13 @@ struct HomeView: View {
       }
     }
     .overlay {
-      if showsSearchView {
-        SearchingView(
-          searchText: .constant(""),
-          showing: $showsSearchView,
-          onSubmit: .constant({ })
-        )
+      if viewModel.isShowingSearchView {
+        SearchView(
+          searchText: $viewModel.searchText,
+          showing: $viewModel.isShowingSearchView,
+          onSubmit: viewModel.onSubmitSearchField
+          
+        ).environment(\.managedObjectContext, viewContext)
       }
     }
   }

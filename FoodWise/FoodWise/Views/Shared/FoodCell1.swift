@@ -14,7 +14,8 @@ struct FoodCell1: View {
   var body: some View {
     RoundedRectangle(cornerRadius: 10)
       .fill(Color.white)
-      .frame(width: 140, height: 250)
+      .frame(height: 250)
+//      .frame(width: 140, height: 250)
       .shadow(
         radius: 1.5
       )

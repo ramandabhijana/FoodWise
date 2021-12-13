@@ -69,6 +69,26 @@ final class FoodRepository {
     }
   }
   
+  func getFoods(withQuery query: String) -> AnyPublisher<[Food], Error> {
+    Future { [weak self] promise in
+      guard let self = self else { return }
+      self.db.collection(self.path)
+        .whereField("keywords", arrayContains: query)
+        .getDocuments { snapshot, error in
+          guard error == nil else { return promise(.failure(error!)) }
+          let foods = snapshot?.documents.compactMap{ document in
+            do {
+              return try document.data(as: Food.self)
+            } catch let error {
+              print("Couldn't create Food from document. \(error)")
+              return nil
+            }
+          } ?? [Food]()
+          return promise(.success(foods))
+        }
+    }.eraseToAnyPublisher()
+  }
+  
   func getFoods(matching categories: [FoodCategories]) -> AnyPublisher<[Food], Error> {
     Future { [weak self] promise in
       guard let self = self else { return }
