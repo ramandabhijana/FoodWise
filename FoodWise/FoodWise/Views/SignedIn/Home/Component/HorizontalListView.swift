@@ -23,9 +23,6 @@ struct HorizontalListView: View {
       Text(sectionName)
         .font(.headline)
         .padding(.leading)
-      
-      
-      
       ScrollView(.horizontal, showsIndicators: false) {
         if viewModel.foodsList.isEmpty {
           VStack {
@@ -39,6 +36,18 @@ struct HorizontalListView: View {
         } else {
           LazyHStack(spacing: 16) {
             ForEach(viewModel.foodsList) { food in
+              FoodCell1(
+                food: food,
+                isLoading: viewModel.loading,
+                buildDestination: FoodDetailsView(
+                  viewModel: .init(
+                    food: food,
+                    customerId: rootViewModel.customer?.id,
+                    foodRepository: viewModel.foodRepository
+                  )
+                )
+              )
+              /*
               NavigationLink {
                 LazyView(FoodDetailsView(
                   viewModel: .init(food: food,
@@ -46,10 +55,14 @@ struct HorizontalListView: View {
                                    foodRepository: viewModel.foodRepository))
                 )
               } label: {
-                FoodCell1(food: food)
-              }
+                FoodCell1(food: food, isLoading: viewModel.loading)
+                  .frame(width: 140)
+//                  .redacted(reason: viewModel.loading ? .placeholder : [])
+              }.disabled(viewModel.loading)
+              */
             }
-            .redacted(reason: viewModel.loading ? .placeholder : [])
+            
+//            .disabled(viewModel.loading)
           }
           .padding(.horizontal)
           .frame(height: 260)

@@ -38,12 +38,13 @@ struct UpdateStockView: View {
               .keyboardType(.numberPad)
               .focused($stockFieldFocused)
           }
+          .zIndex(1)
           
           VStack(alignment: .leading, spacing: 16) {
             WebImage(url: viewModel.food.imagesUrl[0])
               .resizable()
+              .scaledToFill()
               .frame(height: 200)
-              .aspectRatio(contentMode: .fill)
               .clipped()
               .cornerRadius(10)
             makeFoodDetailsItem(key: "ID", value: viewModel.food.id)
@@ -110,6 +111,6 @@ private extension UpdateStockView {
 
 //struct UpdateStockView_Previews: PreviewProvider {
 //  static var previews: some View {
-//    UpdateStockView()
+//    UpdateStockView(showing: .constant(true), viewModel: .init(food: <#T##Food#>, manageFoodViewModel: <#T##ManageFoodViewModel#>))
 //  }
 //}

@@ -39,6 +39,7 @@ class SignUpViewModel: ObservableObject {
   }
   
   func signUp() {
+    precondition(signUpButtonDisabled == false)
     loadingUser = true
     authenticationService.registerUser(
       withEmail: email,

@@ -18,6 +18,9 @@ class DrivingLicenseViewModel: ObservableObject {
   init(imageUrl: URL? = nil, licenseNo: String = "") {
     self.imageUrl = imageUrl
     self.licenseNo = licenseNo
+    if !licenseNo.isEmpty {
+      licenseNoValid = true
+    }
   }
   
   public var signUpButtonDisabled: Bool {
@@ -27,7 +30,7 @@ class DrivingLicenseViewModel: ObservableObject {
     return !(licenseNoValid && imageDataExists)
   }
   
-  private var imageDataExists: Bool { imageData != nil }
+  private var imageDataExists: Bool { imageData != nil || imageUrl != nil }
   
   func validateLicenseNoIfFocusIsLost(focus: Bool) {
     guard focus == false else { return }

@@ -10,10 +10,6 @@ import SwiftUI
 struct MerchantHomeView: View {
   @EnvironmentObject var mainViewModel: MainViewModel
   
-  init() {
-    setupNavigationBarAppearance()
-  }
-  
   var body: some View {
     NavigationView {
       if let merchant = mainViewModel.merchant {
@@ -95,7 +91,7 @@ struct MerchantHomeView: View {
           }
         }
       } else {
-        Button("Sign Out", action: signOut)
+        Color.backgroundColor
       }
     }
   }
@@ -104,14 +100,6 @@ struct MerchantHomeView: View {
     let height = UIScreen.main.bounds.height
     let plusSizeWidth: CGFloat = 736
     return height >= plusSizeWidth ? height / 1.3 : nil
-  }
-  
-  private func setupNavigationBarAppearance() {
-    let appearance = UINavigationBarAppearance()
-    appearance.configureWithTransparentBackground()
-    appearance.backgroundColor = UIColor(named: "PrimaryColor")
-    UINavigationBar.appearance().standardAppearance = appearance
-    UINavigationBar.appearance().scrollEdgeAppearance = appearance
   }
   
   private func signOut() {

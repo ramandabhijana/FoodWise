@@ -103,6 +103,16 @@ struct EditProfileView: View {
       .padding(.bottom, keyboard.currentHeight)
       .animation(.easeOut, value: keyboard.currentHeight)
     }
+    .onAppear {
+      NotificationCenter.default.post(
+        name: .tabBarHiddenNotification,
+        object: nil)
+    }
+    .onDisappear {
+      NotificationCenter.default.post(
+        name: .tabBarShownNotification,
+        object: nil)
+    }
     .sheet(isPresented: $showImagePicker) {
       PHPickerViewController.View(
         selectionLimit: 1,

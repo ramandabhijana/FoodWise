@@ -60,6 +60,10 @@ final class FoodRepository {
   }
   
   func mergedFoods(ids foodIds: [String]) -> AnyPublisher<Food, Error> {
+    guard !foodIds.isEmpty else {
+      return Fail(error: FoodRepositoryError.emptyArgument)
+        .eraseToAnyPublisher()
+    }
     let initialPublisher = getFood(withId: foodIds[0])
     let remainingIds = Array(foodIds.dropFirst())
     return remainingIds.reduce(initialPublisher) { partialResult, foodId in
@@ -173,5 +177,9 @@ final class FoodRepository {
     Future { promise in
       promise(.success([]))
     }.eraseToAnyPublisher()
+  }
+  
+  enum FoodRepositoryError: Error {
+    case emptyArgument
   }
 }

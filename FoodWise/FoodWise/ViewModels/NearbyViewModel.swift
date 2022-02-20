@@ -16,8 +16,12 @@ class NearbyViewModel: ObservableObject {
   }
   
   @Published private var filteredMerchants: [NearbyMerchants] = []
-  @Published private(set) var currentLocationString = "Loading Location"
-  @Published var viewMode = ViewMode.list
+  @Published private(set) var currentLocationString: String? = nil {
+    didSet {
+      locationManager.stopLocationService()
+    }
+  }
+  @Published var viewMode = ViewMode.map
   
   private let locationManager = LocationManager.shared
   private let merchantRepository = MerchantRepository()
@@ -29,7 +33,7 @@ class NearbyViewModel: ObservableObject {
   )
   private var currentUserLocation: CLLocation? {
     willSet {
-      if let location = currentUserLocation {
+      if let location = newValue {
         Task { await geocodeLocation(location) }
       }
     }
@@ -44,8 +48,7 @@ class NearbyViewModel: ObservableObject {
   init() {
     locationManager.startMonitoring()
     locationManager.locationPublisher
-      .sink { [weak self] _ in
-        self?.locationManager.stopLocationService()
+      .sink { _ in
       } receiveValue: { [weak self] userLocation in
         self?.currentUserLocation = userLocation
       }
@@ -106,7 +109,8 @@ class NearbyViewModel: ObservableObject {
     } catch let error as GeocodingError {
       currentLocationString = error.rawValue
     } catch {
-      print(error)
+      print("Fail to geocode location. Error: \(error)")
+      currentLocationString = ""
     }
   }
 }

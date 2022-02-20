@@ -41,27 +41,31 @@ class EditProfileViewModel: ObservableObject {
   }
   
   func saveChanges() {
-    precondition(addressValid)
+    precondition(buttonDisabled == false)
     savingUpdate = true
     if let imageData = profileImageData {
+      
+      // if the user changes his profile image,
+      // upload the image data then get the url
       updateImageChanged(imageData: imageData)
     } else {
+      
+      // update evrything else other than logoUrl
       merchantRepo.updateMerchant(
         merchantId: mainViewModel.merchant.id,
         logoUrl: nil,
         name: name,
         storeType: storeType,
         location: address!.location,
-        addressDetails: (address?.details) ?? ""
+        addressDetails: (address?.details) ?? mainViewModel.merchant.addressDetails
       )
       .sink { [weak self] completion in
         if case .failure(let error) = completion {
           self?.errorMessage = error.localizedDescription
-          self?.savingUpdate = false
         }
+        self?.savingUpdate = false
       } receiveValue: { [weak self] merchant in
         self?.mainViewModel.setMerchant(merchant)
-        self?.savingUpdate = false
       }
       .store(in: &subscriptions)
     }
@@ -79,14 +83,14 @@ class EditProfileViewModel: ObservableObject {
         name: name,
         storeType: storeType,
         location: address!.location,
-        addressDetails: (address?.details) ?? ""
+        addressDetails: (address?.details) ?? mainViewModel.merchant.addressDetails
       )
     }
     .sink { [weak self] completion in
       if case .failure(let error) = completion {
         self?.errorMessage = error.localizedDescription
-        self?.savingUpdate = false
       }
+      self?.savingUpdate = false
     } receiveValue: { [weak self] merchant in
       self?.mainViewModel.setMerchant(merchant)
       self?.savingUpdate = false

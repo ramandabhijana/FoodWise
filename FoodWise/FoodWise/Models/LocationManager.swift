@@ -12,9 +12,13 @@ import Combine
 final class LocationManager: NSObject {
   private lazy var locationManager = CLLocationManager()
   private var locationSubject = PassthroughSubject<CLLocation, Never>()
+  private var authStatusSubject = PassthroughSubject<CLAuthorizationStatus, Never>()
   
   public var locationPublisher: AnyPublisher<CLLocation, Never> {
     locationSubject.eraseToAnyPublisher()
+  }
+  public var authStatusPublisher: AnyPublisher<CLAuthorizationStatus, Never> {
+    authStatusSubject.eraseToAnyPublisher()
   }
   
   public static let shared = LocationManager()
@@ -32,6 +36,10 @@ final class LocationManager: NSObject {
   func stopLocationService() {
     locationManager.stopUpdatingLocation()
   }
+  
+  func requestLocationAuthorization() {
+    locationManager.requestWhenInUseAuthorization()
+  }
 }
 
 extension LocationManager: CLLocationManagerDelegate {
@@ -44,9 +52,7 @@ extension LocationManager: CLLocationManagerDelegate {
   }
   
   func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-    if locationManager.authorizationStatus.isAuthorized {
-      locationManager.startUpdatingLocation()
-    }
+    authStatusSubject.send(manager.authorizationStatus)
   }
 }
 

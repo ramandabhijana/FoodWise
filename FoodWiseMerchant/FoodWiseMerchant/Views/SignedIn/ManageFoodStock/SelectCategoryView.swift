@@ -98,7 +98,7 @@ class SelectCategoryViewModel: ObservableObject {
 
 private extension SelectCategoryView {
   struct CategoryItem: Identifiable {
-    var id: UUID { category.id }
+    var id: String { category.id }
     var category: FoodCategory
     var isSelected = false
   }

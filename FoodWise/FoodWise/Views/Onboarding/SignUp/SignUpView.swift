@@ -107,7 +107,13 @@ struct SignUpView: View {
                 .fill(Color.accentColor)
                 .frame(height: 48)
                 .overlay {
-                  Text("Sign up").foregroundColor(.white)
+                  if viewModel.loadingUser {
+                    ProgressView()
+                      .tint(.white)
+                  } else {
+                    Text("Sign up")
+                      .foregroundColor(.white)
+                  }
                 }
             }
           )

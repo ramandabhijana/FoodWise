@@ -10,14 +10,7 @@ import SDWebImageSwiftUI
 
 struct MyProfileView: View {
   @EnvironmentObject var rootViewModel: RootViewModel
-  
-  init() {
-    let appearance = UINavigationBarAppearance()
-    appearance.configureWithTransparentBackground()
-    appearance.backgroundColor = UIColor(named: "BackgroundColor")
-    UINavigationBar.appearance().standardAppearance = appearance
-    UINavigationBar.appearance().tintColor = .black
-  }
+  @State private var showingSignOutDialog = false
   
   var body: some View {
     NavigationView {
@@ -64,7 +57,7 @@ struct MyProfileView: View {
                   .overlay {
                     HStack {
                       VStack {
-                        Text("20")
+                        Text("0")
                           .font(.title2)
                           .fontWeight(.semibold)
                         Text("Food Rescued")
@@ -77,7 +70,7 @@ struct MyProfileView: View {
                         .padding(.horizontal)
                       
                       VStack {
-                        Text("10")
+                        Text("0")
                           .font(.title2)
                           .fontWeight(.semibold)
                         Text("Food Shared")
@@ -122,7 +115,7 @@ struct MyProfileView: View {
                 .position(x: UIScreen.main.bounds.width / 2.17)
                 .padding(.top)
               
-              Button(action: signOut) {
+              Button(action: { showingSignOutDialog = true }) {
                 HStack {
                   Image(systemName: "rectangle.portrait.and.arrow.right")
                     .rotation3DEffect(
@@ -146,13 +139,33 @@ struct MyProfileView: View {
         .background(Color.backgroundColor)
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+          let appearance = UINavigationBarAppearance()
+          appearance.configureWithTransparentBackground()
+          appearance.backgroundColor = UIColor(named: "BackgroundColor")
+          UINavigationBar.appearance().standardAppearance = appearance
+          UINavigationBar.appearance().tintColor = .black
+          
+          NotificationCenter.default.post(
+            name: .tabBarChangeBackgroundToBackgroundColorNotification,
+            object: nil)
+        }
+        .confirmationDialog(
+          "Are you sure want to sign out?",
+          isPresented: $showingSignOutDialog,
+          titleVisibility: .visible
+        ) {
+          Button("Sign Out",
+                 role: .destructive,
+                 action: signOut)
+          Button("Cancel", role: .cancel) {
+            showingSignOutDialog = false
+          }
+        }
         
       } else {
         Color.backgroundColor.ignoresSafeArea()
       }
-      
-      
-      
     }
   }
   

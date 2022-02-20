@@ -35,6 +35,7 @@ class SignInViewModel: ObservableObject {
   }
   
   func signIn() {
+    precondition(signInButtonDisabled == false)
     loadingUser = true
     authenticationService.signIn(
       email: email,
@@ -51,6 +52,7 @@ class SignInViewModel: ObservableObject {
             if case .failure(let error) = completion {
               self.errorMessage = error.localizedDescription
               self.loadingUser = false
+              self.authenticationService.signOut()
             }
           }, receiveValue: { customer in
             self.signedInCustomer = customer

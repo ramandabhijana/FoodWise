@@ -20,12 +20,6 @@ final class MerchantRepository {
     
   }
   
-  // name: String,
-//email: String,
-//storeType: String,
-//coordinate: (lat: Double, long: Double),
-//addressDetails: Strin
-  
   func createMerchant(
     userId: String,
     name: String,

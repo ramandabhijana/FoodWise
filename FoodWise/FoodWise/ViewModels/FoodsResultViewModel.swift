@@ -18,7 +18,7 @@ class FoodsResultViewModel: ObservableObject {
   }
   @Published private(set) var foods: [Food] = []
   
-  private let foodRepository: FoodRepository
+  private(set) var foodRepository: FoodRepository
   private var subscriptions = Set<AnyCancellable>()
   
   init(searchQuery: String,

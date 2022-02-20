@@ -14,6 +14,8 @@ struct MainView: View {
   
   init(viewModel: MainViewModel) {
     _viewModel = StateObject(wrappedValue: viewModel)
+    setupNavigationBarAppearance()
+    UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = UIColor(named: "AccentColor")
   }
   
   private let signInRequiredPublisher = NotificationCenter.default
@@ -40,12 +42,20 @@ struct MainView: View {
     }
     .fullScreenCover(isPresented: $presentingSignInView) {
       LazyView(
-        SignInView(viewModel: Self.signInViewModel) {
+        SignInView(viewModel: .init()) {
           viewModel.setMerchant($0)
           presentingSignInView = false
         }
       )
     }
+  }
+  
+  private func setupNavigationBarAppearance() {
+    let appearance = UINavigationBarAppearance()
+    appearance.configureWithTransparentBackground()
+    appearance.backgroundColor = UIColor(named: "PrimaryColor")
+    UINavigationBar.appearance().standardAppearance = appearance
+    UINavigationBar.appearance().scrollEdgeAppearance = appearance
   }
 }
 

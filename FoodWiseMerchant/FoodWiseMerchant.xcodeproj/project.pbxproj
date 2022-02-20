@@ -61,6 +61,14 @@
 		EB4A4A2D27572FCD00B35CEF /* ManageFoodStockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4A4A2C27572FCD00B35CEF /* ManageFoodStockView.swift */; };
 		EB4A4A2F27572FF100B35CEF /* NewFoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4A4A2E27572FF100B35CEF /* NewFoodView.swift */; };
 		EB7BB3A6275B0AAA002A209C /* SelectCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7BB3A5275B0AAA002A209C /* SelectCategoryView.swift */; };
+		EB870C74275D0CD800EB044D /* UpdateStockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB870C73275D0CD800EB044D /* UpdateStockViewModel.swift */; };
+		EB920986275BAE5100CC1FBB /* FoodCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB920985275BAE5100CC1FBB /* FoodCategory.swift */; };
+		EBAF7453275B606400B53C45 /* NewFoodViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF7452275B606400B53C45 /* NewFoodViewModel.swift */; };
+		EBCB9C7327C20AD000E30E85 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCB9C7227C20ACF00E30E85 /* Haptics.swift */; };
+		EBE55BBC275C7913003AAF50 /* FoodRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE55BBB275C7913003AAF50 /* FoodRepository.swift */; };
+		EBE55BBE275C8357003AAF50 /* ManageFoodViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE55BBD275C8357003AAF50 /* ManageFoodViewModel.swift */; };
+		EBE55BC0275CAB85003AAF50 /* FoodStocksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE55BBF275CAB85003AAF50 /* FoodStocksView.swift */; };
+		EBE55BC2275CC0DF003AAF50 /* UpdateStockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE55BC1275CC0DF003AAF50 /* UpdateStockView.swift */; };
 		EBE975E82754B47C00FD380B /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE975E72754B47C00FD380B /* LazyView.swift */; };
 		EBE975EA2754C8E500FD380B /* PHPickerViewController.View.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE975E92754C8E500FD380B /* PHPickerViewController.View.swift */; };
 /* End PBXBuildFile section */
@@ -135,6 +143,14 @@
 		EB4A4A2C27572FCD00B35CEF /* ManageFoodStockView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageFoodStockView.swift; sourceTree = "<group>"; };
 		EB4A4A2E27572FF100B35CEF /* NewFoodView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewFoodView.swift; sourceTree = "<group>"; };
 		EB7BB3A5275B0AAA002A209C /* SelectCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCategoryView.swift; sourceTree = "<group>"; };
+		EB870C73275D0CD800EB044D /* UpdateStockViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateStockViewModel.swift; sourceTree = "<group>"; };
+		EB920985275BAE5100CC1FBB /* FoodCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodCategory.swift; sourceTree = "<group>"; };
+		EBAF7452275B606400B53C45 /* NewFoodViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFoodViewModel.swift; sourceTree = "<group>"; };
+		EBCB9C7227C20ACF00E30E85 /* Haptics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Haptics.swift; path = ../../../FoodWise/FoodWise/Utils/Haptics.swift; sourceTree = "<group>"; };
+		EBE55BBB275C7913003AAF50 /* FoodRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodRepository.swift; sourceTree = "<group>"; };
+		EBE55BBD275C8357003AAF50 /* ManageFoodViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageFoodViewModel.swift; sourceTree = "<group>"; };
+		EBE55BBF275CAB85003AAF50 /* FoodStocksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodStocksView.swift; sourceTree = "<group>"; };
+		EBE55BC1275CC0DF003AAF50 /* UpdateStockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateStockView.swift; sourceTree = "<group>"; };
 		EBE975E72754B47C00FD380B /* LazyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LazyView.swift; path = ../../../../FoodWise/FoodWise/Views/Shared/LazyView.swift; sourceTree = "<group>"; };
 		EBE975E92754C8E500FD380B /* PHPickerViewController.View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PHPickerViewController.View.swift; path = ../../../../FoodWise/FoodWise/Views/Shared/PHPickerViewController.View.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -175,6 +191,9 @@
 				EB0C1FCB275471EF00FD0F2C /* SignUpViewModel.swift */,
 				EB4A4A00275540B900B35CEF /* SignInViewModel.swift */,
 				EB17791427574F620033EAC3 /* EditProfileViewModel.swift */,
+				EBAF7452275B606400B53C45 /* NewFoodViewModel.swift */,
+				EB870C73275D0CD800EB044D /* UpdateStockViewModel.swift */,
+				EBE55BBD275C8357003AAF50 /* ManageFoodViewModel.swift */,
 				EB4A4A062755EEF800B35CEF /* HomeViewModel.swift */,
 				EB4A49FC27552BC400B35CEF /* MainViewModel.swift */,
 			);
@@ -269,6 +288,7 @@
 			children = (
 				EB171C4C2751DFCD00F9289F /* SwiftUI.LinearGradient+.swift */,
 				EB171C4D2751DFCD00F9289F /* UIBlurEffect.swift */,
+				EBCB9C7227C20ACF00E30E85 /* Haptics.swift */,
 				EB171C4E2751DFCD00F9289F /* SwiftUI.Image+.swift */,
 				EB171C4F2751DFCD00F9289F /* SwiftUI.Color+.swift */,
 				EB171C502751DFCD00F9289F /* SwiftUI.View+.swift */,
@@ -285,6 +305,7 @@
 				EB171C5B2751E05200F9289F /* LocationGeocoder.swift */,
 				EB171C5D2751E05200F9289F /* MapAnnotation.swift */,
 				EB171C5E2751E05200F9289F /* Food.swift */,
+				EB920985275BAE5100CC1FBB /* FoodCategory.swift */,
 				EB171C5F2751E05200F9289F /* LocationManager.swift */,
 				EB171C652751E0F000F9289F /* FWAnnotation.swift */,
 				EB4A49EC27551A0300B35CEF /* Merchant.swift */,
@@ -355,6 +376,7 @@
 			isa = PBXGroup;
 			children = (
 				EB4A49F227551E8E00B35CEF /* MerchantRepository.swift */,
+				EBE55BBB275C7913003AAF50 /* FoodRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -392,7 +414,9 @@
 			children = (
 				EB4A4A2C27572FCD00B35CEF /* ManageFoodStockView.swift */,
 				EB4A4A2E27572FF100B35CEF /* NewFoodView.swift */,
+				EBE55BC1275CC0DF003AAF50 /* UpdateStockView.swift */,
 				EB7BB3A5275B0AAA002A209C /* SelectCategoryView.swift */,
+				EBE55BBF275CAB85003AAF50 /* FoodStocksView.swift */,
 			);
 			path = ManageFoodStock;
 			sourceTree = "<group>";
@@ -540,13 +564,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB171C532751DFCD00F9289F /* UIBlurEffect.swift in Sources */,
+				EBE55BC0275CAB85003AAF50 /* FoodStocksView.swift in Sources */,
 				EB4A49FB27552A4900B35CEF /* MainView.swift in Sources */,
 				EB171C572751DFCD00F9289F /* Double+.swift in Sources */,
+				EBE55BC2275CC0DF003AAF50 /* UpdateStockView.swift in Sources */,
 				EB171CD12752029500F9289F /* MKMapView+Common.swift in Sources */,
 				EB171C552751DFCD00F9289F /* SwiftUI.Color+.swift in Sources */,
 				EB171CE12752039D00F9289F /* FoodWiseAnnotationView.swift in Sources */,
 				EBE975EA2754C8E500FD380B /* PHPickerViewController.View.swift in Sources */,
 				EB171C4A2751DF8500F9289F /* SignInView.swift in Sources */,
+				EB920986275BAE5100CC1FBB /* FoodCategory.swift in Sources */,
 				EB171C542751DFCD00F9289F /* SwiftUI.Image+.swift in Sources */,
 				EB171C522751DFCD00F9289F /* SwiftUI.LinearGradient+.swift in Sources */,
 				EB171C562751DFCD00F9289F /* SwiftUI.View+.swift in Sources */,
@@ -560,6 +587,7 @@
 				EB171CDD2752039D00F9289F /* FWClusterAnnotationView.swift in Sources */,
 				EB4A49F92755298500B35CEF /* MenuButtonModel.swift in Sources */,
 				EB4A49F327551E8E00B35CEF /* MerchantRepository.swift in Sources */,
+				EBAF7453275B606400B53C45 /* NewFoodViewModel.swift in Sources */,
 				EB4A49FD27552BC400B35CEF /* MainViewModel.swift in Sources */,
 				EB177913275735D90033EAC3 /* SettingsView.swift in Sources */,
 				EB17791527574F620033EAC3 /* EditProfileViewModel.swift in Sources */,
@@ -570,12 +598,16 @@
 				EB171C632751E05200F9289F /* Food.swift in Sources */,
 				EB4A49F127551E7100B35CEF /* StorageService.swift in Sources */,
 				EB4A49F62755295200B35CEF /* MerchantHomeView.swift in Sources */,
+				EBCB9C7327C20AD000E30E85 /* Haptics.swift in Sources */,
 				EBE975E82754B47C00FD380B /* LazyView.swift in Sources */,
+				EB870C74275D0CD800EB044D /* UpdateStockViewModel.swift in Sources */,
 				EB4A4A2D27572FCD00B35CEF /* ManageFoodStockView.swift in Sources */,
 				EB0C1FCF2754729500FD0F2C /* KeyboardResponder.swift in Sources */,
 				EB171C642751E05200F9289F /* LocationManager.swift in Sources */,
 				EB171C602751E05200F9289F /* LocationGeocoder.swift in Sources */,
 				EB171CD22752029500F9289F /* SelectLocationView.swift in Sources */,
+				EBE55BBC275C7913003AAF50 /* FoodRepository.swift in Sources */,
+				EBE55BBE275C8357003AAF50 /* ManageFoodViewModel.swift in Sources */,
 				EB171C1B2751DDC700F9289F /* FoodWiseMerchantApp.swift in Sources */,
 				EB4A4A072755EEF800B35CEF /* HomeViewModel.swift in Sources */,
 				EB177910275732BB0033EAC3 /* AuthenticationService.swift in Sources */,

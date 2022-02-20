@@ -40,7 +40,7 @@ struct MainView: View {
     }
     .fullScreenCover(isPresented: $presentingSignInView) {
       LazyView(
-        SignInView(viewModel: Self.signInViewModel) {
+        SignInView(viewModel: .init()) {
           viewModel.setCourier($0)
           presentingSignInView = false
         }

@@ -11,6 +11,7 @@ import Combine
 
 struct SelectLocationView: View {
   @Environment(\.presentationMode) var presentationMode
+  @FocusState private var detailsFieldFocused: Bool
   @StateObject private var viewModel: SelectLocationViewModel
   
   init(viewModel: SelectLocationViewModel) {
@@ -56,72 +57,84 @@ struct SelectLocationView: View {
         }
         .overlay(alignment: .bottom) {
           if let selectedCoordinate = viewModel.coordinate {
-            VStack(spacing: 16) {
-              VStack(alignment: .leading, spacing: 16) {
-                makeItem(
-                  title: "Location",
-                  subtitle: viewModel.geocodedLocation
-                )
-                makeItem(
-                  title: "Coordinate",
-                  subtitle: "(\(selectedCoordinate.latitude), \(selectedCoordinate.longitude))"
-                )
-                
-                VStack(alignment: .leading, spacing: 5) {
-                  HStack {
-                    Text("Address Details").bold()
-                    Text("(Optional)").fontWeight(.light).font(.subheadline)
+            VStack {
+              VStack(spacing: 16) {
+                VStack(alignment: .leading, spacing: 16) {
+                  makeItem(
+                    title: "Location",
+                    subtitle: viewModel.geocodedLocation
+                  )
+                  makeItem(
+                    title: "Coordinate",
+                    subtitle: "(\(selectedCoordinate.latitude), \(selectedCoordinate.longitude))"
+                  )
+                  
+                  VStack(alignment: .leading, spacing: 5) {
+                    HStack {
+                      Text("Address Details").bold()
+                      Text("(Optional)").fontWeight(.light).font(.subheadline)
+                    }
+                    TextEditor(text: $viewModel.addressDetails)
+                      .disableAutocorrection(true)
+                      .frame(height: 90)
+                      .focused($detailsFieldFocused)
                   }
-                  TextEditor(text: $viewModel.addressDetails)
-                    .disableAutocorrection(true)
-                    .frame(height: 90)
+                }
+                .padding()
+                
+                .background(Color.backgroundColor)
+                .cornerRadius(20)
+                
+                HStack {
+                  Button(
+                    action: viewModel.resetCoordinate,
+                    label: {
+                      RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.white)
+                        .frame(height: 48)
+                        .overlay {
+                          RoundedRectangle(cornerRadius: 10)
+                            .strokeBorder(Color.accentColor)
+                        }
+                        .overlay {
+                          Text("Reselect")
+                            .bold()
+                        }
+                    }
+                  )
+                  
+                  Button(
+                    action: {
+  //                    onSave(selectedCoordinate, viewModel.addressDetails)
+                      presentationMode.wrappedValue.dismiss()
+                    },
+                    label: {
+                      RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.accentColor)
+                        .frame(height: 48)
+                        .overlay {
+                          Text("Save")
+                            .bold()
+                            .foregroundColor(.white)
+                        }
+                    }
+                  )
                 }
               }
-              .padding()
+              .frame(width: UIScreen.main.bounds.width * 0.9, alignment: .leading)
+              .padding(.bottom, 28)
               
-              .background(Color.backgroundColor)
-              .cornerRadius(20)
-              
-              HStack {
-                Button(
-                  action: viewModel.resetCoordinate,
-                  label: {
-                    RoundedRectangle(cornerRadius: 10)
-                      .fill(Color.white)
-                      .frame(height: 48)
-                      .overlay {
-                        RoundedRectangle(cornerRadius: 10)
-                          .strokeBorder(Color.accentColor)
-                      }
-                      .overlay {
-                        Text("Reselect")
-                          .bold()
-                      }
+              if detailsFieldFocused {
+                HStack {
+                  Spacer()
+                  Button("Done") {
+                    detailsFieldFocused.toggle()
                   }
-                )
-                
-                Button(
-                  action: {
-//                    onSave(selectedCoordinate, viewModel.addressDetails)
-                    presentationMode.wrappedValue.dismiss()
-                  },
-                  label: {
-                    RoundedRectangle(cornerRadius: 10)
-                      .fill(Color.accentColor)
-                      .frame(height: 48)
-                      .overlay {
-                        Text("Save")
-                          .bold()
-                          .foregroundColor(.white)
-                      }
-                  }
-                )
+                }
+                .padding()
+                .background(.thinMaterial)
               }
-              
-              
             }
-            .frame(width: UIScreen.main.bounds.width * 0.9, alignment: .leading)
-            .padding(.bottom, 28)
             .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.2)))
           }
         }

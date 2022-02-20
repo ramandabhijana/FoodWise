@@ -70,17 +70,10 @@ struct HomeView: View {
           
         }
         .background(Color.primaryColor)
-//        .edgesIgnoringSafeArea(.bottom)
-//        .onAppear {
-//          let a2 = UINavigationBarAppearance()
-//          a2.configureWithDefaultBackground()
-//          a2.backgroundColor = .init(named: "BackgroundColor")
-//          navigationBar?.standardAppearance = a2
-//        }
-        
       }
       .onAppear {
         NotificationCenter.default.post(name: .tabBarShownNotification, object: nil)
+        NotificationCenter.default.post(name: .tabBarChangeBackgroundToSecondaryColorNotification, object: nil)
       }
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
@@ -95,8 +88,7 @@ struct HomeView: View {
         ToolbarItem(placement: .navigationBarTrailing) {
           HStack {
             
-            Button("\(Image(systemName: "envelope.fill"))") {
-
+            Button("\(Image(systemName: "bubble.left.and.bubble.right.fill"))") {
             }
             NavigationLink("\(Image(systemName: "heart.fill"))") {
               LazyView(
@@ -124,18 +116,17 @@ struct HomeView: View {
           searchText: $viewModel.searchText,
           showing: $viewModel.isShowingSearchView,
           onSubmit: viewModel.onSubmitSearchField
-          
         ).environment(\.managedObjectContext, viewContext)
       }
     }
   }
 }
 
-//struct HomeView_Previews: PreviewProvider {
-//  static var previews: some View {
-//    HomeView(viewModel: .init())
-//  }
-//}
+struct HomeView_Previews: PreviewProvider {
+  static var previews: some View {
+    HomeView(viewModel: .init(), categoriesViewModel: .init())
+  }
+}
 
 struct CategoriesView: View {
   @ObservedObject private var viewModel: CategoriesViewModel
@@ -180,10 +171,6 @@ struct FeaturedMenuModel: Identifiable {
             destination: AnyView(EmptyView()))
     ]
   }
-//    .init(imageName: "Frame 9-3") { NearbyView(viewModel: .init()) }
-//    .init(imageName: "Frame 10") {
-//      EmptyView() as! Destination
-//    }
   
 }
 

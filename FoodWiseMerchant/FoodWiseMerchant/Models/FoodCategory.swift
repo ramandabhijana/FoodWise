@@ -8,10 +8,20 @@
 import Foundation
 
 struct FoodCategory: Identifiable, Codable {
-  var id: UUID = .init()
+  var id: String
   let name: String
   
-  static var categoriesData: [FoodCategory] = [
+  private static var idCount = 1
+  
+  private init(name: String) {
+    self.id = "\(Self.idCount)"
+    self.name = name
+    Self.idCount += 1
+  }
+  
+  var asObject: [String: Any] { ["id": id, "name": name] }
+  
+  static let categoriesData: [FoodCategory] = [
     .init(name: "Rice"),
     .init(name: "Noodle"),
     .init(name: "Chicken & Duck"),

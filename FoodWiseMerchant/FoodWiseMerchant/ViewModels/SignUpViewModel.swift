@@ -44,16 +44,22 @@ class SignUpViewModel: ObservableObject {
   func signUp() {
     precondition(addressValid == true)
     loadingUser = true
+    
+    // attempt to create a new user with provided email and password
     AuthenticationService.shared.registerUser(
       withEmail: email,
       password: password
     ) { [weak self] authResult, error in
+      
+      // if error occur, show the error description
       if let error = error {
         self?.loadingUser = false
         self?.errorMessage = error.localizedDescription
       } else if let self = self,
                 let userInfo = authResult?.additionalUserInfo,
                 userInfo.isNewUser {
+        
+        // user is a valid new user, save the merchant data
         self.merchantRepo.createMerchant(
           userId: (authResult?.user.uid)!,
           name: self.name,

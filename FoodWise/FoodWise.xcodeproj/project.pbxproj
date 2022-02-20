@@ -10,6 +10,15 @@
 		EB03596E274927DF00C22829 /* LocationGeocoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB03596D274927DF00C22829 /* LocationGeocoder.swift */; };
 		EB03597027494F7B00C22829 /* SwiftUI.LinearGradient+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB03596F27494F7B00C22829 /* SwiftUI.LinearGradient+.swift */; };
 		EB038BCD2738F44D006D66D6 /* SwiftUI.View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB038BCC2738F44D006D66D6 /* SwiftUI.View+.swift */; };
+		EB12D9C1276392BC006A862A /* NearbyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB12D9C0276392BC006A862A /* NearbyViewModel.swift */; };
+		EB12D9C32763A085006A862A /* NearbyMapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB12D9C22763A085006A862A /* NearbyMapViewModel.swift */; };
+		EB12D9C52763A397006A862A /* Merchant.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB12D9C42763A396006A862A /* Merchant.swift */; };
+		EB12D9C72763BAC2006A862A /* NearbyListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB12D9C62763BAC1006A862A /* NearbyListViewModel.swift */; };
+		EB148B2D27AF6F0200FBA343 /* SafeAreaInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB148B2C27AF6F0100FBA343 /* SafeAreaInsets.swift */; };
+		EB148B3127AF936D00FBA343 /* ViewReadSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB148B3027AF936D00FBA343 /* ViewReadSize.swift */; };
+		EB14D3C8275E865E00C62D22 /* PhotoZoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB14D3C6275E865E00C62D22 /* PhotoZoomViewController.swift */; };
+		EB14D3C9275E865E00C62D22 /* PhotoZoomViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB14D3C7275E865E00C62D22 /* PhotoZoomViewController.xib */; };
+		EB14D3CD275E8A9D00C62D22 /* PhotoZoom+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB14D3CC275E8A9D00C62D22 /* PhotoZoom+View.swift */; };
 		EB171C592751E02000F9289F /* InputFieldContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB171C582751E02000F9289F /* InputFieldContainer.swift */; };
 		EB171C6C2751E37F00F9289F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB171C6B2751E37F00F9289F /* Assets.xcassets */; };
 		EB171CE82752122E00F9289F /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = EB171CE72752122E00F9289F /* FirebaseAuth */; };
@@ -24,6 +33,16 @@
 		EB2B14B727343A6B008D5AD3 /* RootSignedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2B14B627343A6B008D5AD3 /* RootSignedInView.swift */; };
 		EB2E23B727435214002296B2 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2E23B627435214002296B2 /* SignUpView.swift */; };
 		EB33E2242753640B00E07CA5 /* Snackbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB33E2232753640B00E07CA5 /* Snackbar.swift */; };
+		EB34949627608961004AF363 /* CategoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB34949527608961004AF363 /* CategoryRepository.swift */; };
+		EB3494982761A585004AF363 /* CategoriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3494972761A585004AF363 /* CategoriesViewModel.swift */; };
+		EB37719F27647AE300EA430C /* MerchantRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB37719E27647AE300EA430C /* MerchantRepository.swift */; };
+		EB485AB82766DD3800F99273 /* SearchedKeyword.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB485AB62766DD3800F99273 /* SearchedKeyword.xcdatamodeld */; };
+		EB485ABB2766DDC000F99273 /* SearchedKeywordObject+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB485ABA2766DDC000F99273 /* SearchedKeywordObject+.swift */; };
+		EB485ABD2766DE7600F99273 /* SearchedKeyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB485ABC2766DE7600F99273 /* SearchedKeyword.swift */; };
+		EB485AC02766E35900F99273 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB485ABF2766E35900F99273 /* SearchView.swift */; };
+		EB485AC2276712A300F99273 /* SearchResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB485AC1276712A200F99273 /* SearchResultViewModel.swift */; };
+		EB485AC427672D5C00F99273 /* FoodsResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB485AC327672D5C00F99273 /* FoodsResultViewModel.swift */; };
+		EB485AC627673DA800F99273 /* MerchantsResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB485AC527673DA800F99273 /* MerchantsResultViewModel.swift */; };
 		EB4A4A052755415100B35CEF /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4A4A042755415100B35CEF /* SignInViewModel.swift */; };
 		EB4A4A2A275674EF00B35CEF /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = EB4A4A29275674EF00B35CEF /* GoogleSignIn */; };
 		EB55C1AE27526B7F0013162A /* PHPickerViewController.View.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB55C1AD27526B7F0013162A /* PHPickerViewController.View.swift */; };
@@ -33,12 +52,26 @@
 		EB55C1B927528E8F0013162A /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB55C1B827528E8F0013162A /* StorageService.swift */; };
 		EB6B3577273248D10000DA1D /* CategoryButtonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6B3576273248D10000DA1D /* CategoryButtonModel.swift */; };
 		EB6B357A27324C670000DA1D /* CategoryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6B357927324C670000DA1D /* CategoryButton.swift */; };
+		EB6B64E9275EF50D00CAE84F /* FoodDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6B64E8275EF50D00CAE84F /* FoodDetailsViewModel.swift */; };
 		EB7FC0C42742946500039342 /* FoodCell1.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7FC0C32742946500039342 /* FoodCell1.swift */; };
 		EB7FC0C6274294F300039342 /* Star.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7FC0C5274294F300039342 /* Star.swift */; };
 		EB7FC0C92742971F00039342 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = EB7FC0C82742971F00039342 /* SDWebImageSwiftUI */; };
 		EB7FC0CC2742978900039342 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7FC0CB2742978900039342 /* Food.swift */; };
 		EB7FC0CE2742999300039342 /* UIBlurEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7FC0CD2742999300039342 /* UIBlurEffect.swift */; };
 		EB7FC0D02742B71100039342 /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7FC0CF2742B71100039342 /* Double+.swift */; };
+		EB870C76275E184600EB044D /* FoodCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB870C75275E184600EB044D /* FoodCategory.swift */; };
+		EB870C78275E191C00EB044D /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB870C77275E191C00EB044D /* HomeViewModel.swift */; };
+		EB870C7A275E1B3900EB044D /* FoodRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB870C79275E1B3900EB044D /* FoodRepository.swift */; };
+		EB870C7C275E1D9600EB044D /* HorizontalListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB870C7B275E1D9600EB044D /* HorizontalListView.swift */; };
+		EB870C7E275E1DED00EB044D /* HomeHorizontalListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB870C7D275E1DED00EB044D /* HomeHorizontalListViewModel.swift */; };
+		EB92ABE1275F0F820037468E /* SwiftUIPullToRefresh in Frameworks */ = {isa = PBXBuildFile; productRef = EB92ABE0275F0F820037468E /* SwiftUIPullToRefresh */; };
+		EB92ABE3275F21610037468E /* FavoritesListRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB92ABE2275F21610037468E /* FavoritesListRepository.swift */; };
+		EB92ABE5275F32510037468E /* FavoriteFoodList.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB92ABE4275F32510037468E /* FavoriteFoodList.swift */; };
+		EB92ABE8275FA2BB0037468E /* FavoriteFoodsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB92ABE7275FA2BB0037468E /* FavoriteFoodsView.swift */; };
+		EB92ABEA275FA2D80037468E /* FavoriteFoodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB92ABE9275FA2D80037468E /* FavoriteFoodCell.swift */; };
+		EB92ABEC275FB62D0037468E /* FavoriteFoodsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB92ABEB275FB62D0037468E /* FavoriteFoodsViewModel.swift */; };
+		EB9B42BB2765D5D5002B582D /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9B42BA2765D5D5002B582D /* SearchResultsView.swift */; };
+		EB9B42BE2765D932002B582D /* SegmentItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9B42BD2765D932002B582D /* SegmentItemView.swift */; };
 		EBA35CAD2735769F00037FA6 /* NearbyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA35CAC2735769F00037FA6 /* NearbyView.swift */; };
 		EBB7FA01272CF9DE006BC1F4 /* FoodWiseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB7FA00272CF9DE006BC1F4 /* FoodWiseApp.swift */; };
 		EBB7FA03272CF9DF006BC1F4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB7FA02272CF9DF006BC1F4 /* ContentView.swift */; };
@@ -52,6 +85,10 @@
 		EBB7FA37272D391E006BC1F4 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB7FA36272D391E006BC1F4 /* SignInView.swift */; };
 		EBB7FA3B272ED0F2006BC1F4 /* MyProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB7FA3A272ED0F2006BC1F4 /* MyProfileView.swift */; };
 		EBB7FA3E272F9366006BC1F4 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB7FA3D272F9366006BC1F4 /* HomeView.swift */; };
+		EBC11FBC2763231300AFDEDA /* NearbyMerchantCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC11FBB2763231300AFDEDA /* NearbyMerchantCell.swift */; };
+		EBC11FBE2763314900AFDEDA /* NearbyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC11FBD2763314900AFDEDA /* NearbyListView.swift */; };
+		EBCB9C7127C0F1CC00E30E85 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCB9C7027C0F1CC00E30E85 /* Haptics.swift */; };
+		EBCF127A27A3A8BA0063A750 /* SquarePaymentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCF127927A3A8B90063A750 /* SquarePaymentService.swift */; };
 		EBE0695D2747D7EF00BAD3EB /* SelectLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE0695C2747D7EF00BAD3EB /* SelectLocationView.swift */; };
 		EBE0695F2747DDDA00BAD3EB /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE0695E2747DDDA00BAD3EB /* LocationManager.swift */; };
 		EBE069612747FBC800BAD3EB /* MapAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE069602747FBC800BAD3EB /* MapAnnotation.swift */; };
@@ -93,6 +130,15 @@
 		EB03596D274927DF00C22829 /* LocationGeocoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationGeocoder.swift; sourceTree = "<group>"; };
 		EB03596F27494F7B00C22829 /* SwiftUI.LinearGradient+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI.LinearGradient+.swift"; sourceTree = "<group>"; };
 		EB038BCC2738F44D006D66D6 /* SwiftUI.View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI.View+.swift"; sourceTree = "<group>"; };
+		EB12D9C0276392BC006A862A /* NearbyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyViewModel.swift; sourceTree = "<group>"; };
+		EB12D9C22763A085006A862A /* NearbyMapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyMapViewModel.swift; sourceTree = "<group>"; };
+		EB12D9C42763A396006A862A /* Merchant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Merchant.swift; sourceTree = "<group>"; };
+		EB12D9C62763BAC1006A862A /* NearbyListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyListViewModel.swift; sourceTree = "<group>"; };
+		EB148B2C27AF6F0100FBA343 /* SafeAreaInsets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeAreaInsets.swift; sourceTree = "<group>"; };
+		EB148B3027AF936D00FBA343 /* ViewReadSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewReadSize.swift; sourceTree = "<group>"; };
+		EB14D3C6275E865E00C62D22 /* PhotoZoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoZoomViewController.swift; sourceTree = "<group>"; };
+		EB14D3C7275E865E00C62D22 /* PhotoZoomViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PhotoZoomViewController.xib; sourceTree = "<group>"; };
+		EB14D3CC275E8A9D00C62D22 /* PhotoZoom+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotoZoom+View.swift"; sourceTree = "<group>"; };
 		EB171C582751E02000F9289F /* InputFieldContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldContainer.swift; sourceTree = "<group>"; };
 		EB171C6B2751E37F00F9289F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EB171CEF2752129A00F9289F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -102,6 +148,16 @@
 		EB2B14B627343A6B008D5AD3 /* RootSignedInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootSignedInView.swift; sourceTree = "<group>"; };
 		EB2E23B627435214002296B2 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		EB33E2232753640B00E07CA5 /* Snackbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snackbar.swift; sourceTree = "<group>"; };
+		EB34949527608961004AF363 /* CategoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRepository.swift; sourceTree = "<group>"; };
+		EB3494972761A585004AF363 /* CategoriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewModel.swift; sourceTree = "<group>"; };
+		EB37719E27647AE300EA430C /* MerchantRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantRepository.swift; sourceTree = "<group>"; };
+		EB485AB72766DD3800F99273 /* SearchedKeyword.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SearchedKeyword.xcdatamodel; sourceTree = "<group>"; };
+		EB485ABA2766DDC000F99273 /* SearchedKeywordObject+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchedKeywordObject+.swift"; sourceTree = "<group>"; };
+		EB485ABC2766DE7600F99273 /* SearchedKeyword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchedKeyword.swift; sourceTree = "<group>"; };
+		EB485ABF2766E35900F99273 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		EB485AC1276712A200F99273 /* SearchResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewModel.swift; sourceTree = "<group>"; };
+		EB485AC327672D5C00F99273 /* FoodsResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodsResultViewModel.swift; sourceTree = "<group>"; };
+		EB485AC527673DA800F99273 /* MerchantsResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantsResultViewModel.swift; sourceTree = "<group>"; };
 		EB4A4A042755415100B35CEF /* SignInViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		EB4A4A2B2756759D00B35CEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		EB55C1AD27526B7F0013162A /* PHPickerViewController.View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PHPickerViewController.View.swift; sourceTree = "<group>"; };
@@ -111,11 +167,24 @@
 		EB55C1B827528E8F0013162A /* StorageService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
 		EB6B3576273248D10000DA1D /* CategoryButtonModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryButtonModel.swift; sourceTree = "<group>"; };
 		EB6B357927324C670000DA1D /* CategoryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryButton.swift; sourceTree = "<group>"; };
+		EB6B64E8275EF50D00CAE84F /* FoodDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodDetailsViewModel.swift; sourceTree = "<group>"; };
 		EB7FC0C32742946500039342 /* FoodCell1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodCell1.swift; sourceTree = "<group>"; };
 		EB7FC0C5274294F300039342 /* Star.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Star.swift; sourceTree = "<group>"; };
 		EB7FC0CB2742978900039342 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		EB7FC0CD2742999300039342 /* UIBlurEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBlurEffect.swift; sourceTree = "<group>"; };
 		EB7FC0CF2742B71100039342 /* Double+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+.swift"; sourceTree = "<group>"; };
+		EB870C75275E184600EB044D /* FoodCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodCategory.swift; sourceTree = "<group>"; };
+		EB870C77275E191C00EB044D /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		EB870C79275E1B3900EB044D /* FoodRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodRepository.swift; sourceTree = "<group>"; };
+		EB870C7B275E1D9600EB044D /* HorizontalListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalListView.swift; sourceTree = "<group>"; };
+		EB870C7D275E1DED00EB044D /* HomeHorizontalListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHorizontalListViewModel.swift; sourceTree = "<group>"; };
+		EB92ABE2275F21610037468E /* FavoritesListRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesListRepository.swift; sourceTree = "<group>"; };
+		EB92ABE4275F32510037468E /* FavoriteFoodList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteFoodList.swift; sourceTree = "<group>"; };
+		EB92ABE7275FA2BB0037468E /* FavoriteFoodsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteFoodsView.swift; sourceTree = "<group>"; };
+		EB92ABE9275FA2D80037468E /* FavoriteFoodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteFoodCell.swift; sourceTree = "<group>"; };
+		EB92ABEB275FB62D0037468E /* FavoriteFoodsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteFoodsViewModel.swift; sourceTree = "<group>"; };
+		EB9B42BA2765D5D5002B582D /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
+		EB9B42BD2765D932002B582D /* SegmentItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentItemView.swift; sourceTree = "<group>"; };
 		EBA35CAC2735769F00037FA6 /* NearbyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyView.swift; sourceTree = "<group>"; };
 		EBB7F9FD272CF9DE006BC1F4 /* FoodWise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoodWise.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBB7FA00272CF9DE006BC1F4 /* FoodWiseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodWiseApp.swift; sourceTree = "<group>"; };
@@ -132,6 +201,10 @@
 		EBB7FA36272D391E006BC1F4 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		EBB7FA3A272ED0F2006BC1F4 /* MyProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileView.swift; sourceTree = "<group>"; };
 		EBB7FA3D272F9366006BC1F4 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		EBC11FBB2763231300AFDEDA /* NearbyMerchantCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyMerchantCell.swift; sourceTree = "<group>"; };
+		EBC11FBD2763314900AFDEDA /* NearbyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyListView.swift; sourceTree = "<group>"; };
+		EBCB9C7027C0F1CC00E30E85 /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
+		EBCF127927A3A8B90063A750 /* SquarePaymentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquarePaymentService.swift; sourceTree = "<group>"; };
 		EBE0695C2747D7EF00BAD3EB /* SelectLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectLocationView.swift; sourceTree = "<group>"; };
 		EBE0695E2747DDDA00BAD3EB /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		EBE069602747FBC800BAD3EB /* MapAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnnotation.swift; sourceTree = "<group>"; };
@@ -163,6 +236,7 @@
 				EB171CE82752122E00F9289F /* FirebaseAuth in Frameworks */,
 				EB2B14B52733AD99008D5AD3 /* Introspect in Frameworks */,
 				EB171CEE2752122E00F9289F /* FirebaseStorage in Frameworks */,
+				EB92ABE1275F0F820037468E /* SwiftUIPullToRefresh in Frameworks */,
 				EB4A4A2A275674EF00B35CEF /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -184,11 +258,40 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EB14D3CA275E867200C62D22 /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				EB14D3CB275E8A8400C62D22 /* PhotoZoom */,
+			);
+			path = UIKit;
+			sourceTree = "<group>";
+		};
+		EB14D3CB275E8A8400C62D22 /* PhotoZoom */ = {
+			isa = PBXGroup;
+			children = (
+				EB14D3C6275E865E00C62D22 /* PhotoZoomViewController.swift */,
+				EB14D3C7275E865E00C62D22 /* PhotoZoomViewController.xib */,
+				EB14D3CC275E8A9D00C62D22 /* PhotoZoom+View.swift */,
+			);
+			path = PhotoZoom;
+			sourceTree = "<group>";
+		};
 		EB171CF1275219B900F9289F /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
 				EB33E21F27534F4600E07CA5 /* Onboarding */,
 				EBE15A1C275A19AF00440DC2 /* EditProfileViewModel.swift */,
+				EB870C77275E191C00EB044D /* HomeViewModel.swift */,
+				EB6B64E8275EF50D00CAE84F /* FoodDetailsViewModel.swift */,
+				EB870C7D275E1DED00EB044D /* HomeHorizontalListViewModel.swift */,
+				EB3494972761A585004AF363 /* CategoriesViewModel.swift */,
+				EB12D9C0276392BC006A862A /* NearbyViewModel.swift */,
+				EB485AC1276712A200F99273 /* SearchResultViewModel.swift */,
+				EB485AC327672D5C00F99273 /* FoodsResultViewModel.swift */,
+				EB485AC527673DA800F99273 /* MerchantsResultViewModel.swift */,
+				EB12D9C22763A085006A862A /* NearbyMapViewModel.swift */,
+				EB12D9C62763BAC1006A862A /* NearbyListViewModel.swift */,
+				EB92ABEB275FB62D0037468E /* FavoriteFoodsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -218,10 +321,31 @@
 			path = SignIn;
 			sourceTree = "<group>";
 		};
+		EB485AB92766DD9D00F99273 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				EB485AB62766DD3800F99273 /* SearchedKeyword.xcdatamodeld */,
+				EB485ABA2766DDC000F99273 /* SearchedKeywordObject+.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		EB485ABE2766E32B00F99273 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				EB485ABF2766E35900F99273 /* SearchView.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
 		EB55C1AF275279B00013162A /* Repository */ = {
 			isa = PBXGroup;
 			children = (
 				EB55C1B427527BB70013162A /* CustomerRepository.swift */,
+				EB92ABE2275F21610037468E /* FavoritesListRepository.swift */,
+				EB34949527608961004AF363 /* CategoryRepository.swift */,
+				EB37719E27647AE300EA430C /* MerchantRepository.swift */,
+				EB870C79275E1B3900EB044D /* FoodRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -230,6 +354,7 @@
 			isa = PBXGroup;
 			children = (
 				EB55C1B127527B040013162A /* AuthenticationService.swift */,
+				EBCF127927A3A8B90063A750 /* SquarePaymentService.swift */,
 				EB55C1B827528E8F0013162A /* StorageService.swift */,
 			);
 			path = Services;
@@ -246,6 +371,7 @@
 		EB6B357827324C3B0000DA1D /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				EB870C7B275E1D9600EB044D /* HorizontalListView.swift */,
 				EB6B357927324C670000DA1D /* CategoryButton.swift */,
 			);
 			path = Component;
@@ -262,6 +388,7 @@
 				EBE963C22734E6AE0076E124 /* MKMapView+Common.swift */,
 				EBE81C082753B22400F8A6FD /* LazyView.swift */,
 				EB171C582751E02000F9289F /* InputFieldContainer.swift */,
+				EB14D3CA275E867200C62D22 /* UIKit */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -270,13 +397,44 @@
 			isa = PBXGroup;
 			children = (
 				EB7FC0CB2742978900039342 /* Food.swift */,
+				EB870C75275E184600EB044D /* FoodCategory.swift */,
 				EBE0695E2747DDDA00BAD3EB /* LocationManager.swift */,
 				EBE069602747FBC800BAD3EB /* MapAnnotation.swift */,
 				EB03596D274927DF00C22829 /* LocationGeocoder.swift */,
 				EBE0C6F2274779F600A9C312 /* FWAnnotation.swift */,
+				EB92ABE4275F32510037468E /* FavoriteFoodList.swift */,
+				EB485ABC2766DE7600F99273 /* SearchedKeyword.swift */,
 				EB55C1B627528CF40013162A /* Customer.swift */,
+				EB12D9C42763A396006A862A /* Merchant.swift */,
+				EB485AB92766DD9D00F99273 /* CoreData */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		EB92ABE6275FA28E0037468E /* FavoriteFoods */ = {
+			isa = PBXGroup;
+			children = (
+				EB92ABE7275FA2BB0037468E /* FavoriteFoodsView.swift */,
+				EB92ABE9275FA2D80037468E /* FavoriteFoodCell.swift */,
+			);
+			path = FavoriteFoods;
+			sourceTree = "<group>";
+		};
+		EB9B42B92765D5B1002B582D /* SearchResults */ = {
+			isa = PBXGroup;
+			children = (
+				EB9B42BC2765D912002B582D /* Components */,
+				EB9B42BA2765D5D5002B582D /* SearchResultsView.swift */,
+			);
+			path = SearchResults;
+			sourceTree = "<group>";
+		};
+		EB9B42BC2765D912002B582D /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				EB9B42BD2765D932002B582D /* SegmentItemView.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		EBB7F9F4272CF9DE006BC1F4 = {
@@ -398,8 +556,11 @@
 				EB7FC0CD2742999300039342 /* UIBlurEffect.swift */,
 				EB7FC0CF2742B71100039342 /* Double+.swift */,
 				EB03596F27494F7B00C22829 /* SwiftUI.LinearGradient+.swift */,
+				EB148B3027AF936D00FBA343 /* ViewReadSize.swift */,
+				EBCB9C7027C0F1CC00E30E85 /* Haptics.swift */,
 				EB171CF52752232400F9289F /* String+.swift */,
 				EB171CF727523D2300F9289F /* KeyboardResponder.swift */,
+				EB148B2C27AF6F0100FBA343 /* SafeAreaInsets.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -407,8 +568,11 @@
 		EBB7FA38272ED058006BC1F4 /* SignedIn */ = {
 			isa = PBXGroup;
 			children = (
+				EB485ABE2766E32B00F99273 /* Search */,
+				EB9B42B92765D5B1002B582D /* SearchResults */,
 				EBE963BE2734DA780076E124 /* Nearby */,
 				EBB7FA3C272F9354006BC1F4 /* Home */,
+				EB92ABE6275FA28E0037468E /* FavoriteFoods */,
 				EBE0C6E72744D6CE00A9C312 /* FoodDetails */,
 				EBB7FA39272ED0D0006BC1F4 /* MyProfile */,
 				EB2B14B627343A6B008D5AD3 /* RootSignedInView.swift */,
@@ -435,6 +599,15 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
+		EBC11FBA2763214500AFDEDA /* List */ = {
+			isa = PBXGroup;
+			children = (
+				EBC11FBB2763231300AFDEDA /* NearbyMerchantCell.swift */,
+				EBC11FBD2763314900AFDEDA /* NearbyListView.swift */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
 		EBE0C6E72744D6CE00A9C312 /* FoodDetails */ = {
 			isa = PBXGroup;
 			children = (
@@ -454,6 +627,7 @@
 		EBE963BE2734DA780076E124 /* Nearby */ = {
 			isa = PBXGroup;
 			children = (
+				EBC11FBA2763214500AFDEDA /* List */,
 				EBE963BF2734E5BE0076E124 /* Map */,
 				EBA35CAC2735769F00037FA6 /* NearbyView.swift */,
 			);
@@ -522,6 +696,7 @@
 				EB171CEB2752122E00F9289F /* FirebaseFirestoreSwift-Beta */,
 				EB171CED2752122E00F9289F /* FirebaseStorage */,
 				EB4A4A29275674EF00B35CEF /* GoogleSignIn */,
+				EB92ABE0275F0F820037468E /* SwiftUIPullToRefresh */,
 			);
 			productName = FoodWise;
 			productReference = EBB7F9FD272CF9DE006BC1F4 /* FoodWise.app */;
@@ -600,6 +775,7 @@
 				EB7FC0C72742971F00039342 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 				EB171CE62752122E00F9289F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				EB4A4A28275674EE00B35CEF /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				EB92ABDF275F0F820037468E /* XCRemoteSwiftPackageReference "swiftui-pull-to-refresh" */,
 			);
 			productRefGroup = EBB7F9FE272CF9DE006BC1F4 /* Products */;
 			projectDirPath = "";
@@ -619,6 +795,7 @@
 			files = (
 				EBB7FA08272CF9E0006BC1F4 /* Preview Assets.xcassets in Resources */,
 				EB171C6C2751E37F00F9289F /* Assets.xcassets in Resources */,
+				EB14D3C9275E865E00C62D22 /* PhotoZoomViewController.xib in Resources */,
 				EB171CF02752129A00F9289F /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -646,13 +823,17 @@
 			files = (
 				EBE963C12734E65A0076E124 /* NearbyMapView.swift in Sources */,
 				EBE963D427351E640076E124 /* FWClusterAnnotationView.swift in Sources */,
+				EBCB9C7127C0F1CC00E30E85 /* Haptics.swift in Sources */,
 				EB03597027494F7B00C22829 /* SwiftUI.LinearGradient+.swift in Sources */,
+				EB92ABEA275FA2D80037468E /* FavoriteFoodCell.swift in Sources */,
 				EBB7FA37272D391E006BC1F4 /* SignInView.swift in Sources */,
 				EBE963C72734E7C20076E124 /* FoodWiseAnnotationView.swift in Sources */,
+				EB92ABE5275F32510037468E /* FavoriteFoodList.swift in Sources */,
 				EBE0C6F3274779F600A9C312 /* FWAnnotation.swift in Sources */,
 				EBE81C072753AE6400F8A6FD /* MainView.swift in Sources */,
 				EB55C1AE27526B7F0013162A /* PHPickerViewController.View.swift in Sources */,
 				EBE963CD2734E8940076E124 /* FoodWiseMapPin.swift in Sources */,
+				EB485AC427672D5C00F99273 /* FoodsResultViewModel.swift in Sources */,
 				EB6B357A27324C670000DA1D /* CategoryButton.swift in Sources */,
 				EBE0695F2747DDDA00BAD3EB /* LocationManager.swift in Sources */,
 				EBE0C6E92744D78900A9C312 /* FoodDetailsView.swift in Sources */,
@@ -660,37 +841,68 @@
 				EB55C1B227527B040013162A /* AuthenticationService.swift in Sources */,
 				EBE963D227351C570076E124 /* FoodWiseClusterAnnotationView.swift in Sources */,
 				EB7FC0CE2742999300039342 /* UIBlurEffect.swift in Sources */,
+				EB148B3127AF936D00FBA343 /* ViewReadSize.swift in Sources */,
 				EBE963C52734E78D0076E124 /* FWAnnotationView.swift in Sources */,
+				EBC11FBE2763314900AFDEDA /* NearbyListView.swift in Sources */,
 				EB7FC0CC2742978900039342 /* Food.swift in Sources */,
 				EB55C1B727528CF40013162A /* Customer.swift in Sources */,
+				EB485ABD2766DE7600F99273 /* SearchedKeyword.swift in Sources */,
 				EBE0695D2747D7EF00BAD3EB /* SelectLocationView.swift in Sources */,
+				EB3494982761A585004AF363 /* CategoriesViewModel.swift in Sources */,
 				EB4A4A052755415100B35CEF /* SignInViewModel.swift in Sources */,
 				EB2B14B727343A6B008D5AD3 /* RootSignedInView.swift in Sources */,
 				EBB7FA03272CF9DF006BC1F4 /* ContentView.swift in Sources */,
 				EB7FC0C42742946500039342 /* FoodCell1.swift in Sources */,
 				EB55C1B527527BB70013162A /* CustomerRepository.swift in Sources */,
+				EB12D9C52763A397006A862A /* Merchant.swift in Sources */,
 				EB33E2242753640B00E07CA5 /* Snackbar.swift in Sources */,
 				EBA35CAD2735769F00037FA6 /* NearbyView.swift in Sources */,
 				EBE0C6EB2744D87800A9C312 /* NavigationBarView.swift in Sources */,
+				EB485AC02766E35900F99273 /* SearchView.swift in Sources */,
+				EB148B2D27AF6F0200FBA343 /* SafeAreaInsets.swift in Sources */,
+				EB870C7E275E1DED00EB044D /* HomeHorizontalListViewModel.swift in Sources */,
 				EBB7FA35272D0BC5006BC1F4 /* SwiftUI.Color+.swift in Sources */,
 				EBE963C32734E6AE0076E124 /* MKMapView+Common.swift in Sources */,
+				EB12D9C32763A085006A862A /* NearbyMapViewModel.swift in Sources */,
+				EB12D9C72763BAC2006A862A /* NearbyListViewModel.swift in Sources */,
 				EB171CF827523D2300F9289F /* KeyboardResponder.swift in Sources */,
+				EB870C76275E184600EB044D /* FoodCategory.swift in Sources */,
 				EBB7FA30272D0A59006BC1F4 /* WelcomeView.swift in Sources */,
+				EB9B42BE2765D932002B582D /* SegmentItemView.swift in Sources */,
+				EB485AC2276712A300F99273 /* SearchResultViewModel.swift in Sources */,
+				EB92ABE8275FA2BB0037468E /* FavoriteFoodsView.swift in Sources */,
 				EBB7FA3B272ED0F2006BC1F4 /* MyProfileView.swift in Sources */,
 				EBB7FA3E272F9366006BC1F4 /* HomeView.swift in Sources */,
 				EB038BCD2738F44D006D66D6 /* SwiftUI.View+.swift in Sources */,
+				EB14D3CD275E8A9D00C62D22 /* PhotoZoom+View.swift in Sources */,
 				EBB7FA33272D0AAF006BC1F4 /* SwiftUI.Image+.swift in Sources */,
+				EB92ABE3275F21610037468E /* FavoritesListRepository.swift in Sources */,
+				EB14D3C8275E865E00C62D22 /* PhotoZoomViewController.swift in Sources */,
 				EBE81C092753B22400F8A6FD /* LazyView.swift in Sources */,
+				EB6B64E9275EF50D00CAE84F /* FoodDetailsViewModel.swift in Sources */,
+				EB92ABEC275FB62D0037468E /* FavoriteFoodsViewModel.swift in Sources */,
 				EB03596E274927DF00C22829 /* LocationGeocoder.swift in Sources */,
+				EB485AC627673DA800F99273 /* MerchantsResultViewModel.swift in Sources */,
 				EB7FC0D02742B71100039342 /* Double+.swift in Sources */,
+				EB34949627608961004AF363 /* CategoryRepository.swift in Sources */,
 				EBE15A1D275A19AF00440DC2 /* EditProfileViewModel.swift in Sources */,
+				EB9B42BB2765D5D5002B582D /* SearchResultsView.swift in Sources */,
 				EBE15A1F275A19E300440DC2 /* EditProfileView.swift in Sources */,
 				EB55C1B927528E8F0013162A /* StorageService.swift in Sources */,
 				EBB7FA01272CF9DE006BC1F4 /* FoodWiseApp.swift in Sources */,
+				EB485ABB2766DDC000F99273 /* SearchedKeywordObject+.swift in Sources */,
+				EB870C7C275E1D9600EB044D /* HorizontalListView.swift in Sources */,
 				EBE963D02734F42A0076E124 /* MerchantAnnotation.swift in Sources */,
+				EB37719F27647AE300EA430C /* MerchantRepository.swift in Sources */,
 				EB2E23B727435214002296B2 /* SignUpView.swift in Sources */,
 				EB7FC0C6274294F300039342 /* Star.swift in Sources */,
+				EB870C7A275E1B3900EB044D /* FoodRepository.swift in Sources */,
+				EBCF127A27A3A8BA0063A750 /* SquarePaymentService.swift in Sources */,
+				EB485AB82766DD3800F99273 /* SearchedKeyword.xcdatamodeld in Sources */,
+				EB12D9C1276392BC006A862A /* NearbyViewModel.swift in Sources */,
+				EB870C78275E191C00EB044D /* HomeViewModel.swift in Sources */,
 				EBE069612747FBC800BAD3EB /* MapAnnotation.swift in Sources */,
+				EBC11FBC2763231300AFDEDA /* NearbyMerchantCell.swift in Sources */,
 				EB6B3577273248D10000DA1D /* CategoryButtonModel.swift in Sources */,
 				EB171CF427521A7900F9289F /* SignUpViewModel.swift in Sources */,
 				EB171CF62752232500F9289F /* String+.swift in Sources */,
@@ -1082,6 +1294,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		EB92ABDF275F0F820037468E /* XCRemoteSwiftPackageReference "swiftui-pull-to-refresh" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/globulus/swiftui-pull-to-refresh";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1120,7 +1340,25 @@
 			package = EB7FC0C72742971F00039342 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
 			productName = SDWebImageSwiftUI;
 		};
+		EB92ABE0275F0F820037468E /* SwiftUIPullToRefresh */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB92ABDF275F0F820037468E /* XCRemoteSwiftPackageReference "swiftui-pull-to-refresh" */;
+			productName = SwiftUIPullToRefresh;
+		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		EB485AB62766DD3800F99273 /* SearchedKeyword.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				EB485AB72766DD3800F99273 /* SearchedKeyword.xcdatamodel */,
+			);
+			currentVersion = EB485AB72766DD3800F99273 /* SearchedKeyword.xcdatamodel */;
+			path = SearchedKeyword.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = EBB7F9F5272CF9DE006BC1F4 /* Project object */;
 }

@@ -95,7 +95,7 @@ final class AuthenticationService: ObservableObject {
   
   public func signOut() {
     do {
-      print("signing out")
+//      precondition(currentUserExist)
       try auth.signOut()
     } catch let signOutError as NSError {
       print("\nError signing out: %@\n", signOutError)

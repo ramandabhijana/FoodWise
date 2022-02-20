@@ -128,7 +128,6 @@ final class CourierRepository {
           return promise(.failure(error))
         }
       }
-    }
-    .eraseToAnyPublisher()
+    }.eraseToAnyPublisher()
   }
 }

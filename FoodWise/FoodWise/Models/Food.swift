@@ -83,9 +83,9 @@ extension Food {
   }
   
   static let homeSection: [HomeSection] = [
-//    .init(name: "Best Deals", criteria: .bestDeals),
-//    .init(name: "Under IDR 10K", criteria: .under10k),
-//    .init(name: "Most Loved", criteria: .mostLoved),
+    .init(name: "Best Deals", criteria: .bestDeals),
+    .init(name: "Under IDR 10K", criteria: .under10k),
+    .init(name: "Most Loved", criteria: .mostLoved)
   ]
   
   static var sampleData: [Food] {

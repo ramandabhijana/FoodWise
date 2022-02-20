@@ -12,33 +12,12 @@ struct SettingsView: View {
   @EnvironmentObject var mainViewModel: MainViewModel
   @State private var image: Image? = nil
   @State private var showingEditProfileView = false
+  @State private var showingSignOutDialog = false
   
   var body: some View {
     ScrollView(showsIndicators: false) {
       VStack {
         VStack(spacing: 24) {
-//          if let image = image {
-//            image
-//              .resizable()
-//              .scaledToFill()
-//              .frame(width: 100, height: 100)
-//              .clipShape(Circle())
-//          } else {
-//            Circle()
-//              .fill(Color(uiColor: .lightGray).opacity(0.6))
-//              .frame(width: 100, height: 100)
-//              .overlay {
-//                Image("store-logo-placeholder")
-//                  .resizable()
-//                  .frame(width: 70, height: 70)
-//              }
-//              .onAppear {
-//                viewModel.profileImageData?.asImage { image in
-//                  self.image = image
-//                }
-//              }
-//          }
-          
           WebImage(url: mainViewModel.merchant.logoUrl)
             .resizable()
             .placeholder {
@@ -101,7 +80,7 @@ struct SettingsView: View {
         
         Spacer()
         
-        Button(action: signOut) {
+        Button(action: { showingSignOutDialog.toggle() }) {
           HStack {
             Image(systemName: "rectangle.portrait.and.arrow.right")
               .rotation3DEffect(.degrees(180), axis: (x: 0, y:1, z: 0))
@@ -127,6 +106,16 @@ struct SettingsView: View {
     }
     .navigationBarTitleDisplayMode(.large)
     .navigationTitle("Settings")
+    .confirmationDialog(
+      "Are you sure want to sign out?",
+      isPresented: $showingSignOutDialog,
+      titleVisibility: .visible
+    ) {
+      Button("Sign Out", role: .destructive, action: signOut)
+      Button("Cancel", role: .cancel) {
+        showingSignOutDialog.toggle()
+      }
+    }
   }
   
   private func signOut() {

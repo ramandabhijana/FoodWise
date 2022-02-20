@@ -45,7 +45,7 @@ class SignUpViewModel: ObservableObject {
   }
   
   func signUp() {
-    precondition(licenseValid == true)
+    precondition(signUpButtonDisabled == false)
     loadingUser = true
     AuthenticationService.shared.registerUser(
       withEmail: email,
@@ -58,7 +58,7 @@ class SignUpViewModel: ObservableObject {
       }
       guard let self = self,
             let userInfo = authResult?.additionalUserInfo,
-            userInfo.isNewUser
+            userInfo.isNewUser // make sure the user is a new user
       else { return }
       self.courierRepo.createCourier(
         userId: (authResult?.user.uid)!,
@@ -114,4 +114,3 @@ class SignUpViewModel: ObservableObject {
     licenseValid = license != nil
   }
 }
-

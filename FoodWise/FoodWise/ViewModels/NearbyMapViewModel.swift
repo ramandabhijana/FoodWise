@@ -26,7 +26,7 @@ class NearbyMapViewModel: ObservableObject {
     locationManager.startMonitoring()
     locationManager.locationPublisher
       .sink { [weak self] _ in
-        self?.locationManager.stopLocationService()
+//        self?.locationManager.stopLocationService()
       } receiveValue: { [weak self] userLocation in
         self?.region = .init(
           center: userLocation.coordinate,

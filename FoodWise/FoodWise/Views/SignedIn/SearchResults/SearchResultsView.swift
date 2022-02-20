@@ -252,22 +252,59 @@ struct SearchResultsView: View {
 
 struct FoodsResultView: View {
   @StateObject private var viewModel: FoodsResultViewModel
+  @EnvironmentObject private var rootViewModel: RootViewModel
   
   init(viewModel: FoodsResultViewModel) {
     _viewModel = StateObject(wrappedValue: viewModel)
   }
   
   var body: some View {
-    LazyVGrid(
-      columns: Array(repeating: .init(spacing: 20), count: 2),
-      spacing: 20
-    ) {
-      ForEach(
-        viewModel.foods,
-        content: FoodCell1.init
+    if viewModel.foods.isEmpty {
+      VStack {
+        Image("empty_list")
+          .resizable()
+          .scaledToFit()
+          .frame(width: 100, height: 100)
+        Text("No results can be shown").font(.subheadline)
+      }
+      .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+    } else {
+      LazyVGrid(
+        columns: Array(repeating: .init(spacing: 20), count: 2),
+        spacing: 20
+      ) {
+        ForEach(
+          viewModel.foods,
+          content: makeListCell(food:)
+        )
+        .redacted(reason: viewModel.loading ? .placeholder : [])
+      }.padding()
+    }
+  }
+  
+  func makeListCell(food: Food) -> some View {
+    FoodCell1(
+      food: food,
+      isLoading: viewModel.loading,
+      buildDestination: FoodDetailsView(
+        viewModel: .init(
+          food: food,
+          customerId: rootViewModel.customer?.id,
+          foodRepository: viewModel.foodRepository
+        )
       )
-      .redacted(reason: viewModel.loading ? .placeholder : [])
-    }.padding()
+    )
+    /*
+    NavigationLink {
+      LazyView(FoodDetailsView(
+        viewModel: .init(food: food,
+                         customerId: rootViewModel.customer?.id,
+                         foodRepository: viewModel.foodRepository))
+      )
+    } label: {
+      FoodCell1(food: food)
+    }
+    */
   }
 }
 
@@ -279,16 +316,27 @@ struct MerchantsResultView: View {
   }
   
   var body: some View {
-    LazyVStack(spacing: 20) {
-      ForEach(
-        viewModel.merchants,
-        id: \.self,
-        content: NearbyMerchantCell.init(merchant:)
-      )
-      .redacted(reason: viewModel.loading ? .placeholder : [])
+    if viewModel.merchants.isEmpty {
+      VStack {
+        Image("empty_list")
+          .resizable()
+          .scaledToFit()
+          .frame(width: 100, height: 100)
+        Text("No results can be shown").font(.subheadline)
+      }
+      .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+    } else {
+      LazyVStack(spacing: 20) {
+        ForEach(
+          viewModel.merchants,
+          id: \.self,
+          content: NearbyMerchantCell.init(merchant:)
+        )
+        .redacted(reason: viewModel.loading ? .placeholder : [])
+      }
+      .padding()
+      .onAppear(perform: viewModel.fetchMerchants)
     }
-    .padding()
-    .onAppear(perform: viewModel.fetchMerchants)
   }
 }
 

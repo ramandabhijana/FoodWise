@@ -12,17 +12,20 @@ public struct Snackbar: View {
   private let presenting: AnyView
   private let text: Text
   private let isErrorAlert: Bool
+  private let shouldNotifyNotificationFeedbackOccurred: Bool
   
   init<Presenting>(isShowing: Binding<Bool>,
                    presenting: Presenting,
                    text: Text,
-                   isErrorAlert: Bool) where Presenting: View {
+                   isErrorAlert: Bool,
+                   shouldNotifyNotificationFeedbackOccurred: Bool = false
+  ) where Presenting: View {
     
     self._isShowing = isShowing
     self.presenting = AnyView(presenting)
     self.text = text
     self.isErrorAlert = isErrorAlert
-    
+    self.shouldNotifyNotificationFeedbackOccurred = shouldNotifyNotificationFeedbackOccurred
   }
   
   public var body: some View {
@@ -49,22 +52,30 @@ public struct Snackbar: View {
               DispatchQueue.main.asyncAfter(deadline: deadline) {
                 withAnimation { self.isShowing = false }
               }
+              if isErrorAlert { Haptics.shared.notify(.error) }
+              if shouldNotifyNotificationFeedbackOccurred {
+                Haptics.shared.notify(.success)
+              }
             }
           }
         }
       }
     }
+    
   }
 }
 
 extension View {
   public func snackBar(isShowing: Binding<Bool>,
                        text: Text,
-                       isError: Bool = false) -> some View {
+                       isError: Bool = false,
+                       shouldNotifyNotificationFeedbackOccurred: Bool = false
+  ) -> some View {
     Snackbar(isShowing: isShowing,
              presenting: self,
              text: text,
-             isErrorAlert: isError)
+             isErrorAlert: isError,
+             shouldNotifyNotificationFeedbackOccurred: shouldNotifyNotificationFeedbackOccurred)
   }
   
 }

@@ -128,11 +128,11 @@ struct EditProfileView: View {
             }
             .onTapGesture {
               let licenseNo = viewModel.license.licenseNo
-              if viewModel.profileImageData != nil {
+              if viewModel.license.imageData != nil {
                 Self.licenseViewModel = .init(licenseNo: licenseNo)
               } else {
                 Self.licenseViewModel = .init(
-                  imageUrl: mainViewModel.courier.profilePictureUrl,
+                  imageUrl: mainViewModel.courier.license.imageUrl,
                   licenseNo: licenseNo
                 )
               }
@@ -182,11 +182,10 @@ struct EditProfileView: View {
       )
     }
     .fullScreenCover(isPresented: $showLicenseView) {
-      if let imageData = Self.licenseViewModel.imageData,
-         let licenseNoValid = Self.licenseViewModel.licenseNoValid,
+      if let licenseNoValid = Self.licenseViewModel.licenseNoValid,
          licenseNoValid {
         licenseNoText = Self.licenseViewModel.licenseNo
-        viewModel.license = (imageData, Self.licenseViewModel.licenseNo)
+        viewModel.license = (Self.licenseViewModel.imageData, Self.licenseViewModel.licenseNo)
       } else {
         licenseNoText = ""
         viewModel.license = (Self.licenseViewModel.imageData, "")

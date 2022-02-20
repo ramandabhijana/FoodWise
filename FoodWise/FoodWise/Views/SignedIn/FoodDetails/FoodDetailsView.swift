@@ -31,6 +31,7 @@ struct FoodDetailsView: View {
     viewModel: FoodDetailsViewModel,
     onDismiss: ((Food) -> Void)? = nil
   ) {
+    print("initializing FoodDetailsview")
     _viewModel = StateObject(wrappedValue: viewModel)
     self.onDismiss = onDismiss
   }
@@ -186,10 +187,6 @@ struct FoodDetailsView: View {
               Text("The food has never received a review")
                 .font(.callout)
               
-//              ForEach(0..<20) { num in
-//                Text("Text \(num)")
-//              }
-              
               /*
               VStack(alignment: .leading, spacing: 0) {
                 Text("4.5 ★★★★★").font(.title3)
@@ -339,7 +336,8 @@ struct FoodDetailsView: View {
     }
     .snackBar(
       isShowing: $viewModel.onUpdateFavoriteList.shows,
-      text: Text(viewModel.onUpdateFavoriteList.message)
+      text: Text(viewModel.onUpdateFavoriteList.message),
+      shouldNotifyNotificationFeedbackOccurred: true
     )
     .introspectNavigationController { controller in
       controller.isNavigationBarHidden = true

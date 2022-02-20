@@ -27,7 +27,7 @@ class HomeHorizontalListViewModel: ObservableObject {
     self.foodRepository = foodRepository
     self.criteria = criteria
     self.loading = true
-//    self.fetchInitialFoods()
+    self.fetchInitialFoods()
     onChangeOfSelectedCategory.dropFirst()
       .sink { [weak self] category in
         guard let self = self else { return }
@@ -44,8 +44,11 @@ class HomeHorizontalListViewModel: ObservableObject {
     self.loading = true
     correspondingPublisher()
       .sink { [weak self] completion in
-        print(completion)
-        self?.loading = false
+        if case .failure(let error) = completion {
+          print("Failed fetching initial foods. Error: \(error)")
+        } else {
+          self?.loading = false
+        }
       } receiveValue: { [weak self] foods in
         self?.defaultFoodsList = foods
         self?.foodsList = foods

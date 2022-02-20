@@ -14,10 +14,14 @@ class FavoriteFoodsViewModel: ObservableObject {
   @Published private(set) var errorMessage = ""
   @Published private(set) var foodsList: [Food] = []
   @Published private(set) var loading = false {
-    willSet { if newValue { foodsList = [.asPlaceholderInstance, .asPlaceholderInstance, .asPlaceholderInstance, .asPlaceholderInstance, .asPlaceholderInstance] } }
+    willSet {
+      if newValue {
+        foodsList = [.asPlaceholderInstance, .asPlaceholderInstance, .asPlaceholderInstance, .asPlaceholderInstance, .asPlaceholderInstance]
+      }
+    }
   }
   
-  private var customerId: String?
+  private(set) var customerId: String?
   private var currentFavoriteList: FavoriteFoodList?
   
   private(set) var foodRepository: FoodRepository
@@ -61,6 +65,11 @@ class FavoriteFoodsViewModel: ObservableObject {
       .sink { [weak self] completion in
         if case .failure(let error) = completion {
           self?.errorMessage = error.localizedDescription
+          if let foodRepoError = error as? FoodRepository.FoodRepositoryError {
+            switch foodRepoError {
+            case .emptyArgument: self?.foodsList = []
+            }
+          }
         }
         self?.loading = false
       } receiveValue: { [weak self] foods in

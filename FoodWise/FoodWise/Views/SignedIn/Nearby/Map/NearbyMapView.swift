@@ -10,56 +10,15 @@ import SwiftUI
 import MapKit
 
 struct NearbyMapView: View {
-  
-  // 8,63721° S, 115,23504° E
-  // (-8.6380511, 115.2357704) usr
-  // (-8.6345300, 115.2345579) (-8.6345300, 115.2345579)
-  // (-8.6383263, 115.2347964)
-  // (-8.6364663, 115.2346405)
-  
   @StateObject private var viewModel: NearbyMapViewModel
   @State private var showsRadiusPicker = false
-  /*
-  @State private var region = MKCoordinateRegion(
-    center: CLLocationCoordinate2D(latitude: -8.6380511,
-                                   longitude: 115.2357704),
-    span: MKCoordinateSpan(latitudeDelta: 0.005,
-                           longitudeDelta: 0.005)
-  )
-  */
-  /*
-  @State private var merchants: [Merchant] = [
-    .init(
-      logoUrl: URL(string: "https://i.pinimg.com/736x/cf/20/ea/cf20ead30ec0a3622d6db1f6da25b16c.jpg"),
-      name: "London",
-      coordinate: (-8.6345300, 115.2345579)
-    ),
-    .init(
-      logoUrl: URL(string: "https://i.pinimg.com/originals/6b/e7/43/6be743d83e3400ee1a7f64845b967efb.png"),
-      name: "NearLondon1",
-      coordinate: (-8.6345300, 115.2345579)
-    ),
-    .init(
-      logoUrl: URL(string: "https://i1.wp.com/anantacreative.com/wp-content/uploads/2020/10/Restaurant-Logo1.png?resize=980%2C980&ssl=1"),
-      name: "NearLondon2",
-      coordinate: (-8.6383263, 115.2347964)
-    ),
-    .init(
-      logoUrl: URL(string: "https://nice-branding.com/wp-content/uploads/2020/04/restaurant-logo-graphic-design-agency.png"),
-      name: "Paris",
-      coordinate: (-8.6364663, 115.2342405)
-    ),
-    .init(
-      logoUrl: URL(string: "https://i.pinimg.com/originals/6b/e7/43/6be743d83e3400ee1a7f64845b967efb.png"),
-      name: "",
-      coordinate: (-8.6354580, 115.2360574)
-    )
-  ]
-   */
-  
+  @State private var tabBarHeight: CGFloat = 0.0
+  static private var tabBarFrame: CGFloat? = nil
+  @State private var tabBar: UITabBarController? = nil
   private let locationManager = CLLocationManager()
   
   init(viewModel: NearbyMapViewModel) {
+    
     locationManager.requestWhenInUseAuthorization()
     locationManager.startUpdatingLocation()
     _viewModel = StateObject(wrappedValue: viewModel)
@@ -99,47 +58,64 @@ struct NearbyMapView: View {
               }
               .padding(.horizontal)
               .padding(.bottom, 33)
-            }
-            .onTapGesture {
-              showsRadiusPicker.toggle()
-            }
-        }
-        .overlay(alignment: .bottom) {
-          HStack {
-            ForEach(NearbyRadius.allCases, id: \.rawValue) { radius in
-              Button(action: { viewModel.onChangeRadius(radius) }) {
-                ZStack {
-                  RoundedRectangle(cornerRadius: 50)
-                    .fill(
-                      radius == viewModel.nearbyMerchants?.radius
-                      ? Color.accentColor
-                      : .white
-                    )
-                  
-                  RoundedRectangle(cornerRadius: 50)
-                    .strokeBorder(
-                      Color.secondary,
-                      lineWidth: 2
-                    )
+              .overlay(alignment: .top) {
+                HStack {
+                  ForEach(NearbyRadius.allCases, id: \.rawValue) { radius in
+                    Button(action: { viewModel.onChangeRadius(radius) }) {
+                      ZStack {
+                        RoundedRectangle(cornerRadius: 50)
+                          .fill(
+                            radius == viewModel.nearbyMerchants?.radius
+                            ? Color.accentColor
+                            : .white
+                          )
+                        RoundedRectangle(cornerRadius: 50)
+                          .strokeBorder(
+                            Color.secondary,
+                            lineWidth: 2
+                          )
+                      }
+                      .frame(height: 40)
+                      .overlay {
+                        Text("\(radius.asString)")
+                          .foregroundColor(
+                            radius == viewModel.nearbyMerchants?.radius
+                            ? Color.white
+                            : .secondary
+                          )
+                      }
+                    }
+                  }
                 }
-                .frame(height: 40)
-                .overlay {
-                  Text("\(radius.asString)")
-                    .foregroundColor(
-                      radius == viewModel.nearbyMerchants?.radius
-                      ? Color.white
-                      : .secondary
-                    )
-                }
+                .padding(.horizontal, 22)
+                .padding(.bottom)
+                .offset(y: showsRadiusPicker ? -70.0 : 0.0)
+                .opacity(showsRadiusPicker ? 1 : 0)
+                .animation(.easeIn, value: showsRadiusPicker)
+                .disabled(!showsRadiusPicker)
               }
             }
-          }
-          .padding(.horizontal, 22)
-          .padding(.bottom)
-          .offset(y: showsRadiusPicker ? -110 : 0.0)
-          .opacity(showsRadiusPicker ? 1 : 0)
-          .animation(.easeIn, value: showsRadiusPicker)
-          .disabled(!showsRadiusPicker)
+            .onTapGesture { showsRadiusPicker = false }
+            .offset(y: tabBarHeight)
+            
+        }
+        .introspectTabBarController { controller in
+          tabBarHeight = controller.tabBar.frame.height
+//          tabBarHeight = controller.tabBar.frame.height
+//          tabBar = controller
+//          controller.tabBar.isHidden = true
+//          controller.selectedViewController?.edgesForExtendedLayout = UIRectEdge.bottom
+//          controller.selectedViewController?.extendedLayoutIncludesOpaqueBars = true
+          /*
+           tabBarController?.tabBar.isHidden = true
+               edgesForExtendedLayout = UIRectEdge.bottom
+               extendedLayoutIncludesOpaqueBars = true
+           */
+//          Self.tabBarFrame = controller.tabBar.frame.height
+//          NotificationCenter.default.post(
+//            name: .tabBarHiddenNotification,
+//            object: nil)
+          
         }
       } else {
         Color.backgroundColor.ignoresSafeArea()
@@ -149,6 +125,18 @@ struct NearbyMapView: View {
         }
       }
     }
+//    .onReceive(NotificationCenter.Publisher(
+//      center: .default,
+//      name: UIApplication.didBecomeActiveNotification)
+//    ) { _ in
+//        if let frame = Self.tabBarFrame {
+//          DispatchQueue.main.async {
+//            tabBarHeight = 83
+//          }
+//
+//        }
+//      }
+//    }
   }
 }
 
@@ -181,7 +169,14 @@ private extension NearbyMapView {
       _ mapView: MKMapView,
       viewFor annotation: MKAnnotation
     ) -> MKAnnotationView? {
-      commonAnnotationViewSetup(mapView: mapView, annotation: annotation)
+      let view = commonAnnotationViewSetup(mapView: mapView, annotation: annotation)
+      if let merchantAnnotation = annotation as? MerchantAnnotation {
+        let calloutView = MerchantAnnotationCalloutView(
+          merchant: merchantAnnotation.merchant).asUiView
+        view?.canShowCallout = true
+        view?.detailCalloutAccessoryView = calloutView
+      }
+      return view
     }
     
     func mapView(
@@ -193,8 +188,31 @@ private extension NearbyMapView {
   }
 }
 
+struct MerchantAnnotationCalloutView: View {
+  var merchant: Merchant
+  
+  var body: some View {
+    VStack(alignment: .leading, spacing: 2.5) {
+      Text(merchant.name)
+        .fontWeight(.bold)
+        .fixedSize(horizontal: false, vertical: true)
+      Text(merchant.location.geocodedLocation)
+        .foregroundColor(.secondary)
+        .fixedSize(horizontal: false, vertical: true)
+    }
+  }
+  
+  var asUiView: UIView {
+    let view = UIHostingController(rootView: self).view!
+    view.backgroundColor = .white
+    return view
+  }
+}
+
 //struct NearbyMapView_Previews: PreviewProvider {
 //  static var previews: some View {
-//    NearbyMapView()
+//    NearbyMapView(viewModel: .init(radiusChangedSubject: .init(),
+//                                   filteredMerchantsPublisher: [[NearbyMerchants]]().publisher.eraseToAnyPublisher() )
+//    )
 //  }
 //}

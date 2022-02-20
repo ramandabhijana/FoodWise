@@ -73,7 +73,8 @@ class FoodDetailsViewModel: ObservableObject {
   func addToFavorite() {
     loading = true
     guard var currentFavoriteList = currentFavoriteList else {
-      // post sign in notification
+      NotificationCenter.default.post(name: .signInRequiredNotification,
+                                      object: nil)
       return
     }
     currentFavoriteList.foodIds.append(food.id)

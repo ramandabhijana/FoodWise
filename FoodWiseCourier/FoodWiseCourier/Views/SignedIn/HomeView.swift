@@ -12,6 +12,10 @@ struct HomeView: View {
   @State private var showingSignOutDialog = false
   @State private var showingEditProfile = false
   
+  init() {
+    UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = UIColor(named: "AccentColor")
+  }
+  
   var body: some View {
     NavigationView {
       LazyVStack(spacing: 35) {

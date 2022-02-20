@@ -16,7 +16,7 @@ struct SearchView: View {
   @FetchRequest(
     sortDescriptors: [NSSortDescriptor(
       keyPath: \SearchedKeywordObject.createdDate,
-      ascending: true
+      ascending: false
     )],
     animation: .default
   ) private var keywordsHistory: FetchedResults<SearchedKeywordObject>
@@ -63,11 +63,6 @@ struct SearchView: View {
           name: .tabBarHiddenNotification,
           object: nil)
       }
-      .onDisappear {
-        NotificationCenter.default.post(
-          name: .tabBarShownNotification,
-          object: nil)
-      }
       .introspectNavigationController { controller in
         let a2 = UINavigationBarAppearance()
         a2.configureWithOpaqueBackground()
@@ -87,7 +82,7 @@ struct SearchView: View {
   }
   
   private func dismiss() {
-    searchText = ""
+//    searchText = ""
     withAnimation(.easeIn) { showing.toggle() }
   }
 }
