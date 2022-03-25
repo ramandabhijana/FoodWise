@@ -10,6 +10,10 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import Combine
 
+protocol ProfileUrlNameFetchableRepository: AnyObject {
+  func fetchNameAndProfilePictureUrl(ofUserWithId userId: String) -> AnyPublisher<(name: String, profilePictureUrl: URL?), Error>
+}
+
 final class MerchantRepository {
   private let db = Firestore.firestore()
   private let path = "merchants"
@@ -144,3 +148,28 @@ final class MerchantRepository {
 // @Published var name: String
 //@Published var storeType: String
 //var address: (location: MerchantLocation, details: String)?
+extension MerchantRepository: ProfileUrlNameFetchableRepository {
+  func fetchNameAndProfilePictureUrl(ofUserWithId userId: String) -> AnyPublisher<(name: String, profilePictureUrl: URL?), Error> {
+    Future { [weak self] promise in
+      guard let self = self else { return }
+      let docRef = self.db.collection(self.path).document(userId)
+      docRef.getDocument { snapshot, error in
+        guard error == nil else { return promise(.failure(error!)) }
+        if let snapshot = snapshot,
+           snapshot.exists,
+           let merchant = snapshot.data().flatMap(Merchant.init(object:))
+        {
+          return promise(.success((merchant.name, merchant.logoUrl)))
+        } else {
+          let error = NSError(
+            domain: "",
+            code: 0,
+            userInfo: [NSLocalizedDescriptionKey: "Unable to retrieve merchant information"]
+          )
+          return promise(.failure(error))
+        }
+      }
+    }
+    .eraseToAnyPublisher()
+  }
+}

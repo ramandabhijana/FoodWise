@@ -33,6 +33,20 @@ public final class StorageService {
     }.eraseToAnyPublisher()
   }
   
+  public func deletePictureData(at path: Path) -> AnyPublisher<Void, Error> {
+    Future { [weak self] promise in
+      self?.storage.child(path.stringIdentifier).delete { error in
+        guard error == nil else {
+          print("Failure deleting picture at path: \(path.stringIdentifier) with error: \(error!)")
+          promise(.failure(error!))
+          return
+        }
+        promise(.success(()))
+      }
+    }.eraseToAnyPublisher()
+    
+  }
+  
   public func deletePicture(path: Path) async {
     do {
       try await storage.child(path.stringIdentifier).delete()
@@ -48,6 +62,7 @@ public extension StorageService {
     case profilePictures(fileName: String)
     case chatPictures(fileName: String)
     case foodPictures(fileName: String)
+    case donationPictures(fileName: String)
     
     var stringIdentifier: String {
       switch self {
@@ -57,6 +72,8 @@ public extension StorageService {
         return "chat_pictures/\(name)"
       case .foodPictures(let name):
         return "food_pictures/\(name)"
+      case .donationPictures(let name):
+        return "donation_pictures/\(name)"
       }
     }
   }

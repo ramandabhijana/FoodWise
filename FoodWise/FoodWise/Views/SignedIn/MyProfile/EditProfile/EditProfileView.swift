@@ -104,6 +104,7 @@ struct EditProfileView: View {
       .animation(.easeOut, value: keyboard.currentHeight)
     }
     .onAppear {
+      setNavigationBarColor(withStandardColor: .primaryColor, andScrollEdgeColor: .primaryColor)
       NotificationCenter.default.post(
         name: .tabBarHiddenNotification,
         object: nil)

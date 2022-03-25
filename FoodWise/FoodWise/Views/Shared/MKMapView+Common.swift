@@ -45,6 +45,11 @@ extension MKMapViewDelegate {
         for: annotation
       )
       return view
+//    case is MKUserLocation:
+//      let annotationView = MKAnnotationView()
+//      annotationView.canShowCallout = false
+//      annotationView.isUserInteractionEnabled = false
+//      return annotationView
     default:
       return nil
     }

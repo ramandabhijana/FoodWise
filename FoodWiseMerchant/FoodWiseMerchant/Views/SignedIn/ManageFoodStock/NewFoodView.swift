@@ -57,6 +57,9 @@ struct NewFoodView: View {
                     .scaledToFill()
                     .frame(width: 70, height: 70)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .onTapGesture {
+//                      var bd = $viewModel.foodImagesData[1]
+                    }
                 } else {
                   RoundedRectangle(cornerRadius: 8)
                     .fill(Color.gray.opacity(0.15))
@@ -90,7 +93,7 @@ struct NewFoodView: View {
               }
             }
         }
-        
+    
         InputFieldContainer(
           isError: !(viewModel.nameValid ?? true),
           label: "Name",

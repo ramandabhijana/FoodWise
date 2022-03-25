@@ -8,10 +8,36 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
-struct NearbyMerchantCell: View {
+struct NearbyMerchantCell<Destination: View>: View {
   var merchant: Merchant?
+  let buildDestination: (() -> Destination)?
+  
+  init(
+    merchant: Merchant?,
+    buildDestination: @autoclosure @escaping () -> Destination
+  ) {
+    self.merchant = merchant
+    self.buildDestination = buildDestination
+  }
+  
+  init(merchant: Merchant?) {
+    self.merchant = merchant
+    self.buildDestination = nil
+  }
   
   var body: some View {
+    if let buildDestination = buildDestination {
+      NavigationLink(
+        destination: LazyView(buildDestination()),
+        label: buildView
+      )
+      .disabled(merchant == nil)
+    } else {
+      buildView()
+    }
+  }
+  
+  private func buildView() -> some View {
     RoundedRectangle(cornerRadius: 10)
       .fill(Color.white)
       .frame(height: 110)
@@ -32,7 +58,9 @@ struct NearbyMerchantCell: View {
             HStack {
               Image(systemName: "mappin.and.ellipse")
               Text(merchant?.location.geocodedLocation ?? "Store Location")
-            }.font(.footnote)
+            }
+            .font(.footnote)
+            .foregroundColor(.black)
             Text(merchant?.storeType ?? "Store type")
               .font(.caption)
               .foregroundColor(.black)
@@ -42,12 +70,7 @@ struct NearbyMerchantCell: View {
         }
         .padding()
       }
-    
+      .redacted(reason: merchant == nil ? .placeholder : [])
   }
 }
 
-//struct NearbyMerchantCell_Previews: PreviewProvider {
-//  static var previews: some View {
-//    NearbyMerchantCell(merchant: <#Merchant#>)
-//  }
-//}

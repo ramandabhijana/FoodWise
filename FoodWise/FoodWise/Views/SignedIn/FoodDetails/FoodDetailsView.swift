@@ -135,19 +135,30 @@ struct FoodDetailsView: View {
               height: 65
             )
             divider
-              
-            HStack(spacing: 20) {
-              WebImage(url: viewModel.merchant?.logoUrl)
-                .resizable()
-                .frame(width: 50, height: 50)
-                .clipShape(Circle())
-              VStack(alignment: .leading) {
-                Text(viewModel.merchant?.name ?? "Merchant's name")
-                Text(viewModel.merchant?.storeType ?? "Store Type")
-                  .font(.footnote)
+            NavigationLink {
+              LazyView(MerchantDetailsView(
+                viewModel: .init(
+                  merchant: viewModel.merchant!,
+                  merchantRepository: viewModel.merchantRepository,
+                  foodRepository: viewModel.foodRepository))
+              )
+            } label: {
+              HStack(spacing: 20) {
+                WebImage(url: viewModel.merchant?.logoUrl)
+                  .resizable()
+                  .frame(width: 50, height: 50)
+                  .clipShape(Circle())
+                VStack(alignment: .leading) {
+                  Text(viewModel.merchant?.name ?? "Merchant's name")
+                  Text(viewModel.merchant?.storeType ?? "Store Type")
+                    .font(.footnote)
+                }
+                .foregroundColor(.black)
               }
+              .frame(width: contentWidth, alignment: .leading)
             }
-            .frame(width: contentWidth, alignment: .leading)
+            .disabled(viewModel.merchant == nil)
+
             divider
             
             VStack(alignment: .leading, spacing: 10) {
@@ -269,36 +280,47 @@ struct FoodDetailsView: View {
               y: -5)
           GeometryReader { proxy in
             HStack(alignment: .center) {
+              Button(action: viewModel.goToChatView) {
+                RoundedRectangle(cornerRadius: 10)
+                  .strokeBorder(Color.accentColor, lineWidth: 3)
+                  .overlay(
+                    Image(systemName: "text.bubble.fill")
+                      .foregroundColor(.accentColor)
+                      .font(.title2)
+                  )
+                  .background(
+                    RoundedRectangle(cornerRadius: 10)
+                      .fill(Color.white)
+                  )
+              }
+              .overlay {
+                NavigationLink(
+                  isActive: $viewModel.showingChatView,
+                  destination: { LazyView(ChatRoomView(userId: viewModel.customerId!, otherUserType: kMerchantType, otherUserProfilePictureUrl: viewModel.merchant?.logoUrl, otherUserName: viewModel.merchant?.name, otherUserId: viewModel.merchant!.id)) },
+                  label: EmptyView.init)
+              }
               Button(
-                action: {},
-                label: {
-                  RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(Color.accentColor, lineWidth: 3)
-                    .overlay(
-                      Image(systemName: "text.bubble.fill")
-                        .foregroundColor(.accentColor)
-                        .font(.title2)
-                    )
-                    .background(
-                      RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.white)
-                    )
-                })
-              Button(
-                action: {},
+                action: { viewModel.addToBag() },
                 label: {
                   RoundedRectangle(cornerRadius: 10)
                     .fill(Color.accentColor)
                     .frame(width: proxy.size.width * 0.78)
                     .overlay {
                       HStack {
-                        Image(systemName: "bag.fill.badge.plus")
-                        Text("Add to Bag")
-                          .bold()
+                        if !viewModel.foodOutOfStock {
+                          Image(systemName: "bag.fill.badge.plus")
+                          Text("Add to Bag")
+                            .bold()
+                        } else {
+                          Text("Out of Stock")
+                            .bold()
+                        }
+                        
                       }
                       .foregroundColor(.white)
                     }
                 })
+                .disabled(viewModel.foodOutOfStock)
             }
             .frame(
               width: UIScreen.main.bounds.width - 30,
@@ -324,8 +346,40 @@ struct FoodDetailsView: View {
             .padding()
           }
       }
-      
-      
+      .confirmationDialog(
+        "You can only shop from one merchant at a time!",
+        isPresented: $viewModel.showingDifferentMerchantAlert,
+        titleVisibility: .visible,
+        actions: {
+          Button("Add anyway") {
+            viewModel.replaceBagItems()
+          }
+        },
+        message: {
+          Text("If you still want to put this food in your bag, all the items in your bag at the moment will be removed. You may review your bag first.")
+        }
+      )
+      /*
+       .confirmationDialog(
+         removeFoodViewModel.deleteConfirmationAlertTitle,
+         isPresented: $removeFoodViewModel.showingDeletionConfirmationAlert,
+         titleVisibility: .visible,
+         actions: {
+           Button("Remove", role: .destructive) {
+             if let food = removeFoodViewModel.currentSelectedFood {
+               removeFoodViewModel.removeFood(food)
+             }
+           }
+           Button("Cancel", role: .cancel) {
+             removeFoodViewModel.currentSelectedFood = nil
+             removeFoodViewModel.showingDeletionConfirmationAlert = false
+           }
+         },
+         message: {
+           Text(removeFoodViewModel.deletionConfirmationMessage)
+         }
+       )
+       */
       
       
     }
@@ -339,13 +393,27 @@ struct FoodDetailsView: View {
       text: Text(viewModel.onUpdateFavoriteList.message),
       shouldNotifyNotificationFeedbackOccurred: true
     )
+    .snackBar(
+      isShowing: $viewModel.showingError,
+      text: Text(viewModel.errorMessage),
+      isError: true
+    )
+    .snackBar(
+      isShowing: $viewModel.showingAddedToBag,
+      text: Text("Food was added to your bag!")
+    )
     .introspectNavigationController { controller in
-      controller.isNavigationBarHidden = true
+      navigationController = controller
+      navigationController?.isNavigationBarHidden = true
     }
     .introspectTabBarController { controller in
       tabBar = controller.tabBar
       controller.tabBar.isHidden = true
     }
+    .onAppear {
+      navigationController?.isNavigationBarHidden = true
+    }
+    
   }
   
   private var divider: some View {
@@ -385,11 +453,11 @@ struct FoodDetailsView: View {
   
 }
 
-struct FoodDetailsView_Previews: PreviewProvider {
-  static var previews: some View {
-    FoodDetailsView(viewModel: .init(food: .sampleData.first!, foodRepository: .init()))
-  }
-}
+//struct FoodDetailsView_Previews: PreviewProvider {
+//  static var previews: some View {
+//    FoodDetailsView(viewModel: .init(food: .sampleData.first!, foodRepository: .init()))
+//  }
+//}
 
 private extension CGFloat {
   static let headerImageHeight = UIScreen.main.bounds.height / 2.2

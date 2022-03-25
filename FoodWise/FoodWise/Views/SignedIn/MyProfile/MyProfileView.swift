@@ -93,17 +93,27 @@ struct MyProfileView: View {
               SettingsMoreItemView(
                 imgSystemName: "banknote",
                 title: "Wallet",
-                subtitle: "Check your balance, top-up, and more"
+                subtitle: "Check your balance, top-up, and more",
+                goToDestination: {
+                  LazyView(WalletDetailsView(
+                    viewModel: WalletDetailsViewModel(userId: customer.id)))
+                }
               )
               SettingsMoreItemView(
                 imgSystemName: "house",
                 title: "Shipping Address",
-                subtitle: "Manage your shipping address"
+                subtitle: "Manage your shipping address",
+                goToDestination: {
+                  LazyView(Text("Coming soon"))
+                }
               )
               SettingsMoreItemView(
                 imgSystemName: "archivebox",
                 title: "Order History",
-                subtitle: "See what you've ordered in the past"
+                subtitle: "See what you've ordered in the past",
+                goToDestination: {
+                  LazyView(Text("Coming soon"))
+                }
               )
               
               RoundedRectangle(cornerRadius: 0)
@@ -140,16 +150,23 @@ struct MyProfileView: View {
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
-          let appearance = UINavigationBarAppearance()
-          appearance.configureWithTransparentBackground()
-          appearance.backgroundColor = UIColor(named: "BackgroundColor")
-          UINavigationBar.appearance().standardAppearance = appearance
-          UINavigationBar.appearance().tintColor = .black
+//          let appearance = UINavigationBarAppearance()
+//          appearance.configureWithTransparentBackground()
+//          appearance.backgroundColor = UIColor(named: "BackgroundColor")
+//          UINavigationBar.appearance().scrollEdgeAppearance = appearance
+//          UINavigationBar.appearance().standardAppearance = appearance
+//          UINavigationBar.appearance().tintColor = .black
           
+//          NotificationCenter.default.post(name: .navBarChangeBackgroundToBackgroundColorNotification, object: nil)
+          setNavigationBarColor(withStandardColor: .backgroundColor, andScrollEdgeColor: .backgroundColor)
+          NotificationCenter.default.post(
+            name: .tabBarShownNotification,
+            object: nil)
           NotificationCenter.default.post(
             name: .tabBarChangeBackgroundToBackgroundColorNotification,
             object: nil)
         }
+        
         .confirmationDialog(
           "Are you sure want to sign out?",
           isPresented: $showingSignOutDialog,
@@ -182,19 +199,23 @@ struct MyProfileView_Previews: PreviewProvider {
 }
 
 private extension MyProfileView {
-  struct SettingsMoreItemView: View {
+  struct SettingsMoreItemView<Destination: View>: View {
     let imgSystemName: String
     let title: String
     let subtitle: String
+    let goToDestination: () -> Destination
     
     var body: some View {
-      HStack(spacing: 25) {
-        Image(systemName: imgSystemName)
-        VStack(alignment: .leading) {
-          Text(title)
-          Text(subtitle)
-            .font(.caption)
-            .foregroundColor(.secondary)
+      NavigationLink(destination: goToDestination) {
+        HStack(spacing: 25) {
+          Image(systemName: imgSystemName)
+            .foregroundColor(.black)
+          VStack(alignment: .leading) {
+            Text(title).foregroundColor(.black)
+            Text(subtitle)
+              .font(.caption)
+              .foregroundColor(.secondary)
+          }
         }
       }
     }

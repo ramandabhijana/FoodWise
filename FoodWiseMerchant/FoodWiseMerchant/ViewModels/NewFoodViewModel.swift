@@ -124,8 +124,8 @@ class NewFoodViewModel: ObservableObject {
           categories: selectedCategories,
           stock: stock!,
           keywords: {
-            var keywords = keywords.components(separatedBy: ", ")
-            keywords.append(name)
+            var keywords = keywords.lowercased().components(separatedBy: ", ")
+            keywords.append(name.lowercased())
             return keywords
           }(),
           description: description,

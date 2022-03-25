@@ -46,6 +46,13 @@
 		EB4A4A23275637A800B35CEF /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4A4A22275637A800B35CEF /* MainView.swift */; };
 		EB4A4A25275637D600B35CEF /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4A4A24275637D600B35CEF /* MainViewModel.swift */; };
 		EB4A4A2727563A5600B35CEF /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4A4A2627563A5600B35CEF /* SignInViewModel.swift */; };
+		EB646B7127E1D5910065E666 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB646B7027E1D5910065E666 /* Haptics.swift */; };
+		EB646B7427E1D6880065E666 /* DrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB646B7327E1D6880065E666 /* DrawerView.swift */; };
+		EB646B7627E1D6C00065E666 /* DrawerMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB646B7527E1D6C00065E666 /* DrawerMenuButton.swift */; };
+		EB646B7827E1D77F0065E666 /* UINavigationController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB646B7727E1D77F0065E666 /* UINavigationController+.swift */; };
+		EB646B7A27E1DF3E0065E666 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB646B7927E1DF3E0065E666 /* HomeViewModel.swift */; };
+		EB646B7C27E1E2660065E666 /* CourierSessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB646B7B27E1E2660065E666 /* CourierSessionRepository.swift */; };
+		EB646B7E27E1E2780065E666 /* CourierSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB646B7D27E1E2780065E666 /* CourierSession.swift */; };
 		EBE975EE2754DE2300FD380B /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE975EB2754DE2200FD380B /* LazyView.swift */; };
 		EBE975EF2754DE2300FD380B /* PHPickerViewController.View.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE975EC2754DE2300FD380B /* PHPickerViewController.View.swift */; };
 		EBE975F02754DE2300FD380B /* Snackbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE975ED2754DE2300FD380B /* Snackbar.swift */; };
@@ -111,6 +118,13 @@
 		EB4A4A22275637A800B35CEF /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		EB4A4A24275637D600B35CEF /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		EB4A4A2627563A5600B35CEF /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
+		EB646B7027E1D5910065E666 /* Haptics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Haptics.swift; path = ../../../FoodWise/FoodWise/Utils/Haptics.swift; sourceTree = "<group>"; };
+		EB646B7327E1D6880065E666 /* DrawerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerView.swift; sourceTree = "<group>"; };
+		EB646B7527E1D6C00065E666 /* DrawerMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerMenuButton.swift; sourceTree = "<group>"; };
+		EB646B7727E1D77F0065E666 /* UINavigationController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+.swift"; sourceTree = "<group>"; };
+		EB646B7927E1DF3E0065E666 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		EB646B7B27E1E2660065E666 /* CourierSessionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourierSessionRepository.swift; sourceTree = "<group>"; };
+		EB646B7D27E1E2780065E666 /* CourierSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourierSession.swift; sourceTree = "<group>"; };
 		EBE975EB2754DE2200FD380B /* LazyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LazyView.swift; path = ../../../../FoodWise/FoodWise/Views/Shared/LazyView.swift; sourceTree = "<group>"; };
 		EBE975EC2754DE2300FD380B /* PHPickerViewController.View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PHPickerViewController.View.swift; path = ../../../../FoodWise/FoodWise/Views/Shared/PHPickerViewController.View.swift; sourceTree = "<group>"; };
 		EBE975ED2754DE2300FD380B /* Snackbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Snackbar.swift; path = ../../../../FoodWise/FoodWise/Utils/Snackbar.swift; sourceTree = "<group>"; };
@@ -225,6 +239,8 @@
 				EB171CAD2751E8B400F9289F /* SwiftUI.Color+.swift */,
 				EB171CAE2751E8B400F9289F /* SwiftUI.View+.swift */,
 				EB171CAF2751E8B400F9289F /* Double+.swift */,
+				EB646B7027E1D5910065E666 /* Haptics.swift */,
+				EB646B7727E1D77F0065E666 /* UINavigationController+.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -238,6 +254,7 @@
 				EB171CB42751E8B400F9289F /* Food.swift */,
 				EB4A4A122755F43F00B35CEF /* Courier.swift */,
 				EB4A4A1D2755F6E100B35CEF /* DrivingLicense.swift */,
+				EB646B7D27E1E2780065E666 /* CourierSession.swift */,
 				EB171CB52751E8B400F9289F /* LocationManager.swift */,
 			);
 			path = Models;
@@ -263,6 +280,7 @@
 				EBE975EC2754DE2300FD380B /* PHPickerViewController.View.swift */,
 				EBE975ED2754DE2300FD380B /* Snackbar.swift */,
 				EBE975FA2754F6A600FD380B /* VNDocumentCameraVC+.swift */,
+				EB646B7227E1D65A0065E666 /* Drawer */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -296,6 +314,7 @@
 			isa = PBXGroup;
 			children = (
 				EB4A4A102755F42A00B35CEF /* CourierRepository.swift */,
+				EB646B7B27E1E2660065E666 /* CourierSessionRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -318,6 +337,15 @@
 			path = SignedIn;
 			sourceTree = "<group>";
 		};
+		EB646B7227E1D65A0065E666 /* Drawer */ = {
+			isa = PBXGroup;
+			children = (
+				EB646B7327E1D6880065E666 /* DrawerView.swift */,
+				EB646B7527E1D6C00065E666 /* DrawerMenuButton.swift */,
+			);
+			path = Drawer;
+			sourceTree = "<group>";
+		};
 		EBE975F12754DE4000FD380B /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -326,6 +354,7 @@
 				EBE975F42754E03C00FD380B /* DrivingLicenseViewModel.swift */,
 				EB4A4A24275637D600B35CEF /* MainViewModel.swift */,
 				EB1779192757D3980033EAC3 /* EditProfileViewModel.swift */,
+				EB646B7927E1DF3E0065E666 /* HomeViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -476,7 +505,9 @@
 				EB171CC42751E8B400F9289F /* FWAnnotation.swift in Sources */,
 				EB171CBF2751E8B400F9289F /* UIBlurEffect.swift in Sources */,
 				EB171CC12751E8B400F9289F /* SwiftUI.Color+.swift in Sources */,
+				EB646B7E27E1E2780065E666 /* CourierSession.swift in Sources */,
 				EB171CC62751E8B400F9289F /* MapAnnotation.swift in Sources */,
+				EB646B7427E1D6880065E666 /* DrawerView.swift in Sources */,
 				EB171CC72751E8B400F9289F /* Food.swift in Sources */,
 				EBE975F02754DE2300FD380B /* Snackbar.swift in Sources */,
 				EB4A4A0F2755F3ED00B35CEF /* StorageService.swift in Sources */,
@@ -492,8 +523,12 @@
 				EB4A4A212756371F00B35CEF /* HomeView.swift in Sources */,
 				EB17791C2757D3F20033EAC3 /* EditProfileView.swift in Sources */,
 				EB4A4A112755F42A00B35CEF /* CourierRepository.swift in Sources */,
+				EB646B7827E1D77F0065E666 /* UINavigationController+.swift in Sources */,
+				EB646B7C27E1E2660065E666 /* CourierSessionRepository.swift in Sources */,
+				EB646B7A27E1DF3E0065E666 /* HomeViewModel.swift in Sources */,
 				EB171CC02751E8B400F9289F /* SwiftUI.Image+.swift in Sources */,
 				EB171C802751E81E00F9289F /* FoodWiseCourierApp.swift in Sources */,
+				EB646B7127E1D5910065E666 /* Haptics.swift in Sources */,
 				EB171CC32751E8B400F9289F /* Double+.swift in Sources */,
 				EBE975F32754DE6000FD380B /* SignUpViewModel.swift in Sources */,
 				EB171CC52751E8B400F9289F /* LocationGeocoder.swift in Sources */,
@@ -503,6 +538,7 @@
 				EB171CBE2751E8B400F9289F /* SwiftUI.LinearGradient+.swift in Sources */,
 				EB171CC82751E8B400F9289F /* LocationManager.swift in Sources */,
 				EBE975F52754E03C00FD380B /* DrivingLicenseViewModel.swift in Sources */,
+				EB646B7627E1D6C00065E666 /* DrawerMenuButton.swift in Sources */,
 				EB171CCE2751F99800F9289F /* DrivingLicenseView.swift in Sources */,
 				EB171CCB2751E8B400F9289F /* SignInView.swift in Sources */,
 				EB17791A2757D3980033EAC3 /* EditProfileViewModel.swift in Sources */,
@@ -672,6 +708,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access needed";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Food Wise needs your location access to help you get a customer";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -702,6 +739,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access needed";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Food Wise needs your location access to help you get a customer";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

@@ -16,7 +16,6 @@ final class FoodRepository {
   
   public init() { }
   
-  // TODO: add parameter (eg matching query, category, best deals)
   func getAllFoods() -> AnyPublisher<[Food], Error> {
     Future { [weak self] promise in
       guard let self = self else { return }
@@ -157,6 +156,38 @@ final class FoodRepository {
         query = collectionRef
           .whereField("price", isLessThanOrEqualTo: 10_000)
       }
+      query.getDocuments { snapshot, error in
+        guard error == nil else { return promise(.failure(error!)) }
+        let foods = snapshot?.documents.compactMap{ document in
+          do {
+            return try document.data(as: Food.self)
+          } catch let error {
+            print("Couldn't create Food from document. \(error)")
+            return nil
+          }
+        } ?? [Food]()
+        return promise(.success(foods))
+      }
+    }.eraseToAnyPublisher()
+  }
+  
+  func getAllFoodsForMerchant(withId merchantId: String) -> AnyPublisher<[Food], Error> {
+    Future { [weak self] promise in
+      guard let self = self else { return }
+      let collectionRef = self.db.collection(self.path)
+//      var query: Query
+//      if let category = category {
+//        query = collectionRef
+//          .whereField("categories", arrayContains: category.asObject)
+//          .whereField("price", isLessThanOrEqualTo: 10_000)
+//      } else {
+//        query = collectionRef
+//          .whereField("price", isLessThanOrEqualTo: 10_000)
+//      }
+      let query = collectionRef
+        .whereField("merchantId", isEqualTo: merchantId)
+//        .order(by: "merchantId")
+//        .order(by: "stock", descending: true)
       query.getDocuments { snapshot, error in
         guard error == nil else { return promise(.failure(error!)) }
         let foods = snapshot?.documents.compactMap{ document in

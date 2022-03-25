@@ -6,7 +6,88 @@
 //
 
 import SwiftUI
+import MapKit
 
+struct HomeView: View {
+  @EnvironmentObject var mainViewModel: MainViewModel
+  @EnvironmentObject var drawerStateManager: DrawerStateManager
+  @StateObject private var viewModel: HomeViewModel
+  @State private var coordinateRegion: MKCoordinateRegion = .init(
+    center: .init(),
+    span: .init(latitudeDelta: 10, longitudeDelta: 10))
+  
+  init(viewModel: HomeViewModel) {
+    _viewModel = StateObject(wrappedValue: viewModel)
+  }
+  
+  var body: some View {
+    NavigationView {
+      Map(coordinateRegion: $coordinateRegion, showsUserLocation: true)
+        .navigationTitle("Courier App")
+        .navigationBarTitleDisplayMode(.inline)
+        .ignoresSafeArea()
+        .toolbar {
+          ToolbarItem(placement: .navigationBarLeading) {
+            Button(action: drawerStateManager.showView) {
+              if !drawerStateManager.showingView {
+                Image(systemName: "text.justify")
+                  .foregroundColor(.init(uiColor: .darkGray))
+              }
+            }
+          }
+        }
+        .overlay(alignment: .top) {
+          RoundedRectangle(cornerRadius: 8)
+            .fill(Color.white)
+            .frame(height: 85)
+            .shadow(radius: 5)
+            .overlay {
+              HStack {
+                VStack(alignment: .leading) {
+                  Text("Status")
+                    .font(.subheadline)
+                  Text(viewModel.statusText)
+                    .font(.headline)
+                    .fontWeight(.bold)
+                }
+                Spacer()
+                Toggle(isOn: $viewModel.isOnline, label: EmptyView.init)
+              }
+              .padding()
+            }
+            .padding()
+        }
+        .overlay(alignment: .bottom) {
+          Text(viewModel.isOnline ? viewModel.onlineInfoText : viewModel.offlineInfoText)
+            .font(.footnote)
+            .foregroundColor(viewModel.isOnline ? .white : .black)
+            .padding(.horizontal)
+            .padding(.vertical, 10)
+            .background(
+              RoundedRectangle(cornerRadius: 10)
+                .fill(Color.init(uiColor: viewModel.isOnline ? .darkGray : .white))
+            )
+            .padding(.bottom, 32)
+            .animation(.easeIn, value: viewModel.isOnline)
+        }
+        .onAppear {
+          setNavigationBarColor(withStandardColor: .backgroundColor, andScrollEdgeColor: .backgroundColor)
+        }
+        .onReceive(viewModel.coordinatePublisher) { coordinate in
+          coordinateRegion = .init(center: coordinate,
+                                   span: .init(latitudeDelta: 0.01, longitudeDelta: 0.01))
+        }
+        .onReceive(viewModel.$isOnline) { online in
+          online
+            ? viewModel.createSession(courierId: mainViewModel.courier.id)
+            : viewModel.removeSession()
+        }
+    }
+  }
+}
+
+
+/*
 struct HomeView: View {
   @EnvironmentObject var mainViewModel: MainViewModel
   @State private var showingSignOutDialog = false
@@ -92,3 +173,4 @@ struct HomeView_Previews: PreviewProvider {
     HomeView()
   }
 }
+*/

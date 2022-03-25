@@ -28,8 +28,12 @@ struct SearchView: View {
           .font(.headline)
           .bold()
           .listRowSeparator(.hidden)
-        ForEach(keywordsHistory, id: \.id) {
-          Text($0.value ?? "N/A")
+        ForEach(keywordsHistory, id: \.id) { keyword in
+          Text(keyword.value ?? "N/A")
+            .onTapGesture {
+              searchText = keyword.value ?? ""
+              onSubmit()
+            }
         }
         .onDelete { indices in
           self.keywordsHistory.delete(at: indices,
@@ -62,27 +66,36 @@ struct SearchView: View {
         NotificationCenter.default.post(
           name: .tabBarHiddenNotification,
           object: nil)
+        setNavigationBarColor(withStandardColor: .white, andScrollEdgeColor: .white)
       }
-      .introspectNavigationController { controller in
-        let a2 = UINavigationBarAppearance()
-        a2.configureWithOpaqueBackground()
-        a2.backgroundColor = .white
-        controller.navigationBar.standardAppearance = a2
-        controller.navigationBar.scrollEdgeAppearance = a2
+      .onDisappear {
+        NotificationCenter.default.post(
+          name: .tabBarShownNotification,
+          object: nil)
+        setNavigationBarColor(withStandardColor: .backgroundColor, andScrollEdgeColor: .primaryColor)
       }
+//      .introspectNavigationController { controller in
+//        let a2 = UINavigationBarAppearance()
+//        a2.configureWithOpaqueBackground()
+//        a2.backgroundColor = .white
+//        controller.navigationBar.standardAppearance = a2
+//        controller.navigationBar.scrollEdgeAppearance = a2
+//      }
     }
   }
   
   private func didPressEnter() {
-    if !searchText.isEmpty {
-      SearchedKeywordObject.save(.init(value: searchText),
-                                 inViewContext: viewContext)
+    guard !searchText.isEmpty else {
+      dismiss()
+      return
     }
+    SearchedKeywordObject.save(.init(value: searchText),
+                               inViewContext: viewContext)
     onSubmit()
   }
   
   private func dismiss() {
-//    searchText = ""
+    searchText = ""
     withAnimation(.easeIn) { showing.toggle() }
   }
 }

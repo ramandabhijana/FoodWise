@@ -116,7 +116,7 @@ final class CourierRepository {
         guard error == nil else { return promise(.failure(error!)) }
         if let snapshot = snapshot,
            snapshot.exists,
-           let courier = snapshot.data().flatMap(Courier.init(object:))
+           let courier = try? snapshot.data(as: Courier.self)
         {
           return promise(.success(courier))
         } else {

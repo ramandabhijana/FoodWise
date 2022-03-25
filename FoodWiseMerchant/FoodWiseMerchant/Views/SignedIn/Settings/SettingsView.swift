@@ -80,13 +80,19 @@ struct SettingsView: View {
         
         Spacer()
         
-        Button(action: { showingSignOutDialog.toggle() }) {
-          HStack {
-            Image(systemName: "rectangle.portrait.and.arrow.right")
-              .rotation3DEffect(.degrees(180), axis: (x: 0, y:1, z: 0))
-            Text("Sign Out").padding(.leading)
-          }
-          .foregroundColor(.black)
+        Button(action: { showingSignOutDialog = true }) {
+          RoundedRectangle(cornerRadius: 10)
+            .strokeBorder(Color.init(uiColor: .darkGray), lineWidth: 2)
+            .frame(width: UIScreen.main.bounds.width * 0.9, height: 44)
+            .overlay {
+              HStack {
+                Image(systemName: "rectangle.portrait.and.arrow.right")
+                  .rotation3DEffect(.degrees(180), axis: (x: 0, y:1, z: 0))
+                Text("Sign Out").padding(.leading)
+              }
+              .foregroundColor(.black)
+            }
+          
         }
         
       }
@@ -113,7 +119,7 @@ struct SettingsView: View {
     ) {
       Button("Sign Out", role: .destructive, action: signOut)
       Button("Cancel", role: .cancel) {
-        showingSignOutDialog.toggle()
+        showingSignOutDialog = false
       }
     }
   }

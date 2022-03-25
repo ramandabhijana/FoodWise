@@ -11,8 +11,6 @@ struct ManageFoodStockView: View {
   @EnvironmentObject var mainViewModel: MainViewModel
   @StateObject private var viewModel: ManageFoodViewModel
   static private var updateStockViewModel: UpdateStockViewModel!
-//  @State private var showingAddFoodView = false
-  
   @State private var showsUpdateStockView = false
   
   init() {
@@ -46,8 +44,6 @@ struct ManageFoodStockView: View {
         
         ScrollView(showsIndicators: false) {
           LazyVStack(spacing: 24) {
-            
-            
             ForEach(viewModel.foodsList) { food in
               FoodStockCellView(food: food) { tappedFood in
                 Self.updateStockViewModel = UpdateStockViewModel(
@@ -63,23 +59,6 @@ struct ManageFoodStockView: View {
           }.padding(.vertical, 24)
         }
       }
-      
-      
-      
-      
-      
-      
-      /*
-      NavigationLink("New Food") {
-        LazyView(
-          NewFoodView(viewModel: .init(merchantId: mainViewModel.merchant.id,
-                                       manageFoodViewModel: viewModel))
-            .environmentObject(viewModel)
-        )
-      }
-      */
-//        Text("Tap the + button\nto begin with")
-//          .multilineTextAlignment(.center)
         
     }
     .navigationTitle("Manage Food Stock")

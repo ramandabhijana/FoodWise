@@ -22,3 +22,22 @@ extension View {
     }
   }
 }
+
+extension View {
+  func setNavigationBarColor(withStandardColor standardColor: Color, andScrollEdgeColor scrollEdgeColor: Color) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+      NotificationCenter.default.post(
+        name: .updateNavigationBarNotification,
+        object: nil,
+        userInfo: ["standardColor": standardColor, "scrollEdgeColor": scrollEdgeColor])
+    }
+  }
+  
+  func resetNavigationBar() {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+      NotificationCenter.default.post(
+        name: .updateNavigationBarNotification,
+        object: nil)
+    }
+  }
+}

@@ -9,6 +9,10 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import Combine
 
+protocol ProfileUrlNameFetchableRepository: AnyObject {
+  func fetchNameAndProfilePictureUrl(ofUserWithId userId: String) -> AnyPublisher<(name: String, profilePictureUrl: URL?), Error>
+}
+
 final class CustomerRepository: ObservableObject {
   private let db = Firestore.firestore()
   private let path = "customers"
@@ -107,6 +111,32 @@ final class CustomerRepository: ObservableObject {
         promise(.success(customer))
       } catch let error {
         promise(.failure(error))
+      }
+    }
+    .eraseToAnyPublisher()
+  }
+}
+
+extension CustomerRepository: ProfileUrlNameFetchableRepository {
+  func fetchNameAndProfilePictureUrl(ofUserWithId userId: String) -> AnyPublisher<(name: String, profilePictureUrl: URL?), Error> {
+    Future { [weak self] promise in
+      guard let self = self else { return }
+      let docRef = self.db.collection(self.path).document(userId)
+      docRef.getDocument { snapshot, error in
+        guard error == nil else { return promise(.failure(error!)) }
+        if let snapshot = snapshot,
+           snapshot.exists,
+           let customer = snapshot.data().flatMap(Customer.init(object:))
+        {
+          return promise(.success((customer.fullName, customer.profileImageUrl)))
+        } else {
+          let error = NSError(
+            domain: "",
+            code: 0,
+            userInfo: [NSLocalizedDescriptionKey: "Unable to retrieve customer information"]
+          )
+          return promise(.failure(error))
+        }
       }
     }
     .eraseToAnyPublisher()

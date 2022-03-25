@@ -46,7 +46,7 @@ struct NearbyListView: View {
               ForEach(
                 nearbyMerchants.merchants,
                 id: \.id,
-                content: NearbyMerchantCell.init
+                content: buildCell
               )
               .padding(.horizontal)
             }
@@ -56,6 +56,10 @@ struct NearbyListView: View {
       .background(Color.backgroundColor)
     }
     .edgesIgnoringSafeArea(.top)
+  }
+  
+  private func buildCell(_ merchant: Merchant) -> some View {
+    NearbyMerchantCell(merchant: merchant, buildDestination: LazyView(MerchantDetailsView(viewModel: .init(merchant: merchant))))
   }
   
   private func makeHeader(_ textString: String) -> some View {

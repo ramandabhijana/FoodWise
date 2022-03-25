@@ -2,49 +2,19 @@
 //  SelectLocationView.swift
 //  FoodWise
 //
-//  Created by Abhijana Agung Ramanda on 19/11/21.
+//  Created by Abhijana Agung Ramanda on 08/03/22.
 //
 
 import SwiftUI
 import MapKit
-import Combine
-
-struct SelectLocationViewTest: View {
-  @State private var coordinate: CLLocationCoordinate2D? = nil
-  @State private var details = ""
-  
-  var body: some View {
-    NavigationView {
-      VStack {
-        NavigationLink("Select location") {
-          SelectLocationView(viewModel: .init()) { coordinate, details in
-            print(coordinate)
-          
-            self.coordinate = coordinate
-            self.details = details
-          }
-        }
-        if let coordinate = coordinate {
-          Text("coordinate: lat\(coordinate.latitude), long\(coordinate.longitude)")
-          Text(details)
-        }
-      }
-    }
-  }
-}
 
 struct SelectLocationView: View {
   @Environment(\.presentationMode) var presentationMode
+  @FocusState private var detailsFieldFocused: Bool
   @ObservedObject private var viewModel: SelectLocationViewModel
-  private let onSave: (_ coordinate: CLLocationCoordinate2D, _ details: String) -> Void
   
-  typealias SaveAddressCompletion = (_ coordinate: CLLocationCoordinate2D, _ details: String) -> Void
-  
-  init(viewModel: SelectLocationViewModel,
-       onSave: @escaping SaveAddressCompletion)
-  {
+  init(viewModel: SelectLocationViewModel) {
     self.viewModel = viewModel
-    self.onSave = onSave
   }
   
   var body: some View {
@@ -54,13 +24,13 @@ struct SelectLocationView: View {
           region: region,
           coordinate: $viewModel.coordinate
         )
-        .ignoresSafeArea()
+          .ignoresSafeArea()
       }
       .navigationBarHidden(true)
       .overlay(alignment: .top) {
         HStack {
           Button(
-            action: { },
+            action: { presentationMode.wrappedValue.dismiss() },
             label: {
               Image(systemName: "xmark")
                 .foregroundColor(.init(uiColor: .darkGray))
@@ -82,177 +52,108 @@ struct SelectLocationView: View {
         .background(Color.backgroundColor.opacity(0.7))
         .padding(.top, 48) // safe area height
         .edgesIgnoringSafeArea(.top)
-        
-        
       }
       .overlay(alignment: .bottom) {
         if let selectedCoordinate = viewModel.coordinate {
-          VStack(spacing: 16) {
-            VStack(alignment: .leading, spacing: 16) {
-              makeItem(
-                title: "Location",
-                subtitle: viewModel.geocodedLocation
-              )
-              makeItem(
-                title: "Coordinate",
-                subtitle: "(\(selectedCoordinate.latitude), \(selectedCoordinate.longitude))"
-              )
-              
-              VStack(alignment: .leading, spacing: 5) {
-                HStack {
-                  Text("Address Details").bold()
-                  Text("(Optional)").fontWeight(.light).font(.subheadline)
+          VStack {
+            VStack(spacing: 16) {
+              VStack(alignment: .leading, spacing: 16) {
+                makeItem(
+                  title: "Location",
+                  subtitle: viewModel.geocodedLocation
+                )
+                makeItem(
+                  title: "Coordinate",
+                  subtitle: "(\(selectedCoordinate.latitude), \(selectedCoordinate.longitude))"
+                )
+                
+                VStack(alignment: .leading, spacing: 5) {
+                  HStack {
+                    Text("Address Details").bold()
+                    Text("(Optional)").fontWeight(.light).font(.subheadline)
+                  }
+                  TextEditor(text: $viewModel.addressDetails)
+                    .disableAutocorrection(true)
+                    .frame(height: 90)
+                    .focused($detailsFieldFocused)
                 }
-                TextEditor(text: $addressDetailsText)
-                  .disableAutocorrection(true)
-                  .frame(height: 90)
-  //                .if(textEditorText.isEmpty) { view in
-  //                  view.overlay(alignment: .topLeading) {
-  //                    Text("You can specify things like house number, postal code, floor, etc.")
-  //                      .foregroundColor(.secondary.opacity(0.5))
-  //                      .padding(5)
-  //                  }
-  //                }
+              }
+              .padding()
+              
+              .background(Color.backgroundColor)
+              .cornerRadius(20)
+              
+              HStack {
+                Button(
+                  action: viewModel.resetCoordinate,
+                  label: {
+                    RoundedRectangle(cornerRadius: 10)
+                      .fill(Color.white)
+                      .frame(height: 48)
+                      .overlay {
+                        RoundedRectangle(cornerRadius: 10)
+                          .strokeBorder(Color.accentColor)
+                      }
+                      .overlay {
+                        Text("Reselect")
+                          .bold()
+                      }
+                  }
+                )
+                
+                Button(
+                  action: {
+                    //                    onSave(selectedCoordinate, viewModel.addressDetails)
+                    presentationMode.wrappedValue.dismiss()
+                  },
+                  label: {
+                    RoundedRectangle(cornerRadius: 10)
+                      .fill(Color.accentColor)
+                      .frame(height: 48)
+                      .overlay {
+                        Text("Save")
+                          .bold()
+                          .foregroundColor(.white)
+                      }
+                  }
+                )
               }
             }
-            .padding()
+            .frame(width: UIScreen.main.bounds.width * 0.9, alignment: .leading)
+            .padding(.bottom, 28)
             
-            .background(Color.backgroundColor)
-            .cornerRadius(20)
-            
-            HStack {
-              Button(
-                action: viewModel.resetCoordinate,
-                label: {
-                  RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.white)
-                    .frame(height: 48)
-                    .overlay {
-                      RoundedRectangle(cornerRadius: 10)
-                        .strokeBorder(Color.accentColor)
-                    }
-                    .overlay {
-                      Text("Reselect")
-                        .bold()
-                    }
+            if detailsFieldFocused {
+              HStack {
+                Spacer()
+                Button("Done") {
+                  detailsFieldFocused.toggle()
                 }
-              )
-              
-              Button(
-                action: {
-                  onSave(selectedCoordinate, addressDetailsText)
-                  presentationMode.wrappedValue.dismiss()
-                },
-                label: {
-                  RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.accentColor)
-                    .frame(height: 48)
-                    .overlay {
-                      Text("Save")
-                        .bold()
-                        .foregroundColor(.white)
-                    }
-                }
-              )
+              }
+              .padding()
+              .background(.thinMaterial)
             }
-            
-            
           }
-          .frame(width: UIScreen.main.bounds.width * 0.9, alignment: .leading)
-          .padding(.bottom, 28)
           .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.2)))
-          
-//          .opacity(viewModel.coordinateIsSet ? 1 : 0)
-//          .animation(.easeIn, value: viewModel.coordinateIsSet)
-        } 
+        }
       }
-      
     } else {
-      Text("Please allow location access")
+      Text("Loading Region...")
+        .navigationBarHidden(false)
+        .toolbar {
+          ToolbarItem(placement: .navigationBarLeading) {
+            Button("\(Image(systemName: "xmark"))") { presentationMode.wrappedValue.dismiss() }
+          }
+        }
     }
+    
+    
   }
-  
-  // TODO: Move this and the content of overlay(.top) to another struct
-  @State private var addressDetailsText = ""
-  
   
   func makeItem(title: String, subtitle: String) -> some View {
     VStack(alignment: .leading) {
       Text(title).bold()
       Text(subtitle)
     }
-  }
-}
-
-struct SelectocationView_Previews: PreviewProvider {
-  static var previews: some View {
-    SelectLocationView(viewModel: .init(coordinate: CLLocationCoordinate2D(latitude: -8.6380511,
-                                                                           longitude: 115.2358704)), onSave: {_, _ in })
-  }
-}
-
-
-
-class SelectLocationViewModel: ObservableObject {
-  
-  //
-  @Published public private(set) var region: MKCoordinateRegion? = MKCoordinateRegion(
-    center: CLLocationCoordinate2D(latitude: -8.6380511, // -8.63 5 0511
-                                   longitude: 115.2357704),
-    span: MKCoordinateSpan(latitudeDelta: 0.005,
-                           longitudeDelta: 0.005)
-  )
-  @Published public private(set) var geocodedLocation = ""
-  
-//  @Published public private(set) var region: MKCoordinateRegion? = nil
-//  @Published public private(set) var geocodedLocation = ""
-  @Published internal var coordinate: CLLocationCoordinate2D? {
-    didSet {
-      print("coordinate was set: \(String(describing: coordinate))")
-      guard let coordinate = coordinate else {
-        coordinateIsSet = false
-        return
-      }
-      coordinateIsSet = true
-//      Task { await geocodeLocation(coordinate: coordinate) }
-    }
-  }
-  @Published private(set) var coordinateIsSet = false
-  
-  private var subscriptions = Set<AnyCancellable>()
-  
-  init(coordinate: CLLocationCoordinate2D? = nil) {
-    self.coordinate = coordinate
-    if let coordinate = coordinate {
-      self.region = MKCoordinateRegion(center: coordinate, span: span)
-    } else {
-      LocationManager.shared.locationPublisher
-        .sink { [weak self] location in
-          guard let self = self else { return }
-          print("Received location: \(location)")
-          self.region = MKCoordinateRegion(center: location.coordinate,
-                                           span: span)
-          LocationManager.shared.stopLocationService()
-        }
-        .store(in: &subscriptions)
-    }
-  }
-  
-  @MainActor
-  private func geocodeLocation(coordinate: CLLocationCoordinate2D) async {
-    do {
-      let location = CLLocation(latitude: coordinate.latitude,
-                                longitude: coordinate.longitude)
-      geocodedLocation = try await Geocoder.shared.reverseGeocode(location: location)
-    } catch let error as GeocodingError {
-      geocodedLocation = error.rawValue
-    } catch {
-      print(error)
-    }
-  }
-  
-  func resetCoordinate() {
-    coordinate = nil
   }
 }
 
@@ -306,6 +207,10 @@ private extension SelectLocationView {
     }
     
     func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
+      let userView = mapView.view(for: mapView.userLocation)
+      userView?.isUserInteractionEnabled = false
+      userView?.isEnabled = false
+      userView?.canShowCallout = false
       guard mapView.annotations.count > 1 else { return }
       print("mapView.annotations: \(mapView.annotations)")
       let addedAnnotation = mapView.annotations.first { $0 is FWAnnotation }
@@ -334,6 +239,3 @@ private extension MKMapView {
     }
   }
 }
-
-fileprivate let span = MKCoordinateSpan(latitudeDelta: 0.005,
-                                        longitudeDelta: 0.005)

@@ -9,6 +9,7 @@ import SwiftUI
 import Firebase
 import GoogleSignIn
 import CoreData
+import SquareInAppPaymentsSDK
 
 @main
 struct FoodWiseApp: App {
@@ -42,7 +43,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
   ) -> Bool {
     FirebaseApp.configure()
-    print("Documents Directory: ", FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last ?? "Not Found!")
+//    print("Documents Directory: ", FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last ?? "Not Found!")
+    SQIPInAppPaymentsSDK.squareApplicationID = SquareConstants.applicationId
     return true
   }
   

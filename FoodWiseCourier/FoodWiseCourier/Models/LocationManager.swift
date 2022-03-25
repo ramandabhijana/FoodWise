@@ -22,7 +22,6 @@ final class LocationManager: NSObject {
   private override init() {
     super.init()
     locationManager.requestWhenInUseAuthorization()
-    
     locationManager.delegate = self
   }
   

@@ -16,7 +16,7 @@ class RootViewModel: ObservableObject {
   @Published private(set) var customer: Customer?
   @Published var selectedTab = 0 {
     didSet {
-      if selectedTab == 3 && AuthenticationService.shared.user == nil {
+      if selectedTab != 0 && AuthenticationService.shared.user == nil {
         NotificationCenter.default.post(
           name: .signInRequiredNotification,
           object: nil
@@ -54,6 +54,7 @@ class RootViewModel: ObservableObject {
   
   func fetchCustomerIfUserExist() {
     if let user = AuthenticationService.shared.signedInUser {
+      
       customerRepo.getCustomer(withId: user.uid)
         .sink { completion in
           if case .failure(let error) = completion {
@@ -71,6 +72,7 @@ class RootViewModel: ObservableObject {
 struct RootSignedInView: View {
   @State private var presentingOnboardingView = false
   @State private var tabBarController: UITabBarController?
+  @State private var navigationController: UINavigationController?
   @State var showsTabBar = true
   @StateObject private var viewModel: RootViewModel
   
@@ -89,9 +91,12 @@ struct RootSignedInView: View {
   private let tabBarChangeBackgroundToSecondaryColorPublisher = NotificationCenter.default
     .publisher(for: .tabBarChangeBackgroundToSecondaryColorNotification)
     .receive(on: RunLoop.main)
-  private let appDidBecomeActivePublisher = NotificationCenter.Publisher(
-    center: .default,
-    name: UIApplication.didBecomeActiveNotification)
+  private let navBarChangeBackgroundToPrimaryBackgroundColorPublisher = NotificationCenter.default
+    .publisher(for: .navBarChangeBackgroundToPrimaryBackgroundNotification)
+    .receive(on: RunLoop.main)
+  private let navBarChangeBackgroundToBackgroundColorPublisher = NotificationCenter.default
+    .publisher(for: .navBarChangeBackgroundToBackgroundColorNotification)
+    .receive(on: RunLoop.main)
   
   init() {
     _viewModel = StateObject(wrappedValue: RootViewModel())
@@ -118,11 +123,11 @@ struct RootSignedInView: View {
       .tabItem { Label("Home", systemImage: "house") }
       .tag(0)
       
-      Text("")
+      YourBagView(viewModel: .init())
         .tabItem { Label("Your Bag", systemImage: "bag.fill") }
         .tag(1)
       
-      Text("")
+      SharedFoodsView(viewModel: .init())
         .tabItem { Label("Community", systemImage: "person.3.fill") }
         .tag(2)
       
@@ -135,36 +140,35 @@ struct RootSignedInView: View {
       print("receive sign in req")
       presentingOnboardingView.toggle()
     }
+    .overlay {
+      if viewModel.customer == nil && AuthenticationService.shared.currentUserExist {
+        ZStack {
+          Color.backgroundColor
+            .frame(
+              width: UIScreen.main.bounds.width,
+              height: UIScreen.main.bounds.height
+            )
+          ProgressView()
+            .progressViewStyle(.circular)
+        }
+      }
+    }
     .fullScreenCover(isPresented: $presentingOnboardingView) {
       LazyView(
         WelcomeView {
           viewModel.setCustomer($0)
           presentingOnboardingView = false
         }
-        
       )
     }
     .environmentObject(viewModel)
     .introspectTabBarController { tabBarController = $0 }
+    .introspectNavigationController { navigationController = $0 }
     .onReceive(tabBarHiddenPublisher) { _ in
-//      tabBarController?.setTabBarHidden(true, animated: true)
-//      showsTabBar = false
-//      tabBarController?.setTabBar(hidden: true, animated: true, along: nil)
-//      tabBarController?.tabBar.isHidden = true
-//      tabBarController?.tabBar.layer.zPosition = -1
-//      tabBarController?.tabBar.isUserInteractionEnabled = false
       tabBarController?.setTabBarHidden(true)
     }
     .onReceive(tabBarShownPublisher) { _ in
-//      tabBarController?.setTabBarHidden(false, animated: true)
-//      showsTabBar = true
-//      tabBarController?.setTabBar(hidden: false, animated: true, along: nil)
-//      tabBarController?.tabBar.isHidden = false
-//      tabBarController?.tabBar.layer.zPosition = 0
-//      tabBarController?.tabBar.isUserInteractionEnabled = true
-//      tabBarController?.tabBar.items
       tabBarController?.setTabBarHidden(false)
-      
     }
     .onReceive(tabBarChangeBackgroundToBackgroundColorPublisher) { _ in
       setupTabBarBackgroundColor(withColor: .init(named: "BackgroundColor"))
@@ -172,15 +176,14 @@ struct RootSignedInView: View {
     .onReceive(tabBarChangeBackgroundToSecondaryColorPublisher) { _ in
       setupTabBarBackgroundColor()
     }
-    .onReceive(appDidBecomeActivePublisher) { _ in
-//      print("\ntabBar.ishidden: \(tabBarController?.tabBar.isHidden)\nTabbarhidden: \(tabBarController?.tabBarHidden)")
-//      tabBarController?.updateTabBarFrame()
-//      tabBarController?.setTabBar(hidden: true, animated: false, along: nil)
-      
-//      tabBarController?.setTabBar(hidden: !showsTabBar, animated: true, along: nil)
-      
-      
+    .onReceive(navBarChangeBackgroundToPrimaryBackgroundColorPublisher) { _ in
+      setupNavBarBackgroundColor(withColor: .backgroundColor, scrollEdgeColor: .primaryColor)
     }
+    .onReceive(navBarChangeBackgroundToBackgroundColorPublisher) { _ in
+      setupNavBarBackgroundColor(withColor: .backgroundColor, scrollEdgeColor: .backgroundColor)
+    }
+      
+      
   }
   
   private func setupTabBarBackgroundColor(withColor uiColor: UIColor? = UIColor(named: "SecondaryColor")) {
@@ -195,6 +198,44 @@ struct RootSignedInView: View {
     tabBarController?.tabBar.standardAppearance = appearance
     tabBarController?.tabBar.scrollEdgeAppearance = appearance
   }
+  
+  private func setupNavBarBackgroundColor(withColor standardColor: UIColor, scrollEdgeColor: UIColor? = nil) {
+    let standardAppearance = UINavigationBarAppearance()
+    standardAppearance.configureWithTransparentBackground()
+    standardAppearance.backgroundColor = standardColor
+    
+    let buttonAppearance = UIBarButtonItemAppearance(style: .plain)
+    buttonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.darkGray]
+    
+    standardAppearance.buttonAppearance = buttonAppearance
+//    UINavigationBar.appearance().tintColor = .darkGray
+//    UINavigationBar.appearance().standardAppearance = standardAppearance
+    navigationController?.navigationBar.standardAppearance = standardAppearance
+    
+    if let scrollEdgeColor = scrollEdgeColor {
+      /*
+      UINavigationBar.appearance().scrollEdgeAppearance = {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = scrollEdgeColor
+        return appearance
+      }()
+       */
+      navigationController?.navigationBar.scrollEdgeAppearance = {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = scrollEdgeColor
+        return appearance
+      }()
+    } else {
+      UINavigationBar.appearance().scrollEdgeAppearance = nil
+    }
+    //          UINavigationBar.appearance().scrollEdgeAppearance = appearance
+    //    UINavigationBar.appearance().standardAppearance = appearance
+    //    UINavigationBar.appearance().tintColor = .black
+  }
+  
+  
 }
 
 struct RootSignedInView_Previews: PreviewProvider {
@@ -208,6 +249,28 @@ extension Notification.Name {
   static let tabBarShownNotification = Notification.Name("TabBarShownNotification")
   static let tabBarChangeBackgroundToBackgroundColorNotification = Notification.Name("TabBarChangeBackgroundToBackgroundColorNotification")
   static let tabBarChangeBackgroundToSecondaryColorNotification = Notification.Name("TabBarChangeBackgroundToSecondaryColorNotification")
+  static let navBarChangeBackgroundToPrimaryBackgroundNotification = Notification.Name("NavBarChangeBackgroundToPrimaryBackgroundNotification")
+  static let navBarChangeBackgroundToBackgroundColorNotification = Notification.Name("NavBarChangeBackgroundToBackgroundColorNotification")
+  
+}
+
+extension View {
+  func setNavigationBarColor(withStandardColor standardColor: Color, andScrollEdgeColor scrollEdgeColor: Color) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+      NotificationCenter.default.post(
+        name: .updateNavigationBarNotification,
+        object: nil,
+        userInfo: ["standardColor": standardColor, "scrollEdgeColor": scrollEdgeColor])
+    }
+  }
+  
+  func resetNavigationBar() {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+      NotificationCenter.default.post(
+        name: .updateNavigationBarNotification,
+        object: nil)
+    }
+  }
 }
 
 extension UITabBarController {
@@ -217,194 +280,54 @@ extension UITabBarController {
     tabBar.isUserInteractionEnabled = enabled
     tabBar.items?.forEach { $0.isEnabled = enabled }
   }
-  
-  func setTabBar(
-    hidden: Bool,
-    animated: Bool = true,
-    along transitionCoordinator: UIViewControllerTransitionCoordinator? = nil
-  ) {
-    
-    guard tabBarHidden != hidden else { return }
-    
-    let offsetY = hidden ? tabBar.frame.height : -tabBar.frame.height
-    let endFrame = tabBar.frame.offsetBy(dx: 0, dy: offsetY)
-    let vc: UIViewController? = viewControllers?[selectedIndex]
-    var newInsets: UIEdgeInsets? = vc?.additionalSafeAreaInsets
-    let originalInsets = newInsets
-    newInsets?.bottom -= offsetY
-    
-    /// Helper method for updating child view controller's safe area insets.
-    func set(childViewController cvc: UIViewController?, additionalSafeArea: UIEdgeInsets) {
-      cvc?.additionalSafeAreaInsets = additionalSafeArea
-      cvc?.view.setNeedsLayout()
-    }
-    
-    // Update safe area insets for the current view controller before the animation takes place when hiding the bar.
-    if hidden, let insets = newInsets {
-      set(childViewController: vc, additionalSafeArea: insets)
-    }
-    
-    guard animated else {
-      tabBar.frame = endFrame
-      return
-    }
-    
-    // Perform animation with coordinato if one is given. Update safe area insets _after_ the animation is complete,
-    // if we're showing the tab bar.
-    weak var tabBarRef = self.tabBar
-    UIView.animate(
-      withDuration: 0.3,
-      animations: {
-        tabBarRef?.frame = endFrame
-//        tabBarRef?.isHidden = hidden
-      },
-      completion: { completed in
-      if !hidden,
-         completed,
-         let insets = newInsets {
-        set(childViewController: vc, additionalSafeArea: insets)
-      }
-    })
+}
+
+extension UINavigationController: UIGestureRecognizerDelegate {
+  open override func viewDidLoad() {
+    super.viewDidLoad()
+    self.navigationBar.tintColor = UIColor.black
+    interactivePopGestureRecognizer?.delegate = self
+    NotificationCenter.default.addObserver(self, selector: #selector(updateNavigationBar(_:)), name: .updateNavigationBarNotification, object: nil)
   }
   
-  /// `true` if the tab bar is currently hidden.
-  var isTabBarHidden: Bool {
-    return !tabBar.frame.intersects(view.frame)
+  
+  public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    return viewControllers.count > 1
   }
   
-  /// Extends the size of the `UITabBarController` view frame, pushing the tab bar controller off screen.
-  /// - Parameters:
-  ///   - hidden: Hide or Show the `UITabBar`
-  ///   - animated: Animate the change
-  func setTabBarHidden(_ hidden: Bool, animated: Bool) {
-    guard let vc = selectedViewController,
-//          tabBar.isHidden != tabBarHidden else { return }
-          tabBarHidden != hidden else { return }
-    
-    let frame = self.tabBar.frame
-    let height = frame.size.height
-    let offsetY = hidden ? height : -height
-    print("\nvc height + offsetY: \(vc.view.frame.height + offsetY)\n") // 896 & 979
-    // 847 & 930
-    UIViewPropertyAnimator(duration: animated ? 0.3 : 0, curve: .easeOut) {
-//      self.selectedViewController
-      self.tabBar.frame = self.tabBar.frame.offsetBy(dx: 0, dy: offsetY)
-//      self.selectedViewController?.view.frame = CGRect(
-//        x: 0,
-//        y: 0,
-//        width: vc.view.frame.width,
-//        height: vc.view.frame.height + offsetY
-//      )
-      self.selectedViewController?.additionalSafeAreaInsets.bottom = .zero
-      self.view.setNeedsDisplay()
-      self.view.layoutIfNeeded()
-      self.tabBar.isHidden = hidden
-    }
-    .startAnimation()
-    
-//
-    
-  }
-  
-  /*
-  open override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-//    guard isTabBarHidden != hidden else { return }
-    
-    let offsetY = tabBar.frame.height
-    let endFrame = tabBar.frame.offsetBy(dx: 0, dy: offsetY)
-    let vc: UIViewController? = viewControllers?[selectedIndex]
-    var newInsets: UIEdgeInsets? = vc?.additionalSafeAreaInsets
-    let originalInsets = newInsets
-    newInsets?.bottom -= offsetY
-    
-    /// Helper method for updating child view controller's safe area insets.
-    func set(childViewController cvc: UIViewController?, additionalSafeArea: UIEdgeInsets) {
-      cvc?.additionalSafeAreaInsets = additionalSafeArea
-      cvc?.view.setNeedsLayout()
-    }
-    
-    // Update safe area insets for the current view controller before the animation takes place when hiding the bar.
-//    if hidden, let insets = newInsets {
-//      set(childViewController: vc, additionalSafeArea: insets)
-//    }
-    
-    // Perform animation with coordinato if one is given. Update safe area insets _after_ the animation is complete,
-    // if we're showing the tab bar.
-    weak var tabBarRef = self.tabBar
-    UIView.animate(
-      withDuration: 0.3,
-      animations: {
-        tabBarRef?.frame = endFrame
-      },
-      completion: { completed in
-//      if !hidden,
-//         completed,
-//         let insets = newInsets {
-//        set(childViewController: vc, additionalSafeArea: insets)
-//      }
-    })
-    
-    
-//    if tabBar.isHidden && !isTabBarHidden {
-//      setTabBar(hidden: true, animated: true, along: nil)
-//    }
-  }
-   */
-  
-//  open override func viewDidLayoutSubviews() {
-//    super.viewDidLayoutSubviews()
-//    if tabBar.isHidden && !tabBarHidden {
-//      guard let vc = selectedViewController else { return }
-//      print("\nvc height didlayout\(vc.view.frame.height)\n")
-//      let frame = self.tabBar.frame
-//      let height = frame.size.height
-//      UIViewPropertyAnimator(duration: 0, curve: .easeOut) {
-//        self.tabBar.frame = self.tabBar.frame.offsetBy(dx: 0, dy: height)
-//        self.selectedViewController?.view.frame = CGRect(
-//          x: 0,
-//          y: 0,
-//          width: vc.view.frame.width,
-//          height: vc.view.frame.height + height)
-//        self.selectedViewController?.additionalSafeAreaInsets.bottom =  self.view.safeAreaInsets.bottom
-//        self.view.setNeedsDisplay()
-//        self.view.layoutIfNeeded()
-//      }
-//      .startAnimation()
-//    }
-//  }
-  
-  func updateTabBarFrame() {
-//    if tabBar.isHidden && !tabBarHidden {
-//      setTabBarHidden(true, animated: false)
-//    }
-    /*
-    if tabBar.isHidden && !tabBarHidden {
-      // (CGRect) $R0 = (origin = (x = 0, y = 813), size = (width = 414, height = 83))
-      DispatchQueue.main.async {
-        var tabBarFrame = self.tabBar.frame
-        tabBarFrame.origin.y += tabBarFrame.size.height
-        self.tabBar.frame = tabBarFrame
-        self.tabBar.setNeedsDisplay()
-        self.tabBar.layoutIfNeeded()
-      }
+  @objc func updateNavigationBar(_ notification: NSNotification) {
+    if let info = notification.userInfo {
+      let standardColor = info["standardColor"] as! Color
+      let scrollEdgeColor = info["scrollEdgeColor"] as! Color
       
-//      tabBar.frame.origin.y = tabBarFrame.origin.y
-//      self.view.setNeedsDisplay()
-//      self.view.layoutIfNeeded()
+      let buttonAppearance = UIBarButtonItemAppearance(style: .plain)
+      buttonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.black]
+      UINavigationBar.appearance().tintColor = UIColor.black
       
-//      let vc = selectedViewController
-//      vc?.additionalSafeAreaInsets.bottom = -(tabBarFrame.height - view.safeAreaInsets.bottom)
+      let standardAppearance = UINavigationBarAppearance()
+      standardAppearance.configureWithTransparentBackground()
+      standardAppearance.backgroundColor = UIColor(standardColor)
+      standardAppearance.buttonAppearance = buttonAppearance
       
+      let scrollEdgeAppearance = UINavigationBarAppearance()
+      scrollEdgeAppearance.configureWithTransparentBackground()
+      scrollEdgeAppearance.backgroundColor = UIColor(scrollEdgeColor)
+      scrollEdgeAppearance.buttonAppearance = buttonAppearance
       
-//      view.setNeedsDisplay()
-//      view.layoutIfNeeded()
+      navigationBar.standardAppearance = standardAppearance
+      navigationBar.scrollEdgeAppearance = scrollEdgeAppearance
+      navigationBar.compactAppearance = standardAppearance
+    } else {
+      let appearance = UINavigationBarAppearance()
+      let transparentAppearance = UINavigationBarAppearance()
+      transparentAppearance.configureWithTransparentBackground()
+      navigationBar.standardAppearance = appearance
+      navigationBar.scrollEdgeAppearance = transparentAppearance
+      navigationBar.compactAppearance = appearance
     }
-     */
   }
-  
-  /// Is the tab bar currently off the screen.
-  var tabBarHidden: Bool {
-    return tabBar.frame.origin.y >= UIScreen.main.bounds.height
-  }
+}
+
+extension NSNotification.Name {
+  static var updateNavigationBarNotification: NSNotification.Name { .init(rawValue: "updateNavigationBarNotification") }
 }

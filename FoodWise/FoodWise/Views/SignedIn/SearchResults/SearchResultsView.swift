@@ -330,7 +330,7 @@ struct MerchantsResultView: View {
         ForEach(
           viewModel.merchants,
           id: \.self,
-          content: NearbyMerchantCell.init(merchant:)
+          content: buildCell
         )
         .redacted(reason: viewModel.loading ? .placeholder : [])
       }
@@ -338,15 +338,8 @@ struct MerchantsResultView: View {
       .onAppear(perform: viewModel.fetchMerchants)
     }
   }
-}
-
-extension UINavigationController: UIGestureRecognizerDelegate {
-  override open func viewDidLoad() {
-    super.viewDidLoad()
-    interactivePopGestureRecognizer?.delegate = self
-  }
-
-  public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-    return viewControllers.count > 1
+  
+  private func buildCell(_ merchant: Merchant?) -> some View {
+    NearbyMerchantCell(merchant: merchant, buildDestination: LazyView(MerchantDetailsView(viewModel: .init(merchant: merchant!))))
   }
 }

@@ -72,6 +72,7 @@ struct HomeView: View {
         .background(Color.primaryColor)
       }
       .onAppear {
+        setNavigationBarColor(withStandardColor: .backgroundColor, andScrollEdgeColor: .primaryColor)
         NotificationCenter.default.post(name: .tabBarShownNotification, object: nil)
         NotificationCenter.default.post(name: .tabBarChangeBackgroundToSecondaryColorNotification, object: nil)
       }
@@ -87,9 +88,13 @@ struct HomeView: View {
         }
         ToolbarItem(placement: .navigationBarTrailing) {
           HStack {
-            
-            Button("\(Image(systemName: "bubble.left.and.bubble.right.fill"))") {
+            NavigationLink("\(Image(systemName: "bubble.left.and.bubble.right.fill"))") {
+              LazyView(
+                ConversationsView(viewModel: .init(userId: rootViewModel.customer!.id))
+              )
             }
+            .disabled(rootViewModel.customer == nil)
+            
             NavigationLink("\(Image(systemName: "heart.fill"))") {
               LazyView(
                 FavoriteFoodsView(viewModel: .init(
@@ -102,13 +107,13 @@ struct HomeView: View {
         }
         
       }
-      .introspectNavigationController { controller in
-        navigationBar = controller.navigationBar
-        let a2 = UINavigationBarAppearance()
-        a2.configureWithDefaultBackground()
-        a2.backgroundColor = .init(named: "BackgroundColor")
-        navigationBar?.standardAppearance = a2
-      }
+//      .introspectNavigationController { controller in
+//        navigationBar = controller.navigationBar
+//        let a2 = UINavigationBarAppearance()
+//        a2.configureWithDefaultBackground()
+//        a2.backgroundColor = .init(named: "BackgroundColor")
+//        navigationBar?.standardAppearance = a2
+//      }
     }
     .overlay {
       if viewModel.isShowingSearchView {

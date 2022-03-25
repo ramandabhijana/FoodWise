@@ -41,6 +41,32 @@ final class FoodRepository {
     return upsertFood(food)
   }
   
+  
+  public func updateFood(
+    withId id: String,
+    name: String,
+    imageUrls: [URL],
+    categories: [FoodCategory],
+    stock: Int,
+    keywords: [String],
+    description: String,
+    retailPrice: Double,
+    discountRate: Float,
+    merchantId: String
+  ) -> AnyPublisher<Food, Error> {
+    let food = Food(id: id,
+                    name: name,
+                    imagesUrl: imageUrls,
+                    categories: categories,
+                    stock: stock,
+                    keywords: keywords,
+                    description: description,
+                    retailPrice: retailPrice,
+                    discountRate: discountRate,
+                    merchantId: merchantId)
+    return upsertFood(food, merge: true)
+  }
+  
   private func upsertFood(_ food: Food, merge: Bool = false) -> AnyPublisher<Food, Error> {
     Future { [weak self] promise in
       guard let self = self else { return }
@@ -75,6 +101,19 @@ final class FoodRepository {
     }.eraseToAnyPublisher()
   }
   
+  func incrementFoodStock(_ incrementValue: Int, for food: Food) -> AnyPublisher<Void, Error> {
+    Future { [weak self] promise in
+      guard let self = self else { return }
+      let foodRef = self.db.collection(self.path).document(food.id)
+      foodRef.updateData(["stock": FieldValue.increment(.init(incrementValue))]) { error in
+        if let error = error {
+          return promise(.failure(error))
+        }
+        return promise(.success(Void()))
+      }
+    }.eraseToAnyPublisher()
+  }
+  
   func updateFoodStock(_ stock: Int, for food: Food) -> AnyPublisher<Void, Error> {
     Future { [weak self] promise in
       guard let self = self else { return }
@@ -85,6 +124,20 @@ final class FoodRepository {
         }
         return promise(.success(Void()))
       }
+    }.eraseToAnyPublisher()
+  }
+  
+  func deleteFood(withId foodId: String) -> AnyPublisher<Void, Error> {
+    Future { [weak self] promise in
+      guard let self = self else { return }
+      self.db.collection(self.path).document(foodId)
+        .delete { error in
+          guard error == nil else {
+            promise(.failure(error!))
+            return
+          }
+          promise(.success(()))
+        }
     }.eraseToAnyPublisher()
   }
 }

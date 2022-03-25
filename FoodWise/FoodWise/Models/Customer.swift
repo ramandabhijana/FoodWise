@@ -33,3 +33,11 @@ extension Customer {
   }
 }
 
+extension Customer {
+  var asObject: [String: Any] {
+    ["id": id,
+     "fullName": fullName,
+     "email": email,
+     "profileImageUrl": profileImageUrl?.absoluteString]
+  }
+}

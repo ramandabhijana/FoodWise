@@ -23,9 +23,9 @@
         "package": "Firebase",
         "repositoryURL": "https://github.com/firebase/firebase-ios-sdk.git",
         "state": {
-          "branch": null,
-          "revision": "839cc6b0cd80b0b8bf81fe9bd82b743b25dc6446",
-          "version": "8.9.1"
+          "branch": "master",
+          "revision": "0b3b2c1b240b7059666333ee563563e7c63a5cfc",
+          "version": null
         }
       },
       {
@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/google/GoogleAppMeasurement.git",
         "state": {
           "branch": null,
-          "revision": "9b2f6aca5b4685c45f9f5481f19bee8e7982c538",
-          "version": "8.9.1"
+          "revision": "6cc2991c11872510a5314bc112cc7558dd9d046a",
+          "version": "8.12.0"
         }
       },
       {
@@ -51,8 +51,8 @@
         "repositoryURL": "https://github.com/google/GoogleUtilities.git",
         "state": {
           "branch": null,
-          "revision": "797005ad8a1f0614063933e2fa010a5d13cb09d0",
-          "version": "7.6.0"
+          "revision": "b3bb0c5551fb3f80ca939829639ab5b093edd14f",
+          "version": "7.7.0"
         }
       },
       {
@@ -74,12 +74,30 @@
         }
       },
       {
+        "package": "InputBarAccessoryView",
+        "repositoryURL": "https://github.com/nathantannar4/InputBarAccessoryView",
+        "state": {
+          "branch": null,
+          "revision": "6d3d205f29b80f8fa9a9616ad801c488293242bf",
+          "version": "5.4.0"
+        }
+      },
+      {
         "package": "leveldb",
         "repositoryURL": "https://github.com/firebase/leveldb.git",
         "state": {
           "branch": null,
           "revision": "0706abcc6b0bd9cedfbb015ba840e4a780b5159b",
           "version": "1.22.2"
+        }
+      },
+      {
+        "package": "MessageKit",
+        "repositoryURL": "https://github.com/MessageKit/MessageKit",
+        "state": {
+          "branch": null,
+          "revision": "771ffe946acc495a79a122ded921f3460686ee04",
+          "version": "3.7.0"
         }
       },
       {
@@ -105,8 +123,8 @@
         "repositoryURL": "https://github.com/SDWebImage/SDWebImage.git",
         "state": {
           "branch": null,
-          "revision": "a72df4849408da7e5d3c1b586797b7c601c41d1b",
-          "version": "5.12.1"
+          "revision": "2c53f531f1bedd253f55d85105409c28ed4a922c",
+          "version": "5.12.3"
         }
       },
       {
@@ -123,8 +141,8 @@
         "repositoryURL": "https://github.com/apple/swift-protobuf.git",
         "state": {
           "branch": null,
-          "revision": "7e2c5f3cbbeea68e004915e3a8961e20bd11d824",
-          "version": "1.18.0"
+          "revision": "e1499bc69b9040b29184f7f2996f7bab467c1639",
+          "version": "1.19.0"
         }
       }
     ]

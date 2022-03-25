@@ -10,13 +10,17 @@ import SwiftUI
 public struct InputFieldContainer<C>: View where C: View {
   var isError: Bool
   var label: String
+  var semiBoldLabel: Bool = true
+  var fieldHeight: CGFloat = 45
   var contentBuilder: () -> C
   
   public var body: some View {
     VStack(spacing: 20) {
       VStack(alignment: .leading, spacing: 8) {
         Text(label)
-          .fontWeight(.semibold)
+          .if(semiBoldLabel) {
+            $0.fontWeight(.semibold)
+          }
           .padding(.horizontal, 8)
           .foregroundColor(isError ? .errorColor : .black)
         RoundedRectangle(cornerRadius: 10)
@@ -30,7 +34,7 @@ public struct InputFieldContainer<C>: View where C: View {
               .padding(.horizontal, 8)
           }
           .background(RoundedRectangle(cornerRadius: 10).fill(Color.white))
-          .frame(height: 45)
+          .frame(height: fieldHeight)
           .if(isError) { view in
             view.overlay(alignment: .trailing) {
               Image(systemName: "exclamationmark.circle.fill")

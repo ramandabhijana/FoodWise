@@ -79,7 +79,11 @@ struct SelectCategoryView: View {
 }
 
 class SelectCategoryViewModel: ObservableObject {
-  private(set) var selectedCategories = [FoodCategory]()
+  private(set) var selectedCategories: [FoodCategory]
+  
+  init(selectedCategories: [FoodCategory] = [FoodCategory]()) {
+    self.selectedCategories = selectedCategories
+  }
   
   func addToCategories(_ category: FoodCategory) {
     selectedCategories.append(category)

@@ -9,27 +9,45 @@ import Foundation
 import Combine
 
 class FoodDetailsViewModel: ObservableObject {
+  @Published var showingChatView: Bool = false
+  @Published var showingError = false
+  @Published var showingDifferentMerchantAlert = false
   @Published private(set) var food: Food
   @Published private(set) var loading = false
   @Published private(set) var favorited = false
-  @Published private(set) var errorMessage = ""
+  
+  
+  @Published private(set) var errorMessage = "" {
+    didSet { showingError = true }
+  }
   @Published private(set) var merchant: Merchant? = nil
   
+  @Published var showingAddedToBag: Bool = false
   @Published var onUpdateFavoriteList: (message: String, shows: Bool) = ("", false)
   
-  private var customerId: String?
+  private(set) var customerId: String?
   private var currentFavoriteList: FavoriteFoodList?
   
-  private lazy var favListRepository = FavoritesListRepository()
-  private var foodRepository: FoodRepository
-  private var merchantRepository = MerchantRepository()
+  private var favListRepository: FavoritesListRepository
+  private(set) var foodRepository: FoodRepository
+  private(set) var merchantRepository: MerchantRepository
+  private let shoppingBagRepository: ShoppingBagRepository
   private var subscriptions = Set<AnyCancellable>()
+  
+  var foodOutOfStock: Bool { food.stock <= 0 }
   
   init(food: Food,
        customerId: String? = nil,
        currentFavoriteList: FavoriteFoodList? = nil,
-       foodRepository: FoodRepository) {
+       foodRepository: FoodRepository,
+       shoppingBagRepository: ShoppingBagRepository = ShoppingBagRepository(),
+       favListRepository: FavoritesListRepository = FavoritesListRepository(),
+       merchantRepository: MerchantRepository = MerchantRepository()
+  ) {
     self.foodRepository = foodRepository
+    self.shoppingBagRepository = shoppingBagRepository
+    self.favListRepository = favListRepository
+    self.merchantRepository = merchantRepository
     self.food = food
     self.customerId = customerId
     fetchMerchant()
@@ -87,7 +105,7 @@ class FoodDetailsViewModel: ObservableObject {
       } receiveValue: { [weak self] _ in
         self?.favorited = true
         self?.currentFavoriteList = currentFavoriteList
-        self?.onUpdateFavoriteList = (message: "Food was added to favorite",
+        self?.onUpdateFavoriteList = (message: "Food was added to favorite 💛",
                                       shows: true)
       }
       .store(in: &subscriptions)
@@ -115,6 +133,18 @@ class FoodDetailsViewModel: ObservableObject {
       .store(in: &subscriptions)
   }
   
+  func goToChatView() {
+    guard customerId != nil else {
+      NotificationCenter.default.post(name: .signInRequiredNotification, object: nil)
+      return
+    }
+    guard merchant != nil else {
+      errorMessage = "Something went wrong"
+      return
+    }
+    showingChatView = true
+  }
+  
   func fetchMerchant() {
     merchantRepository.getMerchant(withId: food.merchantId)
       .sink { completion in
@@ -124,4 +154,97 @@ class FoodDetailsViewModel: ObservableObject {
       }
       .store(in: &subscriptions)
   }
+  
+  func replaceBagItems() {
+    addToBag(overwriteIfFromDifferentMerchant: true)
+  }
+  
+  func addToBag(overwriteIfFromDifferentMerchant: Bool = false) {
+    guard let customerId = customerId else {
+      postSignInRequiredNotification()
+      return
+    }
+    guard let merchant = merchant else {
+      errorMessage = "Something went wrong"
+      return
+    }
+    
+    let lineItem = LineItem(id: UUID().uuidString, foodId: food.id, quantity: 1)
+    shoppingBagRepository.getShoppingBag(bagOwnerId: customerId)
+      .flatMap { [weak self] shoppingBagOrNil -> AnyPublisher<Void, Error> in
+        guard let self = self else {
+          return Fail(error: NSError.createWith("Something went wrong")).eraseToAnyPublisher()
+        }
+        guard let shoppingBag = shoppingBagOrNil else {
+          return self.shoppingBagRepository.createBag(withItem: lineItem, ownerId: customerId, merchantShopAtId: merchant.id)
+        }
+        let bagLineItems = shoppingBag.lineItems
+        guard !bagLineItems.isEmpty else {
+          return self.shoppingBagRepository.createBag(withItem: lineItem, ownerId: customerId, merchantShopAtId: merchant.id)
+        }
+        if bagLineItems.first(where: { $0.foodId == lineItem.foodId }) == nil {
+          // validate if from the same merchant
+          guard let currentMerchantId = shoppingBag.merchantShopAtId else {
+            return self.shoppingBagRepository.createBag(withItem: lineItem, ownerId: customerId, merchantShopAtId: merchant.id)
+          }
+          let isShoppingSameMerchant = currentMerchantId == merchant.id
+          if isShoppingSameMerchant {
+            let newLineItems = bagLineItems + [lineItem]
+            return self.shoppingBagRepository.updateBagItems(
+              newLineItems: newLineItems,
+              bagOwnerId: customerId)
+          } else {
+            if overwriteIfFromDifferentMerchant {
+              return self.shoppingBagRepository.createBag(withItem: lineItem, ownerId: customerId, merchantShopAtId: merchant.id)
+            } else {
+              return Fail(error: FoodDetailsViewModelError.differentMerchantError).eraseToAnyPublisher()
+            }
+          }
+        } else {
+          // Simply return publisher, no need to talk to db layer as the lineItem is already saved
+          return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
+        }
+      }
+      .subscribe(on: DispatchQueue.global(qos: .userInteractive))
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] completion in
+        guard case .failure(let error) = completion else {
+          return
+        }
+        if let viewModelError = error as? FoodDetailsViewModelError,
+           viewModelError == .differentMerchantError {
+          self?.showingDifferentMerchantAlert = true
+          return
+        }
+        self?.errorMessage = error.localizedDescription
+      } receiveValue: { [weak self] _ in
+        self?.showingAddedToBag = true
+      }
+      .store(in: &subscriptions)
+  }
+  
+  private func postSignInRequiredNotification() {
+    NotificationCenter.default.post(name: .signInRequiredNotification, object: nil)
+  }
+  
+  
+  
+}
+
+extension NSError {
+  static func createWith(_ localizedDescription: String) -> NSError {
+    NSError(
+      domain: "",
+      code: 0,
+      userInfo: [NSLocalizedDescriptionKey: localizedDescription]
+    )
+  }
+  
+  static var somethingWentWrong: NSError {
+    createWith("Something went wrong")
+  }
+}
+
+enum FoodDetailsViewModelError: Error {
+  case differentMerchantError
 }

@@ -24,11 +24,11 @@ enum MenuDestination {
     case .manageFoodStock:
       ManageFoodStockView()
     case .editFoodDetails:
-      EmptyView()
+      RootEditFoodDetailsView()
     case .chats:
-      EmptyView()
+      ConversationsView()
     case .viewOrders:
-      EmptyView()
+      OrdersView()
     case .requestDelivery:
       EmptyView()
     case .scanBarcode:

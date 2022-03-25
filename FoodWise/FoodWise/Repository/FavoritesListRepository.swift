@@ -30,7 +30,7 @@ final class FavoritesListRepository {
             }
             do {
               let favoriteList = try snapshot.data(as: FavoriteFoodList.self)
-              promise(.success(favoriteList!))
+              promise(.success(favoriteList))
             } catch let err {
               print(err)
               let error = NSError(
