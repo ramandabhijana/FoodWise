@@ -94,7 +94,7 @@ private extension IncomingRequestsView {
             .cornerRadius(10)
           VStack(alignment: .leading, spacing: 5) {
             Text(donation.foodName)
-            Text("\(donation.adoptionRequests.count) Adoption Requests")
+            Text("\(donation.adoptionRequests.count) Requests")
               .font(.subheadline)
               .fontWeight(.bold)
               .padding(.bottom, 8)

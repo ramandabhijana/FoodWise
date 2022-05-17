@@ -15,7 +15,7 @@ class FoodDetailsViewModel: ObservableObject {
   @Published private(set) var food: Food
   @Published private(set) var loading = false
   @Published private(set) var favorited = false
-  
+  @Published private(set) var reviews: [Review] = []
   
   @Published private(set) var errorMessage = "" {
     didSet { showingError = true }
@@ -32,6 +32,7 @@ class FoodDetailsViewModel: ObservableObject {
   private(set) var foodRepository: FoodRepository
   private(set) var merchantRepository: MerchantRepository
   private let shoppingBagRepository: ShoppingBagRepository
+  private(set) var reviewRepository: ReviewRepository
   private var subscriptions = Set<AnyCancellable>()
   
   var foodOutOfStock: Bool { food.stock <= 0 }
@@ -42,16 +43,34 @@ class FoodDetailsViewModel: ObservableObject {
        foodRepository: FoodRepository,
        shoppingBagRepository: ShoppingBagRepository = ShoppingBagRepository(),
        favListRepository: FavoritesListRepository = FavoritesListRepository(),
-       merchantRepository: MerchantRepository = MerchantRepository()
+       merchantRepository: MerchantRepository = MerchantRepository(),
+       reviewRepository: ReviewRepository = ReviewRepository()
   ) {
     self.foodRepository = foodRepository
     self.shoppingBagRepository = shoppingBagRepository
     self.favListRepository = favListRepository
     self.merchantRepository = merchantRepository
+    self.reviewRepository = reviewRepository
     self.food = food
     self.customerId = customerId
     fetchMerchant()
     fetchFavoriteList()
+    fetchReviews()
+  }
+  
+  func fetchReviews() {
+    guard let reviewCount = food.reviewCount,
+          reviewCount > 0
+    else { return }
+    loading = true
+    reviewRepository.getAllReviews(forFoodWithId: food.id, limit: 3)
+      .sink { [weak self] completion in
+        self?.loading = false
+      } receiveValue: { [weak self] reviews in
+        self?.reviews = reviews
+      }
+      .store(in: &subscriptions)
+    
   }
   
   func fetchFood(completion: @escaping () -> ()) {
@@ -159,6 +178,7 @@ class FoodDetailsViewModel: ObservableObject {
     addToBag(overwriteIfFromDifferentMerchant: true)
   }
   
+  // TODO: Separate to individual viewmodel
   func addToBag(overwriteIfFromDifferentMerchant: Bool = false) {
     guard let customerId = customerId else {
       postSignInRequiredNotification()

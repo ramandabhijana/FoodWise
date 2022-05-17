@@ -58,6 +58,7 @@ class YourBagViewModel: ObservableObject {
     bagRepository: ShoppingBagRepository = ShoppingBagRepository(),
     foodRepository: FoodRepository = FoodRepository()
   ) {
+    print("initializing Bagviewmodel")
     self.bagRepository = bagRepository
     self.foodRepository = foodRepository
   }
@@ -159,16 +160,9 @@ class YourBagViewModel: ObservableObject {
   }
   
   func removeItem(lineItem: LineItem, userId: String) {
-    bagRepository.removeItemFromBag(lineItem: lineItem, bagOwnerId: userId)
-      .sink { completion in
-        if case .failure(let error) = completion {
-          print("Bag item was not removed. Error: \(error)")
-        }
-      } receiveValue: { [weak self] _ in
-        guard let index = self?.bagItems.firstIndex(where: { $0.id == lineItem.id }) else { return }
-        self?.bagItems.remove(at: index)
-      }
-      .store(in: &subscriptions)
+    guard let itemIndex = bagItems.firstIndex(where: { $0.id == lineItem.id }) else { return }
+    bagItems.remove(at: itemIndex)
+    updateBagItems(userId: userId)
   }
   
   private func mergedBagItemModels(lineItems: [LineItem]) -> AnyPublisher<BagItemModel, Error> {

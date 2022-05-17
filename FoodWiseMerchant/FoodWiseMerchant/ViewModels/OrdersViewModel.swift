@@ -60,10 +60,10 @@ class OrdersViewModel: ObservableObject {
       } receiveValue: { [weak self] orders in
         self?.newOrders = orders
           .filter { $0.status == OrderStatus.pending.rawValue }
-          .sorted(by: { $0.date.dateValue() > $1.date.dateValue() })
+          .sorted(by: { $0.date.dateValue() < $1.date.dateValue() })
         self?.confirmedOrders = orders
           .filter { $0.status == OrderStatus.accepted.rawValue || $0.status == OrderStatus.rejected.rawValue }
-          .sorted(by: { $0.date.dateValue() < $1.date.dateValue() })
+          .sorted(by: { $0.date.dateValue() > $1.date.dateValue() })
       }
       .store(in: &subscriptions)
   }
@@ -81,9 +81,4 @@ extension OrdersViewModel {
   }
   
   
-}
-
-extension StringProtocol {
-  var firstUppercased: String { return prefix(1).uppercased() + dropFirst().lowercased() }
-  var firstCapitalized: String { return prefix(1).capitalized + dropFirst() }
 }

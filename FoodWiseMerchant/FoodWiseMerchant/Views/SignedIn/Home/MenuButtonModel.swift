@@ -30,13 +30,16 @@ enum MenuDestination {
     case .viewOrders:
       OrdersView()
     case .requestDelivery:
-      EmptyView()
+      ZStack {
+        Color.backgroundColor
+        Text("Access this menu through ") + Text("View All Orders").bold()
+      }
     case .scanBarcode:
-      EmptyView()
+      RecipientVerificationView()
     case .customerReviews:
-      EmptyView()
+      CustomerReviewsView()
     case .wallet:
-      EmptyView()
+      WalletDetailsView()
     case .settings:
       SettingsView()
     }

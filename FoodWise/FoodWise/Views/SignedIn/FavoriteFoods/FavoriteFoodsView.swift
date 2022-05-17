@@ -26,7 +26,7 @@ struct FavoriteFoodsView: View {
         VStack {
           Spacer()
           Button("Sign in to manage your favorite foods") {
-            
+            NotificationCenter.default.post(name: .signInRequiredNotification, object: nil)
           }
           Spacer()
         }
@@ -50,6 +50,9 @@ struct FavoriteFoodsView: View {
                 onTapRemoveFromFavoriteButton: {
                   Self.foodToBeRemoved = food
                   showsUnfavoriteAlert.toggle()
+                },
+                onTapAddToBagButton: {
+                  viewModel.addFoodToBag(food)
                 }
               ).padding(.horizontal)
             }
@@ -91,10 +94,29 @@ struct FavoriteFoodsView: View {
             }
           }
         }
+        .confirmationDialog(
+          "You can only shop from one merchant at a time!",
+          isPresented: $viewModel.showingDifferentMerchantAlert,
+          titleVisibility: .visible,
+          actions: {
+            Button("Add anyway") {
+              viewModel.replaceBagItems()
+            }
+          },
+          message: {
+            Text("If you still want to put this food in your bag, all the items in your bag at the moment will be removed. You may review your bag first.")
+          }
+        )
+        .snackBar(
+          isShowing: $viewModel.showingAddedToBag,
+          text: Text("Food was added to bag! \(Image(systemName: "bag.fill"))"))
       }
     }
     .onAppear {
       setNavigationBarColor(withStandardColor: .backgroundColor, andScrollEdgeColor: .backgroundColor)
+      NotificationCenter.default.post(
+        name: .tabBarHiddenNotification,
+        object: nil)
     }
     
   }

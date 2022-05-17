@@ -12,6 +12,7 @@ struct FavoriteFoodCell<Destination: View>: View {
   var food: Food
   var goToDetailScreen: () -> Destination
   var onTapRemoveFromFavoriteButton: () -> ()
+  var onTapAddToBagButton: () -> ()
   
   var body: some View {
     RoundedRectangle(cornerRadius: 10)
@@ -60,16 +61,13 @@ struct FavoriteFoodCell<Destination: View>: View {
                 }
             }
             
-            Button {
-//              onTapRemoveFromFavoriteButton(food)
-            } label: {
+            Button(action: onTapAddToBagButton) {
               RoundedRectangle(cornerRadius: 10)
                 .strokeBorder(Color.accentColor, lineWidth: 2)
                 .frame(height: 30)
                 .overlay {
                   Text("Add to Bag")
                     .foregroundColor(.accentColor)
-                  
                 }
             }
 

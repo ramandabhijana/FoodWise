@@ -21,9 +21,11 @@ class MainViewModel: ObservableObject {
   init() {
     if let user = AuthenticationService.shared.signedInUser {
       merchantRepo.getMerchant(withId: user.uid)
-        .sink { completion in
+        .sink { [weak self] completion in
           if case .failure(let error) = completion {
-            print("Error reading customer: \(error)")
+            print("Error reading merchant: \(error)")
+            AuthenticationService.shared.signOut()
+            self?.postSignInNotificationIfNeeded()
           }
         } receiveValue: { [weak self] merchant in
           print("\n\(merchant)\n")

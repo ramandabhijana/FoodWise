@@ -19,6 +19,6 @@ struct LineItem: Identifiable, Codable {
      "foodId": foodId,
      "quantity": quantity,
      "price": price as Any,
-     "food": food as Any]
+     "food": food?.asObject as Any]
   }
 }

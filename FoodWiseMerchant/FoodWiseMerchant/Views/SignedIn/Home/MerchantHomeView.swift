@@ -76,8 +76,10 @@ struct MerchantHomeView: View {
               print(UIScreen.main.bounds.height)
             }
           }
-          
-          
+        }
+        .onAppear {
+          setNavigationBarColor(withStandardColor: .primaryColor,
+                                andScrollEdgeColor: .primaryColor)
         }
         .background(Color.primaryColor)
         .edgesIgnoringSafeArea(.bottom)

@@ -149,10 +149,12 @@ struct SharedFoodsView: View {
             }, label: {
               Image(systemName: "envelope.fill")
             })
-            Button(action: { }) {
-              Image(systemName: "archivebox.fill")
-            }
             
+            NavigationLink(destination: {
+              LazyView(SharingArchiveView(viewModel: .init(customerId: rootViewModel.customer!.id)))
+            }, label: {
+              Image(systemName: "archivebox.fill")
+            })
           }
           .foregroundColor(.init(uiColor: .darkGray))
         }

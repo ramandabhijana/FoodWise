@@ -30,5 +30,7 @@
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:469466031495:ios:b4f5bae8af7a301d3f5f22</string>
+	<key>DATABASE_URL</key>
+	<string>https://foodwise-c118c-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>

@@ -9,7 +9,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import Combine
 
-protocol ProfileUrlNameFetchableRepository: AnyObject {
+protocol ProfileUrlNameFetchableRepository {
   func fetchNameAndProfilePictureUrl(ofUserWithId userId: String) -> AnyPublisher<(name: String, profilePictureUrl: URL?), Error>
 }
 
@@ -35,7 +35,9 @@ final class CustomerRepository: ObservableObject {
       var newCustomer = Customer(
         id: userId,
         fullName: name,
-        email: email
+        email: email,
+        foodRescuedCount: 0,
+        foodSharedCount: 0
       )
       if let imageData = imageData {
         // Upload picture and get the url
@@ -101,6 +103,51 @@ final class CustomerRepository: ObservableObject {
     upsertCustomer(customer, merge: true)
   }
   
+  func updateCustomerProfile(customerId: String, fullName: String) -> AnyPublisher<Void, Error> {
+    Future { [weak self] promise in
+      guard let self = self else { return }
+      let data = ["fullName": fullName]
+      self.db.collection(self.path).document(customerId)
+        .setData(data, merge: true) { error in
+          if let error = error {
+            promise(.failure(error))
+          }
+          promise(.success(()))
+        }
+    }
+    .eraseToAnyPublisher()
+  }
+  
+  func incrementFoodSharedCount(forCustomerId customerId: String) -> AnyPublisher<Void, Error> {
+    Future { [weak self] promise in
+      guard let self = self else { return }
+      let data = ["foodSharedCount": FieldValue.increment(Int64(1))]
+      self.db.collection(self.path).document(customerId)
+        .updateData(data) { error in
+          if let error = error {
+            promise(.failure(error))
+          }
+          promise(.success(()))
+        }
+    }
+    .eraseToAnyPublisher()
+  }
+  
+  func incrementFoodRescuedCount(forCustomerId customerId: String) -> AnyPublisher<Void, Error> {
+    Future { [weak self] promise in
+      guard let self = self else { return }
+      let data = ["foodRescuedCount": FieldValue.increment(Int64(1))]
+      self.db.collection(self.path).document(customerId)
+        .updateData(data) { error in
+          if let error = error {
+            promise(.failure(error))
+          }
+          promise(.success(()))
+        }
+    }
+    .eraseToAnyPublisher()
+  }
+  
   private func upsertCustomer(_ customer: Customer, merge: Bool = false) -> AnyPublisher<Customer, Error> {
     Future { [weak self] promise in
       guard let self = self else { return }
@@ -115,6 +162,8 @@ final class CustomerRepository: ObservableObject {
     }
     .eraseToAnyPublisher()
   }
+  
+  
 }
 
 extension CustomerRepository: ProfileUrlNameFetchableRepository {

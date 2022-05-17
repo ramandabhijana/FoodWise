@@ -29,6 +29,7 @@ extension CourierDrawerMenu {
 class DrawerStateManager: ObservableObject {
   @Published var selectedMenu: CourierDrawerMenu = .home
   @Published var showingView = false
+  @Published var showingEditProfile = false
   
   func showView() {
     showingView = true
@@ -83,15 +84,14 @@ struct DrawerView: View {
               .font(.title3)
               .fontWeight(.bold)
             Spacer()
-            NavigationLink(destination: {
-              LazyView(EditProfileView(
-                viewModel: .init(mainViewModel: mainViewModel)
-              ))
-            }, label: {
+            Button {
+              manager.showingEditProfile = true
+              manager.hideView()
+            } label: {
               Text("Edit")
                 .fontWeight(.bold)
                 .font(.callout)
-            })
+            }
           }
           
         }

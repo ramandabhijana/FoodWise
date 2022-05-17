@@ -210,6 +210,7 @@ struct WalletDetailsView: View {
         }
       }
     }
+    
   }
   
   private func makeTransactionHistoryView(data: [WalletDetailsViewModel.TransactionHistoryGroupedByDate]) -> some View {

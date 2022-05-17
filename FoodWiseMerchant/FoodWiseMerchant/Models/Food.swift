@@ -19,6 +19,9 @@ struct Food: Identifiable, Codable, Equatable {
   let discountRate: Float
   let merchantId: String
   var price: Double
+  var rating: Float?
+  var reviewCount: Int?
+  var sentimentScore: Float?
   
   var retailPriceString: String {
     retailPrice.asIndonesianCurrencyString()
@@ -38,6 +41,31 @@ struct Food: Identifiable, Codable, Equatable {
   
   var keywordsString: String {
     keywords.joined(separator: ", ")
+  }
+  
+  var sentimentScoreDescription: String {
+    guard let sentimentScore = sentimentScore else { return "-" }
+    switch sentimentScore {
+    case 1.0...2.0: return "Disappointed"
+    case 2.1...3.9: return "Neutral"
+    case 4.0...5.0: return "Satisfied"
+    default: return "-"
+    }
+  }
+  
+  var asObject: [String: Any] {
+    ["id": id,
+     "name": name,
+     "imagesUrl": imagesUrl.map(\.?.absoluteString),
+     "categories": categories.map(\.asObject),
+     "stock": stock,
+     "keywords": keywords,
+     "description": description,
+     "retailPrice": retailPrice,
+     "discountRate": discountRate,
+     "merchantId": merchantId,
+     "price": price
+    ]
   }
   
   init(id: String, name: String, imagesUrl: [URL?], categories: [FoodCategory], stock: Int, keywords: [String], description: String, retailPrice: Double, discountRate: Float, merchantId: String) {

@@ -15,7 +15,6 @@ class DonationRepository {
   
   public init() { }
   
-  
   func createDonation(pictureUrl: URL, kind: SharedFoodKind, foodName: String, pickupLocation: Address, notes: String, donorId: String) -> AnyPublisher<Donation, Error> {
     Future { [weak self] promise in
       guard let self = self else { return }
@@ -74,16 +73,37 @@ class DonationRepository {
     .eraseToAnyPublisher()
   }
   
-
-  
-  
   func getAvailableFoodsDonatedByUser(with userId: String) -> AnyPublisher<[Donation], Error> {
     Future { [weak self] promise in
       guard let self = self else { return }
       let query = self.db.collection(self.path)
         .whereField("donorId", isEqualTo: userId)
         .whereField("status", isEqualTo: DonationStatus.available.rawValue)
+        .whereField("adoptionRequests", isNotEqualTo: [])
       query
+        .getDocuments { snapshot, error in
+          if let error = error {
+            return promise(.failure(error))
+          }
+          let donations = snapshot?.documents.compactMap({ document in
+            do {
+              return try document.data(as: Donation.self)
+            } catch let error {
+              print("Couldn't create donation from document. \(error)")
+              return nil
+            }
+          }) ?? [Donation]()
+          return promise(.success(donations))
+        }
+    }
+    .eraseToAnyPublisher()
+  }
+  
+  func getFoodsDonatedByUser(with userId: String) -> AnyPublisher<[Donation], Error> {
+    Future { [weak self] promise in
+      guard let self = self else { return }
+      self.db.collection(self.path)
+        .whereField("donorId", isEqualTo: userId)
         .getDocuments { snapshot, error in
           if let error = error {
             return promise(.failure(error))
@@ -131,7 +151,7 @@ class DonationRepository {
       let updatedData = [
         "receiverUserId": request.requesterCustomer.id,
         "status": DonationStatus.booked.rawValue,
-        "adoptionRequests": [Any]()
+        "adoptionRequests": [request.asObject]
       ] as [String : Any]
       self.db.collection(self.path).document(donation.id)
         .setData(updatedData, merge: true) { error in
@@ -142,7 +162,19 @@ class DonationRepository {
     .eraseToAnyPublisher()
   }
   
-  //
-  
-  //
+  func updateDonation(_ donation: Donation) -> AnyPublisher<Void, Error> {
+    Future { [weak self] promise in
+      guard let self = self else { return }
+      do {
+        try self.db.collection(self.path).document(donation.id)
+          .setData(from: donation, merge: true) { error in
+            if let error = error { return promise(.failure(error)) }
+            return promise(.success(()))
+          }
+      } catch {
+        return promise(.failure(error))
+      }
+    }
+    .eraseToAnyPublisher()
+  }
 }

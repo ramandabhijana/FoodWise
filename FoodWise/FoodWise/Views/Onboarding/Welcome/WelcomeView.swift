@@ -39,8 +39,8 @@ struct WelcomeView: View {
       .toolbar {
         ToolbarItem(placement: .navigationBarTrailing) {
           Button("Skip") {
-            if rootViewModel.selectedTab == 3 {
-              rootViewModel.selectedTab = 0
+            if rootViewModel.selectedTab != .home {
+              rootViewModel.selectedTab = .home
             }
             presentationMode.wrappedValue.dismiss()
           }
@@ -139,7 +139,7 @@ private extension WelcomeView {
       
       NavigationLink {
         LazyView(
-          SignInView(viewModel: Self.signInViewModel,
+          SignInView(viewModel: SignInViewModel(),
                      onReceiveCustomer: onReceiveCustomer)
         )
       } label: {

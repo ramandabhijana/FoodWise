@@ -83,7 +83,7 @@ final class AuthenticationService: ObservableObject {
           withIDToken: idToken,
           accessToken: accessToken
         )
-        auth.signIn(with: credential) { authResult, error in
+        self.auth.signIn(with: credential) { authResult, error in
           guard error == nil, let authResult = authResult else {
             return promise(.failure(error!))
           }

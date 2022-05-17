@@ -63,10 +63,6 @@ class SignInViewModel: ObservableObject {
     }
   }
   
-  func signInGoogle() {
-    
-  }
-  
   private func getCustomer(withId userId: String) -> AnyPublisher<Customer, Error> {
     customerRepo.getCustomer(withId: userId)
   }

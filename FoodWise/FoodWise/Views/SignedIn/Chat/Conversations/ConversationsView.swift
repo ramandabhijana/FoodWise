@@ -1,8 +1,8 @@
 //
 //  ConversationsView.swift
-//  FoodWise
+//  FoodWiseCourier
 //
-//  Created by Abhijana Agung Ramanda on 03/03/22.
+//  Created by Abhijana Agung Ramanda on 15/05/22.
 //
 
 import SwiftUI
@@ -24,21 +24,21 @@ struct ConversationsView: View {
       ZStack {
         if !viewModel.conversations.isEmpty {
           List {
-            ForEach(viewModel.conversations.indices) { index in
+            ForEach(Array(viewModel.conversations.enumerated()), id: \.element) { (index, conversation) in
               CellView(
                 repository: {
-                  switch viewModel.conversations[index].conversation.otherUserType {
+                  switch conversation.conversation.otherUserType {
                   case kCustomerType:
                     return CustomerRepository()
                   case kMerchantType:
                     return MerchantRepository()
                   case kCourierType:
-                    return CustomerRepository() // Temporary
+                    return CourierRepository()
                   default:
                     fatalError("Unresolved type")
                   }
                 }(),
-                conversation: viewModel.conversations[index].conversation,
+                conversation: conversation.conversation,
                 userId: rootViewModel.customer!.id,
                 model: $viewModel.conversations[index])
             }
@@ -102,9 +102,10 @@ private extension ConversationsView {
                 .clipShape(Circle())
               VStack(alignment: .leading) {
                 Text(model.userDetail?.name ?? "Name of user")
+                  .font(.subheadline)
                   .foregroundColor(.black)
                 Text(model.conversation.latestMessage.text)
-                  .font(.subheadline)
+                  .font(.caption)
                   .foregroundColor(.secondary)
               }
               .lineLimit(1)
@@ -162,14 +163,16 @@ class ConversationsViewModel: ObservableObject {
   }
 }
 
-private struct ConversationsModel: Identifiable {
+private struct ConversationsModel: Identifiable, Hashable {
+  static func == (lhs: ConversationsModel, rhs: ConversationsModel) -> Bool {
+    lhs.id == rhs.id
+  }
+  
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
+  }
+  
   var userDetail: (name: String, profilePictureUrl: URL?)? = nil
   var conversation: Conversation
   var id: String { conversation.id }
 }
-
-//struct ConversationsView_Previews: PreviewProvider {
-//  static var previews: some View {
-//    ConversationsView()
-//  }
-//}

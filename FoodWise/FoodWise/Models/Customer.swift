@@ -12,16 +12,23 @@ struct Customer: Codable {
   var fullName: String
   let email: String
   var profileImageUrl: URL? = nil
+  var foodRescuedCount: Int?
+  var foodSharedCount: Int?
 }
 
 extension Customer {
   init?(object: [String: Any]) {
     if let id = object["id"] as? String,
        let fullName = object["fullName"] as? String,
-       let email = object["email"] as? String {
+       let email = object["email"] as? String,
+       let foodRescuedCount = object["foodRescuedCount"] as? Int,
+       let foodSharedCount = object["foodSharedCount"] as? Int
+    {
       self.init(id: id,
                 fullName: fullName,
-                email: email)
+                email: email,
+                foodRescuedCount: foodRescuedCount,
+                foodSharedCount: foodSharedCount)
       guard let profileImageUrl = object["profileImageUrl"] as? String else {
         return
       }
@@ -38,6 +45,8 @@ extension Customer {
     ["id": id,
      "fullName": fullName,
      "email": email,
-     "profileImageUrl": profileImageUrl?.absoluteString]
+     "profileImageUrl": profileImageUrl?.absoluteString as Any,
+     "foodRescuedCount": foodRescuedCount,
+     "foodSharedCount": foodSharedCount]
   }
 }

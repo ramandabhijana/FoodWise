@@ -22,7 +22,7 @@ class ChatViewController: MessagesViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    view.backgroundColor = .backgroundColor
+    view.backgroundColor = UIColor(.backgroundColor)
     configureMessageCollectionView()
     setupKeyboardShowedNotification()
     NotificationCenter.default.addObserver(
@@ -57,7 +57,7 @@ class ChatViewController: MessagesViewController {
   }
   
   func configureMessageCollectionView() {
-    messagesCollectionView.backgroundColor = UIColor.backgroundColor
+    messagesCollectionView.backgroundColor = UIColor(.backgroundColor)
     addTapGestureOnCollectionView()
     adjustMessageAlignment()
     scrollsToLastItemOnKeyboardBeginsEditing = false
@@ -72,10 +72,9 @@ class ChatViewController: MessagesViewController {
     messageInputBar = inputBar
     messageInputBar.delegate = delegate
     messageInputBar.isTranslucent = false
-    messageInputBar.backgroundView.backgroundColor = .secondaryColor
+    messageInputBar.backgroundView.backgroundColor = UIColor(.secondaryColor)
     messageInputBar.sendButton.setTitleColor(.accentColor, for: .normal)
-    messageInputBar.sendButton.setTitleColor(
-      UIColor.accentColor.withAlphaComponent(0.3),
+    messageInputBar.sendButton.setTitleColor(.accentColor.withAlphaComponent(0.3),
       for: .highlighted)
     messageInputBar.separatorLine.isHidden = true
     messageInputBar.inputTextView.tintColor = .accentColor
@@ -120,16 +119,6 @@ class ChatViewController: MessagesViewController {
       .sink { [weak self] messages in
         self?.messagesCollectionView.reloadDataAndKeepOffset()
         self?.messagesCollectionView.scrollToLastItem(animated: true)
-        /*
-        self?.messagesCollectionView.performBatchUpdates({
-          self?.messagesCollectionView.insertSections([messages.count - 1])
-            if messages.count >= 2 {
-              self?.messagesCollectionView.reloadSections([messages.count - 2])
-            }
-        }, completion: { [weak self] _ in
-          self?.messagesCollectionView.scrollToLastItem(animated: true)
-        })
-        */
       }
       .store(in: &subscriptions)
   }

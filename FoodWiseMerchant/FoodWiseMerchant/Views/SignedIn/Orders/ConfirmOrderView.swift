@@ -12,6 +12,8 @@ struct OrderConfirmationView: View {
   @EnvironmentObject var mainViewModel: MainViewModel
   @StateObject private var viewModel: ConfirmOrderViewModel
   
+  static private var requestDeliveryViewModel: RequestDeliveryViewModel!
+  
   @Environment(\.presentationMode) var presentationMode
   
   init(viewModel: ConfirmOrderViewModel) {
@@ -113,43 +115,18 @@ struct OrderConfirmationView: View {
                 .bold()
                 .font(.subheadline)
               
-              VStack(alignment: .leading) {
-                Text("Pickup Location")
-                  .font(.caption)
-                  .padding(.leading, 30)
-                HStack(alignment: .top, spacing: 0) {
-                  Image(systemName: "smallcircle.circle")
-                    .font(.caption)
-                    .frame(width: 30, alignment: .leading)
-                  Text(mainViewModel.merchant.location.geocodedLocation)
-                    .font(.footnote)
-                    .bold()
-                }
-                
-                
-                Divider()
-                  .padding(.leading, 30)
-                  .padding(.bottom, 5)
-                
-                VStack(alignment: .leading) {
-                  Text("Destination Location")
-                    .font(.caption)
-                    .padding(.leading, 30)
-                  HStack(alignment: .top, spacing: 0) {
-                    Image(systemName: "mappin.and.ellipse")
-                      .font(.caption)
-                      .frame(width: 30, alignment: .leading)
-                    Text(shippingAddress.geocodedLocation)
-                      .font(.footnote)
-                      .bold()
-                  }
-                }
-                
-              }
-              .padding(.top, 8)
+              PickupDestinationView(
+                pickupAddress: mainViewModel.merchant.location.geocodedLocation,
+                pickupDetails: mainViewModel.merchant.addressDetails,
+                destinationAddress: shippingAddress.geocodedLocation,
+                destinationDetails: shippingAddress.details
+              ).padding(.top, 8)
               
+              // Pending && Not requested
               if viewModel.order.status == OrderStatus.pending.rawValue {
-                Button(action: { }) {
+                Button(action: {
+                  viewModel.showingRequestDeliveryAndAccept = true
+                }) {
                   RoundedRectangle(cornerRadius: 8)
                     .frame(height: 32)
                     .overlay {
@@ -185,13 +162,25 @@ struct OrderConfirmationView: View {
                 .font(.caption)
               Spacer()
               Button {
-                
+                viewModel.showingChatView = true
               } label: {
                 Text("\(Image(systemName: "bubble.right")) Chat")
                   .bold()
                   .font(.subheadline)
               }
-              
+              .overlay {
+                NavigationLink(
+                  isActive: $viewModel.showingChatView,
+                  destination: {
+                    LazyView(ChatRoomView(
+                      userId: mainViewModel.merchant.id,
+                      otherUserType: kCustomerType,
+                      otherUserProfilePictureUrl: URL(string: viewModel.order.customerProfilePicUrl),
+                      otherUserName: viewModel.order.customerName,
+                      otherUserId: viewModel.order.customerId))
+                  },
+                  label: EmptyView.init)
+              }
             }
           }
           .padding()
@@ -200,11 +189,12 @@ struct OrderConfirmationView: View {
         
       }
       .padding()
-      .padding(.bottom, 60)
+      .padding(.bottom, 70)
     }
     .background(Color.backgroundColor)
     .navigationTitle("Confirm Order")
     .navigationBarTitleDisplayMode(.inline)
+    
     .onAppear {
       viewModel.merchantName = mainViewModel.merchant.name
     }
@@ -220,6 +210,15 @@ struct OrderConfirmationView: View {
         onSendButtonTapped: viewModel.rejectOrder
       )
     })
+    .fullScreenCover(
+      isPresented: $viewModel.showingRequestDeliveryView,
+      onDismiss: {
+        setNavigationBarColor(withStandardColor: .primaryColor, andScrollEdgeColor: .primaryColor)
+      },
+      content: {
+        RequestDeliveryView(viewModel: Self.requestDeliveryViewModel)
+      }
+    )
     .overlay(alignment: .bottom) {
       ZStack {
         Rectangle()
@@ -247,7 +246,8 @@ struct OrderConfirmationView: View {
           }
         }
         .frame(height: 44)
-        .padding([.horizontal, .top])
+        .padding()
+        .padding(.bottom)
         .disabled(viewModel.order.status != OrderStatus.pending.rawValue)
       }
       .frame(height: 44)
@@ -267,7 +267,14 @@ struct OrderConfirmationView: View {
       "Please request delivery first",
       isPresented: $viewModel.showingRequestDeliveryRequiredAlert
     ) {
-      Button("OK", role: .cancel) { }
+      Button("OK", action: showRequestDeliveryView)
+    }
+    .alert(
+      "Once you find a courier, the order will be automatically confirmed as accepted",
+      isPresented: $viewModel.showingRequestDeliveryAndAccept
+    ) {
+      Button("Cancel") { }
+      Button("Continue", action: showRequestDeliveryView)
     }
     .overlay {
       if viewModel.loading {
@@ -322,6 +329,20 @@ struct OrderConfirmationView: View {
       Divider()
       
     }
+  }
+  
+  private func showRequestDeliveryView() {
+    guard let shippingAddress = viewModel.order.shippingAddress else { return }
+    Self.requestDeliveryViewModel = .init(
+      pickupGeoCooordinate: mainViewModel.merchant.location.coordinate,
+      destinationGeoCoordinate: shippingAddress.clLocation.coordinate,
+      pickupAddress: mainViewModel.merchant.location.geocodedLocation,
+      pickupDetails: mainViewModel.merchant.addressDetails,
+      destinationAddress: shippingAddress.geocodedLocation,
+      destinationDetails: shippingAddress.details,
+      order: viewModel.order)
+    viewModel.listenRequestDeliveryPublisher(Self.requestDeliveryViewModel.deliveryTaskAssignedPublisher)
+    viewModel.showingRequestDeliveryView = true
   }
 }
 

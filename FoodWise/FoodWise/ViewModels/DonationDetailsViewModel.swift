@@ -13,15 +13,16 @@ class DonationDetailsViewModel: ObservableObject {
     willSet { if !newValue { messageText = "" } }
   }
   @Published var showingMapView: Bool = false
+  @Published var showingChatView: Bool = false
   @Published var showingSendingSnackbar: Bool = false
   @Published var showingSuccessAlert: Bool = false
   @Published var showingErrorSnackbar: Bool = false
   @Published var showingPhotoViewer: Bool = false
   @Published var messageText: String = ""
   
-  private var donationModel: DonationModel
+  private(set) var donationModel: DonationModel
   private let repository: DonationRepository
-  private let currentCustomer: Customer
+  private(set) var currentCustomer: Customer
   private var subscriptions: Set<AnyCancellable> = []
   
   var isDonatedByCurrentCustomer: Bool {
@@ -29,6 +30,13 @@ class DonationDetailsViewModel: ObservableObject {
   }
   var donation: Donation { donationModel.donation }
   var sharer: Customer { donationModel.donorUser }
+  var buttonDisabled: Bool {
+    donation.status != DonationStatus.available.rawValue || isDonatedByCurrentCustomer
+  }
+  var sendRequestButtonText: String {
+    guard !isDonatedByCurrentCustomer else { return "You donated this food" }
+    return donation.status == DonationStatus.available.rawValue ? "Send Request" : "Not available"
+  }
   
   init(donationModel: DonationModel,
        currentCustomer: Customer,

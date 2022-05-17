@@ -14,18 +14,24 @@ class MainViewModel: ObservableObject {
   private let courierRepo = CourierRepository()
   private var subscriptions = Set<AnyCancellable>()
   
+  var courierPublisher: AnyPublisher<Courier, Never> {
+    $courier.compactMap({ $0 }).eraseToAnyPublisher()
+  }
+  
   init() {
     if let user = AuthenticationService.shared.signedInUser {
       courierRepo.getCourier(withId: user.uid)
-        .sink { completion in
+        .sink { [weak self] completion in
           if case .failure(let error) = completion {
             print("Error reading customer: \(error)")
+            AuthenticationService.shared.signOut()
+            self?.postSignInNotificationIfNeeded()
           }
         } receiveValue: { [weak self] courier in
           self?.courier = courier
         }
         .store(in: &subscriptions)
-    }
+    } 
   }
   
   func setCourier(_ courier: Courier) {

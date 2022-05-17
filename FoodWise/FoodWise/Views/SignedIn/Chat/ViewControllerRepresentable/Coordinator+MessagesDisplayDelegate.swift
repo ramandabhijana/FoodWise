@@ -17,7 +17,7 @@ extension ChatViewViewControllerRepresentation.Coordinator: MessagesDisplayDeleg
   
   func backgroundColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
     return isFromCurrentSender(message: message)
-    ? .primaryColor
+    ? UIColor(.primaryColor)
     : UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1)
   }
   

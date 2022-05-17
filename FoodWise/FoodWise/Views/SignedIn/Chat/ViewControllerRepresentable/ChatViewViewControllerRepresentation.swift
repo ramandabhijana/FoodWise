@@ -132,22 +132,6 @@ extension ChatViewViewControllerRepresentation {
       }
     }
     
-//    private func fetchChatRoom(chatRoomId: String) {
-//      repository.getChatRoom(with: chatRoomId)
-//        .sink { completion in
-//          if case .failure(let error) = completion {
-//            print("Error fetching chat room with error: \(error)")
-//          }
-//        } receiveValue: { [weak self] chatRoom in
-//          guard let self = self else { return }
-//          if self.chatRoom == nil { self.chatRoom = chatRoom }
-//          let messages = chatRoom.messages.map(self.transformToMessageType(_:))
-//          self.messages = messages
-//          self.messagesChangedSubject.send(messages)
-//        }
-//        .store(in: &subscriptions)
-//    }
-    
     func transformToMessage(_ messageType: MessageType) -> Message {
       let content: String = {
         if case .text(let messageText) = messageType.kind {

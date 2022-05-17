@@ -10,10 +10,6 @@ import MessageKit
 import CoreLocation
 import FirebaseFirestore
 
-public let kCustomerType = "CUSTOMER"
-public let kCourierType = "COURIER"
-public let kMerchantType = "MERCHANT"
-
 struct Conversations: Codable {
   let userId: String
   var all: [Conversation]

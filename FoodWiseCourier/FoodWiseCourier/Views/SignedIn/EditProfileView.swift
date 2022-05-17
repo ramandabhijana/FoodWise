@@ -169,6 +169,10 @@ struct EditProfileView: View {
     }
     .navigationTitle("Edit Profile")
     .edgesIgnoringSafeArea(.bottom)
+    .onAppear {
+      setNavigationBarColor(withStandardColor: .primaryColor,
+                            andScrollEdgeColor: .primaryColor)
+    }
     .onReceive(mainViewModel.$courier.compactMap { $0 }) { _ in
       dismiss()
     }

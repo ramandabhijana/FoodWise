@@ -27,12 +27,6 @@ struct NearbyView: View {
   }
   
   init(viewModel: NearbyViewModel) {
-    let segmentedAppearance = UISegmentedControl.appearance()
-    segmentedAppearance.selectedSegmentTintColor = .darkGray
-    segmentedAppearance.setTitleTextAttributes(
-      [.foregroundColor: UIColor.white],
-      for: .selected)
-    
     _viewModel = StateObject(wrappedValue: viewModel)
     Self.mapViewModel = NearbyMapViewModel(
       radiusChangedSubject: radiusChangedSubject,

@@ -20,6 +20,10 @@ struct Donation: Codable, Identifiable, Hashable {
   var receiverUserId: String?
   var status: String
   var adoptionRequests: [AdoptionRequest]
+  var shippingAddress: Address?
+  var deliveryCharge: Double?
+  var deliveryTaskId: String?
+  
   
   init(date: Date, pictureUrl: URL?, kind: SharedFoodKind, foodName: String, pickupLocation: Address, notes: String, donorId: String, receiverUserId: String? = nil, status: DonationStatus = .available, adoptionRequests: [AdoptionRequest] = []) {
     self.id = UUID().uuidString
@@ -54,6 +58,24 @@ struct Donation: Codable, Identifiable, Hashable {
     default:
       return SharedFoodKind.all
     }
+  }
+  
+  var asObject: [String: Any] {
+    ["id": id,
+     "date": date,
+     "pictureUrl": pictureUrl?.absoluteString as Any,
+     "kind": kind,
+     "foodName": foodName,
+     "pickupLocation": pickupLocation.asObject,
+     "notes": notes,
+     "donorId": donorId,
+     "receiverUserId": receiverUserId as Any,
+     "status": status,
+     "adoptionRequests": adoptionRequests.map(\.asObject),
+     "shippingAddress": shippingAddress?.asObject as Any,
+     "deliveryCharge": deliveryCharge as Any,
+     "deliveryTaskId": deliveryTaskId as Any
+    ]
   }
   
   static var asPlaceholderInstance: Donation {

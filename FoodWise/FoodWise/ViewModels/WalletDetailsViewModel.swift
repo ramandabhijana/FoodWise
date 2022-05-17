@@ -14,7 +14,6 @@ class WalletDetailsViewModel: ObservableObject {
   @Published var showingHistoryView = false
   
   @Published private(set) var wallet: Wallet? = nil
-//  Wallet(id: "59DFE4BA-6E93-4D92-9DF6-8067848980B0", balance: 0.0, transactionHistory: [], userId: "yPKvaSDIL8XSvkIVn5u9CmyRi8t1")
   @Published private(set) var transactionHistory: [TransactionHistoryGroupedByDate] = []
   @Published private(set) var errorMessage: String = ""
   @Published private(set) var isLoading: Bool = false

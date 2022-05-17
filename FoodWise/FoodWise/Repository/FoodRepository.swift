@@ -210,6 +210,18 @@ final class FoodRepository {
     }.eraseToAnyPublisher()
   }
   
+  func setReviewProperty(forFoodWithId foodId: String, rating: Float, reviewCount: Int, sentimentScore: Float) -> AnyPublisher<Void, Error> {
+    Future { [weak self] promise in
+      guard let self = self else { return }
+      let data: [String: Any] = ["rating": rating, "reviewCount": reviewCount, "sentimentScore": sentimentScore]
+      self.db.collection(self.path).document(foodId)
+        .setData(data, merge: true) { error in
+          guard error == nil else { return promise(.failure(error!)) }
+          return promise(.success(()))
+        }
+    }.eraseToAnyPublisher()
+  }
+  
   enum FoodRepositoryError: Error {
     case emptyArgument
   }

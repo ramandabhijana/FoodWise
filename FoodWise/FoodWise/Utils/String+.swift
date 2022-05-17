@@ -20,3 +20,12 @@ public extension String {
     return passwordPredicate.evaluate(with: self)
   }
 }
+
+extension StringProtocol {
+  var firstUppercased: String { return prefix(1).uppercased() + dropFirst().lowercased() }
+  var firstCapitalized: String { return prefix(1).capitalized + dropFirst() }
+}
+
+public let kCustomerType = "CUSTOMER"
+public let kCourierType = "COURIER"
+public let kMerchantType = "MERCHANT"

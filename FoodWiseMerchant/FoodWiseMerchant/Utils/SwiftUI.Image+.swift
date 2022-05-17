@@ -19,4 +19,7 @@ extension Image {
   public static var riceIcon: Image { .init("Rice") }
   public static var samosaIcon: Image { .init("Samosa") }
   public static var spinachIcon: Image { .init("Spinach") }
+  public static var walletPattern: Image {
+    .init("WalletPattern") }
+  public static var emptyFolder: Image { .init("empty_folder") }
 }

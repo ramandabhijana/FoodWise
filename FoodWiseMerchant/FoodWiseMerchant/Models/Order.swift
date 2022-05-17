@@ -25,6 +25,7 @@ struct Order: Codable, Identifiable, Hashable {
   let customerEmail: String
   let walletId: String?
   let shippingAddress: ShippingAddress?
+  var deliveryTaskId: String?
   
   internal init(id: String, date: Date, paymentMethod: OrderPaymentMethod, pickupMethod: OrderPickupMethod, status: OrderStatus, total: Double, deliveryCharge: Double, subtotal: Double, items: [LineItem], merchantShopFromId: String, customerId: String, customerProfilePicUrl: String, customerName: String, customerEmail: String, walletId: String?, shippingAddress: ShippingAddress?) {
     self.id = id
@@ -51,6 +52,27 @@ struct Order: Codable, Identifiable, Hashable {
   
   static func == (lhs: Order, rhs: Order) -> Bool {
     lhs.id == rhs.id
+  }
+  
+  var asObject: [String: Any] {
+    ["id": id,
+     "date": date,
+     "paymentMethod": paymentMethod,
+     "pickupMethod": pickupMethod,
+     "status": status,
+     "total": total,
+     "deliveryCharge": deliveryCharge,
+     "subtotal": subtotal,
+     "items": items.map(\.asObject),
+     "merchantShopFromId": merchantShopFromId,
+     "customerId": customerId,
+     "customerProfilePicUrl": customerProfilePicUrl,
+     "customerName": customerName,
+     "customerEmail": customerEmail,
+     "walletId": walletId as Any,
+     "shippingAddress": shippingAddress?.asObject as Any,
+     "deliveryTaskId": deliveryTaskId as Any
+    ]
   }
 }
 

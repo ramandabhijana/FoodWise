@@ -102,7 +102,7 @@ private extension SharedFoodsViewModel {
 
 struct DonationModel: Identifiable, Hashable {
   var id: String { donation.id }
-  let donation: Donation
+  var donation: Donation
   let donorUser: Customer
   
   func hash(into hasher: inout Hasher) {
@@ -115,7 +115,7 @@ struct DonationModel: Identifiable, Hashable {
   
   static var asPlaceholderInstance: DonationModel {
     .init(donation: .asPlaceholderInstance,
-          donorUser: .init(id: "", fullName: "Customer name", email: ""))
+          donorUser: .init(id: "", fullName: "Customer name", email: "", foodRescuedCount: 0, foodSharedCount: 0))
   }
 }
 

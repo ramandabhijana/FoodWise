@@ -19,6 +19,9 @@ struct Food: Identifiable, Codable, Equatable {
   let discountRate: Float
   let merchantId: String
   var price: Double
+  var rating: Float?
+  var reviewCount: Int?
+  var sentimentScore: Float?
   
   var retailPriceString: String {
     retailPrice.asIndonesianCurrencyString()
@@ -48,6 +51,37 @@ struct Food: Identifiable, Codable, Equatable {
     self.discountRate = discountRate
     self.price = retailPrice - (retailPrice * Double((discountRate * 0.01)))
     self.merchantId = merchantId
+  }
+  
+  var asLineItemObject: [String: Any] {
+    /*
+     var id: String
+     let name: String
+     let imagesUrl: [URL?]
+     let categories: [FoodCategory]
+     var stock: Int
+     let keywords: [String]
+     let description: String
+     let retailPrice: Double
+     let discountRate: Float
+     let merchantId: String
+     var price: Double
+     var rating: Float?
+     var reviewCount: Int?
+     var sentimentScore: Float?
+     */
+    ["id": id,
+     "name": name,
+     "imagesUrl": imagesUrl.map(\.?.absoluteString),
+     "categories": categories.map(\.asObject),
+     "stock": stock,
+     "keywords": keywords,
+     "description": description,
+     "retailPrice": retailPrice,
+     "discountRate": discountRate,
+     "merchantId": merchantId,
+     "price": price
+    ]
   }
   
   static var asPlaceholderInstance: Food {

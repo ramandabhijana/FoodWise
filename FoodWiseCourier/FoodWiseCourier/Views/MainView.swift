@@ -6,19 +6,26 @@
 //
 
 import SwiftUI
+import Combine
 
 struct MainView: View {
   @State private var presentingSignInView = false
   @StateObject private var viewModel: MainViewModel
   @StateObject private var drawerStateManager = DrawerStateManager()
+  @StateObject private var homeViewModel: HomeViewModel
   private static var signInViewModel = SignInViewModel()
+  private static var homeViewModel: HomeViewModel!
   
   private let signInRequiredPublisher = NotificationCenter.default
     .publisher(for: .signInRequiredNotification)
     .receive(on: RunLoop.main)
   
   init(viewModel: MainViewModel) {
+//    let mainViewModel = MainViewModel()
+    let homeViewModel = HomeViewModel(courierPublisher: viewModel.courierPublisher)
     _viewModel = StateObject(wrappedValue: viewModel)
+//    Self.homeViewModel = homeViewModel
+    _homeViewModel = StateObject(wrappedValue: homeViewModel)
     UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = UIColor(named: "AccentColor")
   }
   
@@ -27,6 +34,8 @@ struct MainView: View {
       if viewModel.courier != nil {
         HStack(spacing: 0) {
           DrawerView(manager: drawerStateManager)
+          
+          
           ZStack {
             /*
             switch drawerStateManager.selectedMenu {
@@ -41,7 +50,8 @@ struct MainView: View {
               EmptyView()
             }
              */
-            HomeView(viewModel: .init())
+            HomeView(viewModel: homeViewModel)
+            
           }
           .frame(width: UIScreen.main.bounds.width)
           .environmentObject(drawerStateManager)
@@ -73,8 +83,9 @@ struct MainView: View {
           }
       }
     }
-//    .onAppear(perform: viewModel.postSignInNotificationIfNeeded)
+    .onAppear(perform: viewModel.postSignInNotificationIfNeeded)
     .onReceive(signInRequiredPublisher) { _ in
+      print("presentingSignInView")
       presentingSignInView = true
     }
     .fullScreenCover(isPresented: $presentingSignInView) {
@@ -85,6 +96,7 @@ struct MainView: View {
         }
       )
     }
+    
   }
 }
 

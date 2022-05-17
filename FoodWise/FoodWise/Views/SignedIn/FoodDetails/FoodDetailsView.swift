@@ -195,8 +195,43 @@ struct FoodDetailsView: View {
               Text("Rating and Reviews")
                 .bold()
                 .padding(.bottom)
-              Text("The food has never received a review")
-                .font(.callout)
+              if let reviewCount = viewModel.food.reviewCount,
+                 reviewCount > 0 {
+                VStack(alignment: .leading, spacing: 0) {
+                  HStack {
+                    Text(String.init(format: "%.1f", viewModel.food.rating ?? 1.0))
+                    makeRatingStars(forCount: viewModel.food.rating ?? 1.0)
+                  }
+                  Text(
+                    "(\(reviewCount) Review\(reviewCount > 1 ? "s" : ""))"
+                  )
+                  .fontWeight(.light)
+                }
+                .padding(.bottom, 5)
+                
+                VStack(alignment: .leading, spacing: 0) {
+                  ForEach(viewModel.reviews) { review in
+                    FoodRatingReviewsView.makeReviewCell(with: review)
+                    Divider().padding(.vertical, 5)
+                  }
+                }
+                
+                if reviewCount > 3 {
+                  NavigationLink {
+                    LazyView(FoodRatingReviewsView(viewModel: .init(foodId: viewModel.food.id, repository: viewModel.reviewRepository)))
+                  } label: {
+                    Text("See all")
+                      .fontWeight(.bold)
+                      .frame(maxWidth: .infinity)
+                  }
+                }
+              } else {
+                Text("The food has never received a review")
+                  .font(.callout)
+              }
+              
+              
+              
               
               /*
               VStack(alignment: .leading, spacing: 0) {
@@ -385,8 +420,7 @@ struct FoodDetailsView: View {
     }
     .ignoresSafeArea()
     .onDisappear {
-      navigationController?.isNavigationBarHidden = false
-      tabBar?.isHidden = false
+//      navigationController?.isNavigationBarHidden = false
     }
     .snackBar(
       isShowing: $viewModel.onUpdateFavoriteList.shows,
@@ -406,12 +440,11 @@ struct FoodDetailsView: View {
       navigationController = controller
       navigationController?.isNavigationBarHidden = true
     }
-    .introspectTabBarController { controller in
-      tabBar = controller.tabBar
-      controller.tabBar.isHidden = true
-    }
     .onAppear {
       navigationController?.isNavigationBarHidden = true
+      NotificationCenter.default.post(
+        name: .tabBarHiddenNotification,
+        object: nil)
     }
     
   }
@@ -450,6 +483,24 @@ struct FoodDetailsView: View {
     }
   }
   
+  private func makeRatingStars(forCount ratingCount: Float) -> some View {
+    HStack(spacing: 1) {
+      ForEach(1..<6) { num in
+        RatingStar(
+          size: 20,
+          fill: {
+            if Float(num) - 0.5 == ratingCount {
+              return .half
+            } else if Float(num) <= ratingCount {
+              return .full
+            } else {
+              return .none
+            }
+          }()
+        )
+      }
+    }
+  }
   
 }
 

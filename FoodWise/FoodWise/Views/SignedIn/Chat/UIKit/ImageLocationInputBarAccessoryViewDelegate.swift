@@ -79,7 +79,7 @@ extension ImageLocationInputBarAccessoryView {
           self?.presentImagePickerController(sourceType: .camera)
         }
       action.setValue(
-        UIImage(systemName: "camera")?.withTintColor(.accentColor, renderingMode: .alwaysOriginal),
+        UIImage(systemName: "camera")?.withTintColor(UIColor(.accentColor), renderingMode: .alwaysOriginal),
         forKey: "image")
       return action
     }()
@@ -90,7 +90,7 @@ extension ImageLocationInputBarAccessoryView {
           self?.presentImagePickerController(sourceType: .photoLibrary)
         }
       action.setValue(
-        UIImage(systemName: "photo")?.withTintColor(.accentColor, renderingMode: .alwaysOriginal),
+        UIImage(systemName: "photo")?.withTintColor(UIColor(.accentColor), renderingMode: .alwaysOriginal),
         forKey: "image")
       return action
     }()
@@ -102,7 +102,7 @@ extension ImageLocationInputBarAccessoryView {
 //          self?.presentImagePickerController(sourceType: .photoLibrary)
         }
       action.setValue(
-        UIImage(systemName: "mappin.and.ellipse")?.withTintColor(.accentColor, renderingMode: .alwaysOriginal),
+        UIImage(systemName: "mappin.and.ellipse")?.withTintColor(UIColor(.accentColor), renderingMode: .alwaysOriginal),
         forKey: "image")
       return action
       

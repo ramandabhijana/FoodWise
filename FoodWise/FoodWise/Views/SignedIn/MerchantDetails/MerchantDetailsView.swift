@@ -103,7 +103,8 @@ struct MerchantDetailsView: View {
             
             GeometryReader { proxy in
               HStack(spacing: 16) {
-                TextField("Search...", text: .constant(""), prompt: nil)
+                TextField("Search...", text: $viewModel.searchText, prompt: nil)
+                  .disableAutocorrection(true)
                   .padding(.vertical, 5)
                   .padding(.horizontal)
                   .background(Color.white)
@@ -183,7 +184,7 @@ struct MerchantDetailsView: View {
                 spacing: 20
               ) {
                 ForEach(
-                  viewModel.allFoods,
+                  viewModel.filteredFoods,
                   content: buildFoodCell(food:)
                 )
                   .redacted(reason: viewModel.loading ? .placeholder : [])
@@ -221,11 +222,6 @@ struct MerchantDetailsView: View {
         name: .tabBarHiddenNotification,
         object: nil)
     }
-//    .onAppear {
-//      NotificationCenter.default.post(
-//        name: .tabBarHiddenNotification,
-//        object: nil)
-//    }
   }
   
   private func buildFoodCell(food: Food) -> some View {

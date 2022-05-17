@@ -134,12 +134,7 @@ struct NewFoodView: View {
         ) {
           TextField(
             "Food's current available stock",
-            value: $viewModel.stock,
-            formatter: {
-              let formatter = NumberFormatter()
-              formatter.numberStyle = .decimal
-              return formatter
-            }()
+            text: $viewModel.stock
           )
             .keyboardType(.numberPad)
             .disableAutocorrection(true)
@@ -203,15 +198,7 @@ struct NewFoodView: View {
               label: "Disc. Rate",
               semiBoldLabel: false
             ) {
-              TextField(
-                "20% or higher",
-                value: $viewModel.discountRate,
-                formatter: {
-                  let formatter = NumberFormatter()
-                  formatter.numberStyle = .decimal
-                  return formatter
-                }()
-              )
+              TextField("20% or higher", text: $viewModel.discountRate)
                 .keyboardType(.numberPad)
                 .disableAutocorrection(true)
                 .focused($discRateFieldFocused)

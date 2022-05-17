@@ -13,10 +13,34 @@ extension Notification.Name {
 }
 
 class RootViewModel: ObservableObject {
+  
+  enum TabItems: Int, CaseIterable {
+    case home, bag, community, more
+    
+    var itemName: String {
+      switch self {
+      case .home: return "Home"
+      case .bag: return "Your Bag"
+      case .community: return "Community"
+      case .more: return "More"
+      }
+    }
+    
+    var imageSystemName: String {
+      switch self {
+      case .home: return "house.fill"
+      case .bag: return "bag.fill"
+      case .community: return "person.3.fill"
+      case .more: return "ellipsis.circle.fill"
+      }
+    }
+  }
+  
   @Published private(set) var customer: Customer?
-  @Published var selectedTab = 0 {
+  @Published private(set) var showingTabBar: Bool = true
+  @Published var selectedTab: TabItems = .home {
     didSet {
-      if selectedTab != 0 && AuthenticationService.shared.user == nil {
+      if selectedTab != .home && AuthenticationService.shared.user == nil {
         NotificationCenter.default.post(
           name: .signInRequiredNotification,
           object: nil
@@ -28,6 +52,13 @@ class RootViewModel: ObservableObject {
   private let customerRepo = CustomerRepository()
   private var subscriptions = Set<AnyCancellable>()
   
+  private let tabBarHiddenPublisher = NotificationCenter.default
+    .publisher(for: .tabBarHiddenNotification)
+    .receive(on: RunLoop.main)
+  private let tabBarShownPublisher = NotificationCenter.default
+    .publisher(for: .tabBarShownNotification)
+    .receive(on: RunLoop.main)
+  
   init() {
     AuthenticationService.shared.$user
       .dropFirst()
@@ -38,6 +69,7 @@ class RootViewModel: ObservableObject {
       .store(in: &subscriptions)
     
     fetchCustomerIfUserExist()
+    setupTabBarHiddenPublisher()
   }
   
   func postSignInRequiredIfUserNil() {
@@ -52,14 +84,28 @@ class RootViewModel: ObservableObject {
     self.customer = customer
   }
   
+  func incrementFoodSharedCount() {
+    guard let customer = customer else { return }
+    self.customer?.foodSharedCount! += 1
+    customerRepo.incrementFoodSharedCount(forCustomerId: customer.id)
+      .replaceError(with: ())
+      .sink(receiveValue: { _ in })
+      .store(in: &subscriptions)
+  }
+  
+  func incrementFoodRescuedCount() {
+    customer?.foodRescuedCount! += 1
+  }
+  
   func fetchCustomerIfUserExist() {
     if let user = AuthenticationService.shared.signedInUser {
       
       customerRepo.getCustomer(withId: user.uid)
-        .sink { completion in
+        .sink { [weak self] completion in
           if case .failure(let error) = completion {
             print("Error reading customer: \(error)")
             AuthenticationService.shared.signOut()
+            self?.postSignInRequiredIfUserNil()
           }
         } receiveValue: { [weak self] customer in
           self?.customer = customer
@@ -67,21 +113,34 @@ class RootViewModel: ObservableObject {
         .store(in: &subscriptions)
     }
   }
+  
+  private func setupTabBarHiddenPublisher() {
+    tabBarShownPublisher
+      .debounce(for: .seconds(0.5), scheduler: RunLoop.main)
+      .sink { [weak self] _ in
+        guard self?.showingTabBar != true else { return }
+        self?.showingTabBar = true
+      }
+      .store(in: &subscriptions)
+    tabBarHiddenPublisher
+      .debounce(for: .seconds(0.5), scheduler: RunLoop.main)
+      .sink { [weak self] _ in
+        guard self?.showingTabBar != false else { return }
+        self?.showingTabBar = false
+      }
+      .store(in: &subscriptions)
+  }
 }
 
 struct RootSignedInView: View {
   @State private var presentingOnboardingView = false
   @State private var tabBarController: UITabBarController?
   @State private var navigationController: UINavigationController?
-  @State var showsTabBar = true
+  @State private var tabBarBackgroundColor: Color = .secondaryColor
   @StateObject private var viewModel: RootViewModel
   
-  private let tabBarHiddenPublisher = NotificationCenter.default
-    .publisher(for: .tabBarHiddenNotification)
-    .receive(on: RunLoop.main)
-  private let tabBarShownPublisher = NotificationCenter.default
-    .publisher(for: .tabBarShownNotification)
-    .receive(on: RunLoop.main)
+  private let tabBarHeight: CGFloat = UITabBarController().tabBar.bounds.height
+  
   private let signInRequiredPublisher = NotificationCenter.default
     .publisher(for: .signInRequiredNotification)
     .receive(on: RunLoop.main)
@@ -98,43 +157,60 @@ struct RootSignedInView: View {
     .publisher(for: .navBarChangeBackgroundToBackgroundColorNotification)
     .receive(on: RunLoop.main)
   
+  private lazy var allMainViews: [RootViewModel.TabItems: AnyView] = {
+    [
+      .home: AnyView(
+        HomeView(
+          viewModel: .init(),
+          categoriesViewModel: .init())),
+      .bag: AnyView(YourBagView(viewModel: .init())),
+      .community: AnyView(SharedFoodsView(viewModel: .init())),
+      .more: AnyView(MyProfileView())
+    ]
+  }()
+  
   init() {
     _viewModel = StateObject(wrappedValue: RootViewModel())
     
-    let itemAppearance = UITabBarItemAppearance()
-    itemAppearance.selected.iconColor = .darkGray
-    itemAppearance.normal.iconColor = .lightGray.withAlphaComponent(0.5)
+    let segmentedAppearance = UISegmentedControl.appearance()
+    segmentedAppearance.selectedSegmentTintColor = .darkGray
+    segmentedAppearance.setTitleTextAttributes(
+      [.foregroundColor: UIColor.white],
+      for: .selected)
     
-    let appearance = UITabBarAppearance()
-    appearance.stackedLayoutAppearance = itemAppearance
-    appearance.configureWithTransparentBackground()
-    appearance.backgroundColor = UIColor(named: "SecondaryColor")
-    UITabBar.appearance().standardAppearance = appearance
-    UITabBar.appearance().scrollEdgeAppearance = appearance
     UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = UIColor(named: "AccentColor")
   }
   
   var body: some View {
-    TabView(selection: $viewModel.selectedTab) {
-      HomeView(
-        viewModel: .init(),
-        categoriesViewModel: .init()
-      )
-      .tabItem { Label("Home", systemImage: "house") }
-      .tag(0)
-      
-      YourBagView(viewModel: .init())
-        .tabItem { Label("Your Bag", systemImage: "bag.fill") }
-        .tag(1)
-      
-      SharedFoodsView(viewModel: .init())
-        .tabItem { Label("Community", systemImage: "person.3.fill") }
-        .tag(2)
-      
-      MyProfileView()
-        .tabItem { Label("Settings", systemImage: "gearshape.fill") }
-        .tag(3)
-    }
+//    TabView(selection: $viewModel.selectedTab) {
+//      HomeView(
+//        viewModel: .init(),
+//        categoriesViewModel: .init()
+//      )
+//      .tabItem { Label("Home", systemImage: "house") }
+//      .tag(0)
+//
+//      YourBagView(viewModel: .init())
+//        .tabItem { Label("Your Bag", systemImage: "bag.fill") }
+//        .tag(1)
+//
+//      SharedFoodsView(viewModel: .init())
+//        .tabItem { Label("Community", systemImage: "person.3.fill") }
+//        .tag(2)
+//
+//      MyProfileView()
+//        .tabItem { Label("Settings", systemImage: "gearshape.fill") }
+//        .tag(3)
+//    }
+    makeTabView(with: [
+      .home: AnyView(
+        HomeView(
+          viewModel: .init(),
+          categoriesViewModel: .init())),
+      .bag: AnyView(LazyView(YourBagView(viewModel: .init()))),
+      .community: AnyView(SharedFoodsView(viewModel: .init())),
+      .more: AnyView(MyProfileView())
+    ])
     .onAppear(perform: viewModel.postSignInRequiredIfUserNil)
     .onReceive(signInRequiredPublisher) { _ in
       print("receive sign in req")
@@ -142,15 +218,14 @@ struct RootSignedInView: View {
     }
     .overlay {
       if viewModel.customer == nil && AuthenticationService.shared.currentUserExist {
-        ZStack {
-          Color.backgroundColor
-            .frame(
-              width: UIScreen.main.bounds.width,
-              height: UIScreen.main.bounds.height
-            )
+        VStack {
+          Spacer()
           ProgressView()
             .progressViewStyle(.circular)
+          Spacer()
         }
+        .frame(maxWidth: .infinity)
+        .background(Color.backgroundColor)
       }
     }
     .fullScreenCover(isPresented: $presentingOnboardingView) {
@@ -162,19 +237,23 @@ struct RootSignedInView: View {
       )
     }
     .environmentObject(viewModel)
-    .introspectTabBarController { tabBarController = $0 }
+//    .introspectTabBarController { tabBarController = $0 }
     .introspectNavigationController { navigationController = $0 }
-    .onReceive(tabBarHiddenPublisher) { _ in
-      tabBarController?.setTabBarHidden(true)
-    }
-    .onReceive(tabBarShownPublisher) { _ in
-      tabBarController?.setTabBarHidden(false)
-    }
+//    .onReceive(tabBarHiddenPublisher) { _ in
+//      tabBarController?.setTabBarHidden(true)
+//      viewModel.showingTabBar = false
+//    }
+//    .onReceive(tabBarShownPublisher) { _ in
+//      print("tabBarShownNotifiation")
+//      tabBarController?.setTabBarHidden(false)
+//    }
     .onReceive(tabBarChangeBackgroundToBackgroundColorPublisher) { _ in
-      setupTabBarBackgroundColor(withColor: .init(named: "BackgroundColor"))
+//      setupTabBarBackgroundColor(withColor: .init(named: "BackgroundColor"))
+      tabBarBackgroundColor = .backgroundColor
     }
     .onReceive(tabBarChangeBackgroundToSecondaryColorPublisher) { _ in
-      setupTabBarBackgroundColor()
+      tabBarBackgroundColor = .secondaryColor
+//      setupTabBarBackgroundColor()
     }
     .onReceive(navBarChangeBackgroundToPrimaryBackgroundColorPublisher) { _ in
       setupNavBarBackgroundColor(withColor: .backgroundColor, scrollEdgeColor: .primaryColor)
@@ -182,8 +261,52 @@ struct RootSignedInView: View {
     .onReceive(navBarChangeBackgroundToBackgroundColorPublisher) { _ in
       setupNavBarBackgroundColor(withColor: .backgroundColor, scrollEdgeColor: .backgroundColor)
     }
+  }
+  
+  private func makeTabView(with viewsDictionary: [RootViewModel.TabItems: AnyView]) -> some View {
+    return ZStack(alignment: .bottom) {
+      Group {
+        switch viewModel.selectedTab {
+        case .home: viewsDictionary[.home]
+        case .bag: LazyView(viewsDictionary[.bag])
+        case .community: LazyView(viewsDictionary[.community])
+        case .more: LazyView(viewsDictionary[.more])
+        }
+      }
+      .padding(.bottom, viewModel.showingTabBar ? tabBarHeight : 0)
+      .animation(.easeIn, value: viewModel.showingTabBar)
       
-      
+      VStack(spacing: 0) {
+        Divider()
+        HStack {
+          ForEach(RootViewModel.TabItems.allCases, id: \.self.rawValue) { item in
+            Spacer()
+            Button(action: { viewModel.selectedTab = item }) {
+              VStack {
+                Image(systemName: item.imageSystemName)
+                  .font(.title2)
+                  .foregroundColor(
+                    item == viewModel.selectedTab
+                      ? Color(uiColor: .darkGray)
+                      : Color(uiColor: .lightGray.withAlphaComponent(0.5)))
+                Text(item.itemName)
+                  .font(.caption2)
+                  .foregroundColor(
+                    item == viewModel.selectedTab
+                      ? .accentColor
+                      : Color(uiColor: .lightGray.withAlphaComponent(0.5)))
+              }
+            }
+            Spacer()
+          }
+        }
+        .frame(height: tabBarHeight)
+        .background(tabBarBackgroundColor)
+        
+      }
+      .offset(y: viewModel.showingTabBar ? 0 : tabBarHeight*2)
+      .animation(.easeIn, value: viewModel.showingTabBar)
+    }
   }
   
   private func setupTabBarBackgroundColor(withColor uiColor: UIColor? = UIColor(named: "SecondaryColor")) {
@@ -270,15 +393,6 @@ extension View {
         name: .updateNavigationBarNotification,
         object: nil)
     }
-  }
-}
-
-extension UITabBarController {
-  func setTabBarHidden(_ hidden: Bool) {
-    tabBar.layer.zPosition = hidden ? -1 : 0
-    let enabled = hidden ? false : true
-    tabBar.isUserInteractionEnabled = enabled
-    tabBar.items?.forEach { $0.isEnabled = enabled }
   }
 }
 

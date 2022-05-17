@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import MapKit
 
 class CheckoutViewModel: ObservableObject {
   @Published var showingAllOrderItems = false
@@ -24,16 +25,33 @@ class CheckoutViewModel: ObservableObject {
   
   private let orderRepository: OrderRepository
   private let merchantRepository: MerchantRepository
-  private var currentDistanceFromMerchant: Measurement<UnitLength>? = nil
+  private var currentDistanceFromMerchant: Measurement<UnitLength>? = nil {
+    didSet {
+      guard let currentDistanceFromMerchant = currentDistanceFromMerchant else {
+        deliveryFee = 0.0
+        return
+      }
+      let firstRate = 1_500.00
+      let secondRate = 2_500.00
+      let thresholdDistance = Measurement(value: 5.0, unit: UnitLength.kilometers)
+      if currentDistanceFromMerchant > thresholdDistance {
+        let afterFirstRate = (currentDistanceFromMerchant.value.truncatingRemainder(dividingBy: thresholdDistance.value)) * secondRate
+        deliveryFee = firstRate * currentDistanceFromMerchant.value + afterFirstRate
+      } else {
+        deliveryFee = max(firstRate * currentDistanceFromMerchant.value, firstRate)
+      }
+    }
+  }
   private(set) var walletRepository: WalletRepository
   private(set) var orderItems: [LineItem]
   private(set) var wallet: Wallet? = nil
   
+  private lazy var directionsCalculator: DirectionsCalculator = .init()
   private var subscriptions: Set<AnyCancellable> = []
   
   var shippingAddress: Address? = nil
   var firstThreeItems: [LineItem] { Array(orderItems.prefix(3)) }
-  var placeOrderButtonDisabled: Bool { selectedPickupMethod == nil || selectedPaymentMethod == nil || isPlacingOrder }
+  var placeOrderButtonDisabled: Bool { selectedPickupMethod == nil || selectedPaymentMethod == nil || isPlacingOrder || (selectedPickupMethod == .delivery && currentDistanceFromMerchant == nil) }
   var subTotalString: String {
     Self.rpCurrencyFormatter.string(from: .init(value: subTotal)) ?? "-"
   }
@@ -55,20 +73,7 @@ class CheckoutViewModel: ObservableObject {
    FIRST RATE: Rp1.500/km or part thereof for FIRST 5 KM
    SECOND RATE: Rp2.500/km or part thereof AFTER 5 KM
    */
-  private var deliveryFee: Double {
-    guard let currentDistanceFromMerchant = currentDistanceFromMerchant else {
-      return 0.0
-    }
-    let firstRate = 1_500.00
-    let secondRate = 2_500.00
-    let thresholdDistance = Measurement(value: 5.0, unit: UnitLength.kilometers)
-    if currentDistanceFromMerchant > thresholdDistance {
-      let afterFirstRate = (currentDistanceFromMerchant.value.truncatingRemainder(dividingBy: thresholdDistance.value)) * secondRate
-      return firstRate * currentDistanceFromMerchant.value + afterFirstRate
-    } else {
-      return max(firstRate * currentDistanceFromMerchant.value, firstRate)
-    }
-  }
+  @Published private(set) var deliveryFee: Double = 0.0
   private var totalCost: Double { subTotal + deliveryFee }
   
   static let rpCurrencyFormatter: NumberFormatter = {
@@ -114,6 +119,7 @@ class CheckoutViewModel: ObservableObject {
             currentDistanceFromMerchant = nil
             return
     }
+    /*
     let distanceFromSelectedAddress = merchant.location
       .asClLocation
       .distance(from: shippingAddress.clLocation)
@@ -121,7 +127,20 @@ class CheckoutViewModel: ObservableObject {
       value: distanceFromSelectedAddress,
       unit: UnitLength.meters
     ).converted(to: .kilometers)
-    self.currentDistanceFromMerchant = distanceInKm
+    */
+    let pickupLocation = MKMapItem(placemark: .init(coordinate: merchant.location.asClLocation.coordinate))
+    let dropOffLocation = MKMapItem(placemark: .init(coordinate: shippingAddress.clLocation.coordinate))
+    directionsCalculator.calculateRoute(from: pickupLocation, to: dropOffLocation)
+      .sink { completion in
+        if case .failure(let error) = completion {
+          print("unable to get route with error: \(error)")
+        }
+      } receiveValue: { [weak self] route in
+        self?.currentDistanceFromMerchant = Measurement(
+          value: route.distance,
+          unit: UnitLength.meters).converted(to: .kilometers)
+      }
+      .store(in: &subscriptions)
   }
   
   func verifyWalletBalance(userId: String) {
@@ -181,7 +200,20 @@ class CheckoutViewModel: ObservableObject {
       }
     }()
     
-    orderRepository.createOrder(paymentMethod: paymentMethod, pickupMethod: pickupMethod, total: totalCost, deliveryCharge: deliveryFee, subtotal: subTotal, items: orderItems, merchantShopFromId: merchant.id, customerId: customer.id, customerProfilePicUrl: customer.profileImageUrl?.absoluteString ?? "", customerName: customer.fullName, customerEmail: customer.email, walletId: wallet?.id, shippingAddress: shippingAddress)
+    let transactionPublisher = selectedPaymentMethod == .wallet
+    ? walletRepository.addNewTransaction(
+      Transaction(
+        date: .now,
+        amountSpent: -(totalCost),
+        info: "Pay Order"
+      ),
+      toWalletWithId: wallet!.id)
+    : Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
+    
+    let createOrderPublisher = orderRepository.createOrder(paymentMethod: paymentMethod, pickupMethod: pickupMethod, total: totalCost, deliveryCharge: deliveryFee, subtotal: subTotal, items: orderItems, merchantShopFromId: merchant.id, customerId: customer.id, customerProfilePicUrl: customer.profileImageUrl?.absoluteString ?? "", customerName: customer.fullName, customerEmail: customer.email, walletId: wallet?.id, shippingAddress: shippingAddress)
+    
+    transactionPublisher
+      .flatMap { _ in createOrderPublisher }
       .sink { [weak self] completion in
         if case .failure(let error) = completion {
           print("Failed to createOrder with error: \(error)")
@@ -195,8 +227,6 @@ class CheckoutViewModel: ObservableObject {
         }
       }
       .store(in: &subscriptions)
-
-     
   }
   
   

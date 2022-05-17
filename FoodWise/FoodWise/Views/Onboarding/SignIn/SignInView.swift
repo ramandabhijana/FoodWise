@@ -109,7 +109,9 @@ public struct SignInView: View {
     .navigationTitle("Sign In")
     .onReceive(
       viewModel.$signedInCustomer.compactMap { $0 },
-      perform: onReceiveCustomer
+      perform: { customer in
+        onReceiveCustomer(customer)
+      }
     )
     .onReceive(viewModel.$errorMessage.dropFirst()) { message in
       showErrorSnackbar.toggle()

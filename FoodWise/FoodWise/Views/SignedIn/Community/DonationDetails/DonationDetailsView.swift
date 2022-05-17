@@ -14,8 +14,6 @@ struct DonationDetailsView: View {
   @StateObject private var viewModel: DonationDetailsViewModel
   @State private var currentNavBarConfig: CurrentNavigationBarConfiguration = .init()
   @State private var imageOffset: CGFloat = 0.0
-  @State private var tabBar: UITabBar?
-  @State private var tabBarHeight: CGFloat?
   @FocusState private var messageFieldFocused: Bool
   
   @Environment(\.dismiss) private var dismiss
@@ -79,7 +77,7 @@ struct DonationDetailsView: View {
               Text(viewModel.isDonatedByCurrentCustomer ? "You" : viewModel.sharer.fullName)
               Spacer()
               if !viewModel.isDonatedByCurrentCustomer {
-                Button(action: {  }) {
+                Button(action: { viewModel.showingChatView = true }) {
                   Text("Chat")
                     .padding(.horizontal, 16)
                     .padding(.vertical, 5)
@@ -87,6 +85,13 @@ struct DonationDetailsView: View {
                       RoundedRectangle(cornerRadius: 6)
                         .strokeBorder(lineWidth: 2)
                     }
+                }
+                .overlay {
+                  NavigationLink(
+                    isActive: $viewModel.showingChatView,
+                    destination: { LazyView(ChatRoomView(userId: viewModel.currentCustomer.id, otherUserType: kCustomerType, otherUserProfilePictureUrl: viewModel.donationModel.donorUser.profileImageUrl, otherUserName: viewModel.donationModel.donorUser.fullName, otherUserId: viewModel.donationModel.donorUser.id))
+                    },
+                    label: EmptyView.init)
                 }
               }
             }
@@ -126,12 +131,6 @@ struct DonationDetailsView: View {
         name: .tabBarHiddenNotification,
         object: nil)
     }
-    .onDisappear {
-      tabBar?.isHidden = false
-//      NotificationCenter.default.post(
-//        name: .tabB,
-//        object: nil)
-    }
     .navigationBarHidden(true)
     .background(Color.backgroundColor)
     .ignoresSafeArea()
@@ -162,46 +161,29 @@ struct DonationDetailsView: View {
             message: Text("We'll send you an email if the request is accepted"),
             dismissButton: .default(Text("Ok")))
     }
-    .introspectTabBarController(customize: { tabBarController in
-      tabBar = tabBarController.tabBar
-      tabBar?.isHidden = true
-      
-//      tabBarHeight = (tabBarController.tabBar.frame.height) - safeAreaInsets.bottom
-      // (tabBar?.frame.height ?? 0.0) - safeAreaInsets.bottom
-      
-//      tabBarHeight = (tabBar?.frame.height ?? 0.0) - safeAreaInsets.bottom
-      
-//      tabBar?.frame = .zero
-    })
     .overlay(alignment: .top) {
       navigationBar
     }
     .overlay(alignment: .bottom) {
-      if !viewModel.isDonatedByCurrentCustomer {
-        Rectangle()
-          .fill(Color.secondaryColor)
-          .shadow(radius: 5)
-          .edgesIgnoringSafeArea(.bottom)
-          .frame(height: 80)
-          .overlay {
-            Button(action: { viewModel.showingMessageSheet = true }) {
-              RoundedRectangle(cornerRadius: 8)
-                .fill(Color.accentColor)
-                .frame(height: 44)
-                .padding(.horizontal)
-                .overlay {
-                  Text(
-                    viewModel.donation.status == DonationStatus.available.rawValue
-                    ? "Send Request" : "Not available"
-                  )
-                    .foregroundColor(.white)
-                }
-            }
-            .disabled(viewModel.donation.status != DonationStatus.available.rawValue)
+      Rectangle()
+        .fill(Color.secondaryColor)
+        .shadow(radius: 5)
+        .edgesIgnoringSafeArea(.bottom)
+        .frame(height: 80)
+        .overlay {
+          Button(action: { viewModel.showingMessageSheet = true }) {
+            RoundedRectangle(cornerRadius: 8)
+              .fill(Color.accentColor)
+              .frame(height: 44)
+              .padding(.horizontal)
+              .overlay {
+                Text(viewModel.sendRequestButtonText)
+                  .foregroundColor(.white)
+              }
           }
-          .offset(y: tabBarHeight ?? 0.0)
-          .offset(y: (tabBar?.frame.height ?? 0.0) - safeAreaInsets.bottom)
-      }
+          .disabled(viewModel.buttonDisabled)
+        }
+      
     }
     
     .overlay {
@@ -232,33 +214,14 @@ struct DonationDetailsView: View {
               .padding(.top, 48)
             }
             .padding()
-            .padding(.bottom)
           }
           .animation(.easeIn, value: viewModel.showingMessageSheet)
       }
-      .offset(y: (tabBar?.frame.height ?? 0.0) - safeAreaInsets.bottom)
       .background(Color.black.opacity(0.4))
       .offset(y: viewModel.showingMessageSheet ? 0 : UIScreen.main.bounds.height)
     }
     
   }
-  
-//  private func openLocationInMaps() {
-//    let regionDistance: CLLocationDistance = 0.1
-//    let coordinate: CLLocationCoordinate2D = viewModel.donation.pickupLocation.clLocation.coordinate
-//    let regionSpan = MKCoordinateRegion(
-//      center: coordinate,
-//      latitudinalMeters: regionDistance,
-//      longitudinalMeters: regionDistance)
-//    let options = [
-//      MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center),
-//      MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)
-//    ]
-//    let placemark = MKPlacemark(coordinate: coordinate, addressDictionary: nil)
-//    let mapItem = MKMapItem(placemark: placemark)
-//    mapItem.openInMaps(launchOptions: options)
-//  }
-  
 }
 
 //struct DonationDetailsView_Previews: PreviewProvider {

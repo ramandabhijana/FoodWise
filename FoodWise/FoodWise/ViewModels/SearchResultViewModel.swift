@@ -15,7 +15,11 @@ enum SearchResultTitle: String {
 class SearchResultViewModel: ObservableObject {
   @Published var searchText: String
   @Published var isShowingSearchView = false
-  @Published var isSearchResultNavigationActive = false
+  @Published var isSearchResultNavigationActive = false {
+    didSet {
+      print("\nisSearchResultNavigationActive: \(isSearchResultNavigationActive)\n")
+    }
+  }
   @Published var currentTitle = SearchResultTitle.foods.rawValue
   private let initialSearchText: String
   

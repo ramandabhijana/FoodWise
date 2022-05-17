@@ -16,6 +16,36 @@ final class CustomerRepository {
   init() {
     
   }
+  
+  func incrementFoodSharedCount(forCustomerId customerId: String) -> AnyPublisher<Void, Error> {
+    Future { [weak self] promise in
+      guard let self = self else { return }
+      let data = ["foodSharedCount": FieldValue.increment(Int64(1))]
+      self.db.collection(self.path).document(customerId)
+        .updateData(data) { error in
+          if let error = error {
+            promise(.failure(error))
+          }
+          promise(.success(()))
+        }
+    }
+    .eraseToAnyPublisher()
+  }
+  
+  func incrementFoodRescuedCount(by value: Int64, forCustomerId customerId: String) -> AnyPublisher<Void, Error> {
+    Future { [weak self] promise in
+      guard let self = self else { return }
+      let data = ["foodRescuedCount": FieldValue.increment(value)]
+      self.db.collection(self.path).document(customerId)
+        .updateData(data) { error in
+          if let error = error {
+            promise(.failure(error))
+          }
+          promise(.success(()))
+        }
+    }
+    .eraseToAnyPublisher()
+  }
 }
 
 extension CustomerRepository: ProfileUrlNameFetchableRepository {

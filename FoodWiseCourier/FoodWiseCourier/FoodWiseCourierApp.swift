@@ -17,6 +17,12 @@ struct FoodWiseCourierApp: App {
       MainView(viewModel: .init())
     }
   }
+  
+//  var rootView: some View {
+//    let mainViewModel = MainViewModel()
+//    let homeViewModel = HomeViewModel(courierPublisher: mainViewModel.courierPublisher)
+//    return MainView(viewModel: .init(), homeViewModel: homeViewModel)
+//  }
 }
 
 class AppDelegate: NSObject, UIApplicationDelegate {
@@ -27,4 +33,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     FirebaseApp.configure()
     return true
   }
+  
+  func applicationWillTerminate(_ application: UIApplication) {
+    
+  }
 }
+

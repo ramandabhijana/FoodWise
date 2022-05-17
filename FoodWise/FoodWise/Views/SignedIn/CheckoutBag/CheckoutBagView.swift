@@ -15,9 +15,6 @@ struct CheckoutBagView: View {
   @StateObject private var viewModel: CheckoutViewModel
   @StateObject private var selectLocationViewModel: SelectLocationViewModel
   
-  @State private var tabBarHeight: CGFloat = 0.0
-  @State private var tabBar: UITabBar? = nil
-  
   static private var topUpViewModel: TopUpViewModel!
   
   init(viewModel: CheckoutViewModel,
@@ -180,9 +177,6 @@ struct CheckoutBagView: View {
     .onAppear {
       NotificationCenter.default.post(name: .tabBarHiddenNotification, object: nil)
     }
-    .onDisappear {
-      tabBar?.isHidden = false
-    }
     .background(Color.backgroundColor)
     .navigationTitle("Checkout")
     .navigationBarHidden(viewModel.isLoading)
@@ -239,7 +233,6 @@ struct CheckoutBagView: View {
     })
     .overlay(alignment: .bottom) {
       checkoutSheet
-        .offset(y: tabBarHeight)
     }
     .sheet(isPresented: $viewModel.showingAllOrderItems) {
       NavigationView {
@@ -292,11 +285,6 @@ struct CheckoutBagView: View {
         Text("To proceed using the wallet as a payment method, you must top up sufficient balance")
       }
     )
-    .introspectTabBarController { controller in
-      tabBarHeight = controller.tabBar.frame.height
-      tabBar = controller.tabBar
-      tabBar?.isHidden = true
-    }
   }
   
   @ViewBuilder

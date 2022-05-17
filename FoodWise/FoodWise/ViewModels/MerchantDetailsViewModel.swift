@@ -11,11 +11,12 @@ import Combine
 enum MerchantDetailsSortOptions: String, CaseIterable {
   case original = "Default"
   case price = "Price"
-  case discound = "Discount"
+  case discount = "Discount"
 }
 
 class MerchantDetailsViewModel: ObservableObject {
   @Published var showingChatView: Bool = false
+  @Published var searchText: String = ""
   @Published private(set) var merchant: Merchant? = nil
   @Published private(set) var allFoods: [Food] = []
   @Published private(set) var errorMessage = ""
@@ -36,6 +37,20 @@ class MerchantDetailsViewModel: ObservableObject {
   private var fetchFoodsPublisher: AnyPublisher<[Food], Error>? {
     guard let merchantId = merchant?.id else { return nil }
     return foodRepository.getAllFoodsForMerchant(withId: merchantId)
+  }
+  
+  var filteredFoods: [Food] {
+    let filtered = allFoods.filter { food in
+      searchText.isEmpty
+      || food.name.lowercased().contains(searchText.lowercased())
+    }
+    return filtered.sorted {
+      switch currentSortOption {
+      case .original: return $0.stock > $1.stock
+      case .price: return $0.price < $1.price
+      case .discount: return $0.discountRate > $1.discountRate
+      }
+    }
   }
   
   init(

@@ -11,10 +11,10 @@ import Combine
 class NewFoodViewModel: ObservableObject {
   @Published var name = ""
   @Published var selectedCategories = [FoodCategory]()
-  @Published var stock: Int? = nil
+  @Published var stock = ""
   @Published var keywords = ""
   @Published var description = ""
-  @Published var discountRate: Float? = 20.0
+  @Published var discountRate = "20"
   @Published var retailPrice: Double? = 0.0 {
     didSet { if retailPrice == nil { retailPrice = 0.00 } }
   }
@@ -54,8 +54,8 @@ class NewFoodViewModel: ObservableObject {
   
   private var displayedPrice: Double? {
     guard let retailPrice = retailPrice,
-          let discountRate = discountRate,
-          discountRate >= 20.0 else {
+          let discountRate = discountRateValue,
+          discountRate >= 20.0 && discountRate <= 100.0 else {
       return nil
     }
     return retailPrice - (retailPrice * Double((discountRate * 0.01)))
@@ -64,7 +64,8 @@ class NewFoodViewModel: ObservableObject {
   var selectedCategoriesName: String {
     selectedCategories.map(\.name).joined(separator: ", ")
   }
-  
+  var stockValue: Int { Int(stock)! }
+  var discountRateValue: Float? { Float(discountRate) }
   var photoLimit: Int {
     let notNilElementsCount = foodImagesData.compactMap { $0 }.count
     let spaceAvailable = 4 - notNilElementsCount
@@ -122,7 +123,7 @@ class NewFoodViewModel: ObservableObject {
           name: name,
           imageUrls: imageUrls,
           categories: selectedCategories,
-          stock: stock!,
+          stock: stockValue,
           keywords: {
             var keywords = keywords.lowercased().components(separatedBy: ", ")
             keywords.append(name.lowercased())
@@ -130,7 +131,7 @@ class NewFoodViewModel: ObservableObject {
           }(),
           description: description,
           retailPrice: retailPrice!,
-          discountRate: discountRate!,
+          discountRate: discountRateValue!,
           merchantId: merchantId)
       }
       .sink { [weak self] completion in
@@ -166,7 +167,7 @@ class NewFoodViewModel: ObservableObject {
   
   func validateStockIfFocusIsLost(_ focus: Bool) {
     guard focus == false else { return }
-    stockValid = stock ?? -1 >= 0
+    stockValid = Int(stock) != nil
   }
   
   func validateKeywordsIfFocusIsLost(_ focus: Bool) {
@@ -181,7 +182,12 @@ class NewFoodViewModel: ObservableObject {
   
   func validateDiscountRateIfFocusIsLost(_ focus: Bool) {
     guard focus == false else { return }
-    discountRateValid = discountRate ?? -1.0 >= 20.0
+    if let discountFloat = Float(discountRate) {
+      discountRateValid = discountFloat >= 20.0 && discountFloat <= 100.0
+    } else {
+      discountRateValid = false
+    }
+    
   }
   
   

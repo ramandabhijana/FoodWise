@@ -12,9 +12,9 @@ import MapKit
 struct NearbyMapView: View {
   @StateObject private var viewModel: NearbyMapViewModel
   @State private var showsRadiusPicker = false
-  @State private var tabBarHeight: CGFloat = 0.0
-  static private var tabBarFrame: CGFloat? = nil
-  @State private var tabBar: UITabBarController? = nil
+//  @State private var tabBarHeight: CGFloat = 0.0
+//  static private var tabBarFrame: CGFloat? = nil
+//  @State private var tabBar: UITabBarController? = nil
   private let locationManager = CLLocationManager()
   
   init(viewModel: NearbyMapViewModel) {
@@ -96,11 +96,11 @@ struct NearbyMapView: View {
               }
             }
             .onTapGesture { showsRadiusPicker = false }
-            .offset(y: tabBarHeight)
+//            .offset(y: tabBarHeight)
             
         }
-        .introspectTabBarController { controller in
-          tabBarHeight = controller.tabBar.frame.height
+//        .introspectTabBarController { controller in
+//          tabBarHeight = controller.tabBar.frame.height
 //          tabBarHeight = controller.tabBar.frame.height
 //          tabBar = controller
 //          controller.tabBar.isHidden = true
@@ -116,7 +116,7 @@ struct NearbyMapView: View {
 //            name: .tabBarHiddenNotification,
 //            object: nil)
           
-        }
+//        }
       } else {
         Color.backgroundColor.ignoresSafeArea()
         VStack {
@@ -125,6 +125,7 @@ struct NearbyMapView: View {
         }
       }
     }
+    .ignoresSafeArea()
 //    .onReceive(NotificationCenter.Publisher(
 //      center: .default,
 //      name: UIApplication.didBecomeActiveNotification)

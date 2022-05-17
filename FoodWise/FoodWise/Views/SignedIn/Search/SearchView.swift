@@ -68,12 +68,12 @@ struct SearchView: View {
           object: nil)
         setNavigationBarColor(withStandardColor: .white, andScrollEdgeColor: .white)
       }
-      .onDisappear {
-        NotificationCenter.default.post(
-          name: .tabBarShownNotification,
-          object: nil)
-        setNavigationBarColor(withStandardColor: .backgroundColor, andScrollEdgeColor: .primaryColor)
-      }
+//      .onDisappear {
+//        NotificationCenter.default.post(
+//          name: .tabBarShownNotification,
+//          object: nil)
+//        setNavigationBarColor(withStandardColor: .backgroundColor, andScrollEdgeColor: .primaryColor)
+//      }
 //      .introspectNavigationController { controller in
 //        let a2 = UINavigationBarAppearance()
 //        a2.configureWithOpaqueBackground()

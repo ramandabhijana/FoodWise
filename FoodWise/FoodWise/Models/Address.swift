@@ -23,4 +23,11 @@ struct Address: Codable {
   var clLocation: CLLocation {
     CLLocation(latitude: geopoint.latitude, longitude: geopoint.longitude)
   }
+  
+  var asObject: [String: Any] {
+    ["geopoint": geopoint,
+     "geocodedLocation": geocodedLocation,
+     "details": details
+    ]
+  }
 }

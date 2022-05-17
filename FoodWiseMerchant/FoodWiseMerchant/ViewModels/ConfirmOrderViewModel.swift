@@ -15,7 +15,9 @@ class ConfirmOrderViewModel: ObservableObject {
   @Published var shouldDismissView: Bool = false
   @Published var loading = false
   @Published var showingRequestDeliveryRequiredAlert = false
-  
+  @Published var showingRequestDeliveryAndAccept = false
+  @Published var showingRequestDeliveryView = false
+  @Published var showingChatView = false
   @Published var remarksText: String = ""
   
   private(set) var order: Order
@@ -77,8 +79,19 @@ class ConfirmOrderViewModel: ObservableObject {
     let mailPublisher = SMTPService.sendOrderRemark(
       with: remarkData,
       accepted: false)
+    let transactionPublisher = order.walletId != nil
+    ? walletRepository.addNewTransaction(
+      Transaction(
+        date: order.date.dateValue(),
+        amountSpent: order.total,
+        info: "Refund (Order rejected)"
+      ),
+      toWalletWithId: order.walletId!)
+    : Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
+    
     repository.confirmOrder(orderWithId: order.id, status: .rejected)
       .flatMap { _ in mailPublisher }
+      .flatMap { _ in transactionPublisher }
       .sink { _ in
       } receiveValue: { [weak self] _ in
         self?.showingRejectSheet = false
@@ -89,7 +102,7 @@ class ConfirmOrderViewModel: ObservableObject {
       .store(in: &subscriptions)
   }
   
-  func acceptOrder() {
+  func acceptOrder(withDeliveryTaskId taskId: String? = nil) {
     if order.pickupMethod == OrderPickupMethod.delivery.rawValue,
        courierFound == false {
       showingRequestDeliveryRequiredAlert = true
@@ -107,25 +120,30 @@ class ConfirmOrderViewModel: ObservableObject {
         foodRepository.incrementFoodStock(-(item.quantity), for: item.food!)
       }
     
-    let transactionPublisher = order.walletId != nil
-    ? walletRepository.addNewTransaction(
-      Transaction(
-        date: order.date.dateValue(),
-        amountSpent: -(order.total),
-        info: "Pay Order"
-      ),
-      toWalletWithId: order.walletId!)
-    : Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
-    
     let remarkData = OrderRemarkData(userEmail: order.customerEmail, userName: order.customerName, date: orderDateFormatted, time: orderTimeFormatted, merchantName: merchantName, remarks: "")
     let mailPublisher = SMTPService.sendOrderRemark(
       with: remarkData,
       accepted: true)
     
+    let transactionPublisher = walletRepository.fetchOrCreateWallet(userId: order.merchantShopFromId)
+      .flatMap { [walletRepository] wallet in
+        order.walletId != nil
+        ? walletRepository.addNewTransaction(
+          Transaction(
+            date: order.date.dateValue(),
+            amountSpent: order.subtotal,
+            info: "Order"
+          ),
+          toWalletWithId: wallet.id)
+        : Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
+      }
+    
     Publishers.MergeMany(foodStockPublishers)
       .collect()
       .flatMap { _ in
-        orderRepository.confirmOrder(orderWithId: order.id, status: .accepted)
+        orderRepository.confirmOrder(orderWithId: order.id,
+                                     status: .accepted,
+                                     deliveryTaskId: taskId)
       }
       .flatMap { _ in transactionPublisher }
       .flatMap { _ in mailPublisher }
@@ -136,6 +154,16 @@ class ConfirmOrderViewModel: ObservableObject {
       } receiveValue: { [weak self] _ in
         self?.loading = false
         self?.postConfirmedNotificationAndDismiss(accepted: true)
+      }
+      .store(in: &subscriptions)
+  }
+  
+  func listenRequestDeliveryPublisher(_ publisher: AnyPublisher<DeliveryTask, Never>) {
+    publisher
+      .sink { [weak self] task in
+        self?.showingRequestDeliveryView = false
+        self?.courierFound = true
+        self?.acceptOrder(withDeliveryTaskId: task.taskId)
       }
       .store(in: &subscriptions)
   }

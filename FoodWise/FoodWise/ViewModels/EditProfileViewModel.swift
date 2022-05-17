@@ -61,7 +61,10 @@ class EditProfileViewModel: ObservableObject {
   
   private func updateCustomer() {
     customer.fullName = fullName
-    customerRepo.updateCustomer(customer)
+    customerRepo.updateCustomerProfile(
+      customerId: customer.id,
+      fullName: customer.fullName
+    )
       .subscribe(on: backgroundQueue)
       .receive(on: DispatchQueue.main)
       .sink { [weak self] completion in
@@ -69,8 +72,9 @@ class EditProfileViewModel: ObservableObject {
           self?.errorMessage = error.localizedDescription
         }
         self?.savingUpdate = false
-      } receiveValue: { [weak self] customer in
-        self?.rootViewModel.setCustomer(customer)
+      } receiveValue: { [weak self] _ in
+        guard let self = self else { return }
+        self.rootViewModel.setCustomer(self.customer)
       }
       .store(in: &subscriptions)
   }

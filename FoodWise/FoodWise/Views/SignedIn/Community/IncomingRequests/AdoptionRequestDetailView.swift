@@ -68,12 +68,17 @@ struct AdoptionRequestDetailView: View {
     .onReceive(viewModel.donationPublisher) { _ in
       dismiss()
     }
+    .onAppear {
+      setNavigationBarColor(withStandardColor: .primaryColor,
+                            andScrollEdgeColor: .primaryColor)
+    }
   }
 }
 
 private extension AdoptionRequestDetailView {
   struct RequestCell: View {
     @ObservedObject var viewModel: AdoptionRequestDetailViewModel
+    @State private var showingChatView = false
     var request: AdoptionRequest
     var currentUser: Customer
     
@@ -91,7 +96,7 @@ private extension AdoptionRequestDetailView {
           Text(request.requesterCustomer.fullName)
             .lineLimit(1)
           Spacer()
-          Button(action: { }) {
+          Button(action: { showingChatView = true }) {
             Text("Chat")
               .font(.subheadline)
               .padding(.horizontal)
@@ -100,6 +105,19 @@ private extension AdoptionRequestDetailView {
                 RoundedRectangle(cornerRadius: 4)
                   .strokeBorder(lineWidth: 2)
               }
+          }
+          .overlay {
+            NavigationLink(
+              isActive: $showingChatView,
+              destination: {
+                LazyView(ChatRoomView(
+                  userId: currentUser.id,
+                  otherUserType: kCustomerType,
+                  otherUserProfilePictureUrl: request.requesterCustomer.profileImageUrl,
+                  otherUserName: request.requesterCustomer.fullName,
+                  otherUserId: request.requesterCustomer.id))
+              },
+              label: EmptyView.init)
           }
         }
         .padding(.top, 5)

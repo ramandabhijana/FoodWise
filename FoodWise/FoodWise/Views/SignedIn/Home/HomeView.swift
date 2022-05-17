@@ -222,8 +222,6 @@ struct SearchingView: View {
   @Binding var searchText: String
   @Binding var showing: Bool
   @Binding var onSubmit: () -> Void
-  @State private var tabBarFrame = CGRect.zero
-  @State private var tabBarController: UITabBarController? = nil
   
   var body: some View {
     NavigationView {
@@ -259,26 +257,12 @@ struct SearchingView: View {
         }
       }
       .onAppear {
-        DispatchQueue.main.async { tabBarHidden(true) }
+        setNavigationBarColor(withStandardColor: .white, andScrollEdgeColor: .white)
       }
-      .onDisappear { tabBarHidden(false) }
-      .introspectTabBarController(customize: setTabBarController)
-      .introspectNavigationController { controller in
-        let a2 = UINavigationBarAppearance()
-        a2.configureWithOpaqueBackground()
-        a2.backgroundColor = .white
-        controller.navigationBar.standardAppearance = a2
+      .onDisappear {
+        setNavigationBarColor(withStandardColor: .primaryColor, andScrollEdgeColor: .primaryColor)
       }
     }
-  }
-  
-  private func setTabBarController(_ controller: UITabBarController) {
-    tabBarController = controller
-  }
-  
-  private func tabBarHidden(_ hidden: Bool) {
-    tabBarController?.tabBar.isHidden = hidden
-    UIView.transition(with: (tabBarController?.view)!, duration: 0.15, options: .transitionCrossDissolve, animations: nil, completion: nil)
   }
   
   private func dismiss() {

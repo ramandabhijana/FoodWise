@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<gpx version="1.1" creator="Xcode">
+  
+  <!--
+  Provide one or more waypoints containing a latitude/longitude pair. If you provide one
+  waypoint, Xcode will simulate that specific location. If you provide multiple waypoints,
+  Xcode will simulate a route visiting each waypoint.
+  -->
+  
+<!-- Point 1 (-8.6675611, 115.2385411) -->
+<!-- Point 2 (-8.6732827, 115.2383433)-->
+<!-- Point 3 turning (-8.6734223, 115.2382638)-->
+<!-- Point 4 (-8.6731727, 115.2334848)-->
+<!-- Point 5 turning (-8.6731800, 115.2334623)-->
+<!-- Point 6 (-8.6738575, 115.2334855)-->
+  
+  <wpt lat="-8.6675611" lon="115.2385411">
+    <name>Point 1</name>
+    
+    <!--
+    Optionally provide a time element for each waypoint. Xcode will interpolate movement
+    at a rate of speed based on the time elapsed between each waypoint. If you do not provide
+    a time element, then Xcode will use a fixed rate of speed.
+    
+    Waypoints must be sorted by time in ascending order.
+    -->
+    <time>2014-09-24T14:55:37Z</time>
+    <magvar>180</magvar>
+  </wpt>
+  
+<!--  (-8.6767042, 115.2383973)-->
+<wpt lat="-8.6767042" lon="115.2383973">
+  <name>Point 2</name>
+  <time>2014-09-24T14:59:00Z</time>
+  <magvar>180</magvar>
+</wpt>
+  
+<!--  <wpt lat="-8.6732827" lon="115.2383433">-->
+<!--    <name>Point 2</name>-->
+<!--    <time>2014-09-24T14:56:10Z</time>-->
+<!--    <magvar>180</magvar>-->
+<!--  </wpt>-->
+<!--  <wpt lat="-8.6734223" lon="115.2382638">-->
+<!--    <name>Point 3</name>-->
+<!--    <time>2014-09-24T14:56:20Z</time>-->
+<!--    <magvar>200</magvar>-->
+<!--  </wpt>-->
+<!--  <wpt lat="-8.6731727" lon="115.2334848">-->
+<!--    <name>Point 4</name>-->
+<!--    <time>2014-09-24T14:57:00Z</time>-->
+<!--    <magvar>270</magvar>-->
+<!--  </wpt>-->
+<!--  <wpt lat="-8.6731800" lon="115.2334623">-->
+<!--    <name>Point 5</name>-->
+<!--    <time>2014-09-24T14:57:10Z</time>-->
+<!--    <magvar>200</magvar>-->
+<!--  </wpt>-->
+<!--  <wpt lat="-8.6738575" lon="115.2334855">-->
+<!--    <name>Point 6</name>-->
+<!--    <time>2014-09-24T14:57:30Z</time>-->
+<!--    <magvar>180</magvar>-->
+<!--  </wpt>-->
+  
+</gpx>

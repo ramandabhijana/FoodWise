@@ -57,7 +57,7 @@ struct MyProfileView: View {
                   .overlay {
                     HStack {
                       VStack {
-                        Text("0")
+                        Text("\(customer.foodRescuedCount ?? 0)")
                           .font(.title2)
                           .fontWeight(.semibold)
                         Text("Food Rescued")
@@ -70,7 +70,7 @@ struct MyProfileView: View {
                         .padding(.horizontal)
                       
                       VStack {
-                        Text("0")
+                        Text("\(customer.foodSharedCount ?? 0)")
                           .font(.title2)
                           .fontWeight(.semibold)
                         Text("Food Shared")
@@ -100,19 +100,20 @@ struct MyProfileView: View {
                 }
               )
               SettingsMoreItemView(
-                imgSystemName: "house",
-                title: "Shipping Address",
-                subtitle: "Manage your shipping address",
+                imgSystemName: "doc.plaintext",
+                title: "Order History",
+                subtitle: "List of ongoing and past orders",
                 goToDestination: {
-                  LazyView(Text("Coming soon"))
+                  LazyView(OrdersHistoryView(
+                    viewModel: OrdersHistoryViewModel(customerId: customer.id)))
                 }
               )
               SettingsMoreItemView(
-                imgSystemName: "archivebox",
-                title: "Order History",
-                subtitle: "See what you've ordered in the past",
+                imgSystemName: "text.badge.star",
+                title: "Ratings and Reviews",
+                subtitle: "Write your thoughts and rate the food you ordered",
                 goToDestination: {
-                  LazyView(Text("Coming soon"))
+                  LazyView(WaitingReviewsView(viewModel: WaitingReviewsViewModel(customerId: customer.id)))
                 }
               )
               
@@ -132,6 +133,7 @@ struct MyProfileView: View {
                       .degrees(180),
                       axis: (x: 0, y:1, z: 0)
                     )
+                    .frame(width: 30, alignment: .leading)
                   
                   VStack(alignment: .leading) {
                     Text("Sign Out")
@@ -147,7 +149,7 @@ struct MyProfileView: View {
           }
         }
         .background(Color.backgroundColor)
-        .navigationTitle("Settings")
+        .navigationTitle("More")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
 //          let appearance = UINavigationBarAppearance()
@@ -188,7 +190,7 @@ struct MyProfileView: View {
   
   private func signOut() {
     AuthenticationService.shared.signOut()
-    rootViewModel.selectedTab = 0
+    rootViewModel.selectedTab = .home
   }
 }
 
@@ -210,6 +212,7 @@ private extension MyProfileView {
         HStack(spacing: 25) {
           Image(systemName: imgSystemName)
             .foregroundColor(.black)
+            .frame(width: 30, alignment: .leading)
           VStack(alignment: .leading) {
             Text(title).foregroundColor(.black)
             Text(subtitle)

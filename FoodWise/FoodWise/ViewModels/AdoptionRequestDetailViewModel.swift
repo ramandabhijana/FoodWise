@@ -16,6 +16,7 @@ class AdoptionRequestDetailViewModel: ObservableObject {
   
   @Published private(set) var donation: Donation
   private let repository: DonationRepository
+  private let customerRepository: CustomerRepository
   private var subscriptions: Set<AnyCancellable> = []
   private(set) var toBeAcceptedRequest: AdoptionRequest? = nil
   
@@ -31,9 +32,10 @@ class AdoptionRequestDetailViewModel: ObservableObject {
     donationSubject.eraseToAnyPublisher()
   }
   
-  init(donation: Donation, repository: DonationRepository) {
+  init(donation: Donation, repository: DonationRepository, customerRepository: CustomerRepository = CustomerRepository()) {
     self.donation = donation
     self.repository = repository
+    self.customerRepository = customerRepository
   }
   
   func showAcceptAlert(withRequest request: AdoptionRequest) {

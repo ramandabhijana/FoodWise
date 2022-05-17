@@ -91,6 +91,7 @@ struct FoodCell1<Destination: View>: View {
             Group {
               Text(food.name)
                 .lineLimit(2)
+                .multilineTextAlignment(.leading)
                 .padding(.top, 8)
               Text(food.priceString)
                 .fontWeight(.bold)

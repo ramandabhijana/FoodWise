@@ -54,12 +54,12 @@ class DonateFoodViewModel: ObservableObject {
   
   init(repository: DonationRepository) {
     self.repository = repository
-//    $foodName
-//      .dropFirst()
-//      .debounce(for: .milliseconds(800), scheduler: RunLoop.main)
-//      .map { !$0.isEmpty }
-//      .assign(to: \.isNameValid, on: self)
-//      .store(in: &subscriptions)
+    $foodName
+      .dropFirst()
+      .debounce(for: .milliseconds(800), scheduler: RunLoop.main)
+      .map { !$0.isEmpty }
+      .assign(to: \.isNameValid, on: self)
+      .store(in: &subscriptions)
   }
   
   

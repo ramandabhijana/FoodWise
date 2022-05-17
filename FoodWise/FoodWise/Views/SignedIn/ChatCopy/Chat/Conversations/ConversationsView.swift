@@ -33,7 +33,7 @@ struct ConversationsView: View {
                   case kMerchantType:
                     return MerchantRepository()
                   case kCourierType:
-                    return CustomerRepository() // Temporary
+                    return CourierRepository() 
                   default:
                     fatalError("Unresolved type")
                   }

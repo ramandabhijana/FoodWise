@@ -13,13 +13,16 @@ struct LineItem: Identifiable, Codable {
   var quantity: Int
   var price: Double? = nil
   var food: Food? = nil
+  var isReviewed: Bool? = nil
   
   var asObject: [String: Any] {
     ["id": id,
      "foodId": foodId,
      "quantity": quantity,
      "price": price as Any,
-     "food": food as Any]
+     "food": food?.asLineItemObject as Any,
+     "isReviewed": isReviewed as Any
+    ]
   }
 }
 

@@ -114,22 +114,23 @@ struct DonateFoodView: View {
               text: $viewModel.foodName
             )
               .disableAutocorrection(true)
-              .focused($nameFieldFocused)
-              .onChange(of: nameFieldFocused) { focused in
-                if !focused {
-                  DispatchQueue.main.async {
-                    viewModel.validateNameField()
-                    setNavigationBarColor(
-                      withStandardColor: .primaryColor,
-                      andScrollEdgeColor: .primaryColor)
-                    
-                    NotificationCenter.default.post(name: .tabBarChangeBackgroundToSecondaryColorNotification, object: nil)
-                  }
-                }
+//              .focused($nameFieldFocused)
+//              .onChange(of: nameFieldFocused) { focused in
+//                if !focused {
+//                  DispatchQueue.main.async {
+//                    viewModel.validateNameField()
+//                    setNavigationBarColor(
+//                      withStandardColor: .primaryColor,
+//                      andScrollEdgeColor: .primaryColor)
+//
+//                    NotificationCenter.default.post(name: .tabBarChangeBackgroundToSecondaryColorNotification, object: nil)
+//                  }
+//                }
+                
                 //                setNavigationBarColor(
                 //                  withStandardColor: .primaryColor,
                 //                  andScrollEdgeColor: .primaryColor)
-              }
+//              }
           }
           
           InputFieldContainer(

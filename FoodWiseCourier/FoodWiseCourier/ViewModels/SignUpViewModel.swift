@@ -60,6 +60,7 @@ class SignUpViewModel: ObservableObject {
             let userInfo = authResult?.additionalUserInfo,
             userInfo.isNewUser // make sure the user is a new user
       else { return }
+      
       self.courierRepo.createCourier(
         userId: (authResult?.user.uid)!,
         name: self.fullName,
