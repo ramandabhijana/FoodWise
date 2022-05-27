@@ -25,17 +25,23 @@ enum NetworkAPIError: Error {
 
 class ChargePaymentService {
   private enum APIEnvironment: String {
-    case prod = ""
+    case prod = "https://food-wise-square-payment.herokuapp.com/"
     case localhost = "http://localhost:5000"
     
     var baseUrl: URL { URL(string: self.rawValue)! }
+    
+    /*
+     curl -X POST 'https://food-wise-square-payment.herokuapp.com/walletTopUp' \
+       -H 'Content-Type: application/json' \
+       -d '{ "nonce": "cnon:CBASEMfL3q2AFyPOZO35xQYjiw8" }'
+     */
   }
   
   class func processWalletTopUp(_ body: WalletTopUpBody) -> AnyPublisher<Payment, Error> {
     let httpBody = try? JSONEncoder().encode(body)
     assert(httpBody != nil)
     let requestPath = "walletTopUp"
-    let url = APIEnvironment.localhost.baseUrl.appendingPathComponent(requestPath)
+    let url = APIEnvironment.prod.baseUrl.appendingPathComponent(requestPath)
     let urlRequest: URLRequest = {
       var req = URLRequest(url: url)
       req.httpMethod = "POST"

@@ -10,7 +10,7 @@ import Combine
 
 class SMTPService {
   private enum APIEnvironment: String {
-    case prod = ""
+    case prod = "https://food-wise-mail-service.herokuapp.com/"
     case localhost = "http://localhost:8080"
     
     var baseUrl: URL { URL(string: self.rawValue)! }
